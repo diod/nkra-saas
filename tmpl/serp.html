@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Национальный корпус русского языка</title>
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/common.js"></script>
+</head>
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td class="logo"><a border="0" href="http://ruscorpora.ru/"><img src="/i/logo.gif"></a></td></tr></table>
+<div class="content"><h1 class="alt">Национальный корпус русского языка</h1>
+<h1>Результаты поиска в поэтическом корпусе</h1><br clear="all"><p class="res" style="clear: right;">Объем всего корпуса: 
+<span class="stat-number"><TMPL_var name="TotalDocs"></span>
+<span class="stat-caption">документ<TMPL_var name="TotalDocsFlex"></span>.<TMPL_if name="SubcorpusStat" value="1"> &nbsp; Объем подкорпуса: 
+<span class="stat-number"><TMPL_var name="SubcorpusDocs"></span>
+<span class="stat-caption">документ<TMPL_var name="SubcorpusDocsFlex"></span>.</TMPL_if></p><p class="res"><TMPL_var name="Query">
+<br></p><p class="found">Найдено <span class="stat-number"><TMPL_var name="Docs"></span> <span class="stat-caption">документ<TMPL_var name="DocsFlex"></span>, <span class="stat-number"><TMPL_var name="Hits"></span> <span class="stat-caption">вхождени<TMPL_var name="HitsFlex"></span>.</p>
+<script type="text/javascript">
+  pager(<TMPL_var name="CurrentPage">,<TMPL_var name="LastPage">);
+</script><ol start="<TMPL_var name="startdoc">">
+<TMPL_loop name="doc_lst">
+  <!--<TMPL_var name="show_doc">-->
+  <!--<TMPL_var name="show_doc_lst">-->
+  <li><span class="b-doc-expl" explain="<TMPL_var name="docid">"><TMPL_var name="author"><TMPL_IF name="dub" value="dubium">(?)</TMPL_IF>. <TMPL_var name="title"> (<TMPL_var name="date">)</span>&nbsp;&nbsp;<tmpl_if name="manual_tagging"
+    value="1"><span class="on"> [омонимия снята] </span></tmpl_if><tmpl_if name="manual_tagging"
+    value="0"><span class="off"> [омонимия не снята] </span></tmpl_if>
+<script type="text/javascript">
+  all_examples("<tmpl_var name="docid">");
+</script>
+  <table width="100%" cellspacing="10"><tr><td width="100%"><ul><TMPL_loop name="snippet_lst">
+  <li><TMPL_if name="next_snippet" value="1"><br></TMPL_if><TMPL_loop name="word_lst"><TMPL_if name="is_word" 
+  value="1"><span
+ class="b-wrd-expl<TMPL_if name="has_hit" value="True"> g-em</TMPL_if>" explain="<TMPL_var name="coords">"><TMPL_var
+  name="text"></span></TMPL_if><TMPL_if name="is_word" value="0"><TMPL_var name="text"></TMPL_if></TMPL_loop>
+  <br><span class="doc">[<TMPL_var name="author"><TMPL_IF name="dub" value="dubium">(?)</TMPL_IF>. <TMPL_var name="title"> (<TMPL_var name="date">)]</span> <tmpl_if name="manual_tagging"
+    value="1"><span class="on-doc"> [омонимия снята] </span></tmpl_if><tmpl_if name="manual_tagging"
+    value="0"><span class="off-doc"> [омонимия не снята] </span></tmpl_if>
+  <a href=#>&larr;&#133;&rarr;</a></li></TMPL_loop></ul></td></tr></table></li>
+</TMPL_loop>          
+  </ol><script type="text/javascript">
+  pager(<TMPL_var name="CurrentPage">,<TMPL_var name="LastPage">);
+</script>
+    <br clear="all"><br></div><div class="footer"><footer xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:x="http://www.yandex.ru/xscript">
+    <p>Поиск осуществлен системой <a href="http://company.yandex.ru/technology/server/">Яндекс.Сервер</a></p>
+    <p>При цитировании примеров просим ссылаться на Национальный корпус русского языка</p>
+  </footer></div></body></html>

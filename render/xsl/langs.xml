@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<langs>
+ <ru>
+  <header>
+    <title>Национальный корпус русского языка</title>
+    <link rel="shortcut icon" href="http://ruscorpora.ru/favicon.ico"/>
+  </header>
+  <conj>
+   <sentences f="предложений" f1="предложение" f234="предложения" />
+   <words f="слов" f1="слово" f234="слова" />
+   <documents f="документов" f1="документ" f234="документа" />
+   <fragments f="фрагментов" f1="фрагмент" f234="фрагмента" />
+   <contexts f="вхождений" f1="вхождение" f234="вхождения" />
+  </conj>
+  <logo>
+    <a href="http://ruscorpora.ru/">
+      <img src="http://ruscorpora.ru/verstka/i/logo.gif"/>
+    </a>
+  </logo>
+  <corp_name>Национальный корпус русского языка</corp_name>
+  <results>Результаты поиска</results>
+  <attributes>атрибуты</attributes>
+  <to_search>
+    <name>перейти на страницу поиска</name>
+    <url_prefix>http://ruscorpora.ru/</url_prefix>
+    <url_infix>saas/search-</url_infix>
+    <url_postfix>.html</url_postfix>
+  </to_search>
+  <language href="en">English</language>
+  <accent_no>версия без ударений</accent_no>
+  <accent_yes>версия с ударениями</accent_yes>
+  <settings>настройки</settings>
+  <choose_corp>
+    <name>выбрать подкорпус</name>
+    <url_prefix>http://ruscorpora.ru/saas/</url_prefix>
+    <url_infix>mycorpora-</url_infix>
+    <url_postfix>.html</url_postfix>
+    <save_and_go>Сохранить подкорпус и перейти к странице поиска</save_and_go>
+  </choose_corp>
+  <reset_corp>сбросить подкорпус</reset_corp>
+  <search>
+    <search_on>Поиск ведётся по пользовательскому подкорпусу</search_on>
+    <value>объемом</value>
+    <not_found>По этому запросу ничего не найдено</not_found>
+  </search>
+  <pages>Страницы</pages>
+  <prev_page>предыдущая страница</prev_page>
+  <next_page>следующая страница</next_page>
+  <prev_fragment>предыдущий фрагмент</prev_fragment>
+  <next_fragment>следующий фрагмент</next_fragment>
+  <result>
+    <found>Найдено</found>
+    <sorted>Отсортировано</sorted>
+    <total-amount>общим объемом</total-amount>
+    <sentences>предложений</sentences>
+    <documents>документов</documents>
+    <contexts>вхождений</contexts>
+  </result>
+  <corp-stat>
+    <corp-prefix>Объем всего корпуса</corp-prefix>
+    <subcorp-prefix>Всего в подкорпусе</subcorp-prefix>
+  </corp-stat>
+  <format>
+    <ordinary>обычный формат</ordinary>
+    <kwic>формат KWIC</kwic>
+  </format>
+  <download>Скачать несколько первых результатов выдачи в формате</download>
+  <query>
+    <distance>на расстоянии</distance>
+    <from>от</from>
+    <to>до</to>
+    <connection>со связью</connection>
+    <any_alone>любое слово</any_alone>
+    <any_dist>любого слова</any_dist>
+  </query>
+  <form>
+    <apply>Применить</apply>
+    <reset>Восстановить исходные значения</reset>
+    <sort>Упорядочить</sort>
+    <show>Показывать</show>
+    <output>Формат выдачи</output>
+  </form>
+  <all_contexts>Все примеры</all_contexts>
+  <omo_on>омонимия не снята</omo_on>
+  <omo_off>омонимия снята</omo_off>
+  <footer>
+    <p>Поиск осуществлен системой <a href="http://company.yandex.ru/technology/server/">Яндекс.Сервер</a></p>
+    <p>При цитировании примеров просим ссылаться на Национальный корпус русского языка</p>
+  </footer>
+  <error>
+    <unavailable>Извините, сервис временно недоступен</unavailable>
+    <later>Попробуйте перезагрузить страницу или зайти позднее</later>
+    <empty>Задан пустой поисковый запрос</empty>
+    <blocked>Вы робот? С Вашего IP-адреса было задано слишком много запросов. Ваш доступ к корпусу временно ограничен.</blocked>
+  </error>
+  <word-info>
+    <lex name="Лемма"/>
+    <gramm name="Грамматика"/>
+    <sem name="Семантика основная"/>
+    <sem2 name="Семантика дополнительная"/>
+    <semf name="Семантика c фильтрами 1"/>
+    <semf2 name="Семантика c фильтрами 2"/>
+    <flags name="Доп. признаки"/>
+    <word_formation name="Словообразование"/>
+    <source_el name="Греческая форма"/>
+    <lex_el name="Греческая лемма"/>
+  </word-info>
+  <doc-info>
+    <editor_id name="Разметчик"/>
+    <author name="Автор"/>
+    <sex name="Пол автора"/>
+    <birthday name="Дата рождения автора"/>
+    <header name="Название"/>
+    <cyclus name="Цикл"/>
+    <created name="Дата создания"/>
+    <exact name="Точность даты"/>
+    <original name="Автор оригинала"/>
+    <language name="Язык оригинала"/>
+    <interviewer name="Диалектолог (запись)"/>
+    <region name="Регион записи"/>
+    <not_place name="Место записи"/>
+    <period name="Датировка"/>
+    <translation name="Оригинальность"/>
+    <comment name="Комментарий"/>
+
+    <sphere name="Сфера функционирования"/>
+    <genre_fi name="Жанр художественной литературы"/>
+    <genre name="Жанр текста"/>
+    <chronotop name="Время и место действия"/>
+    <topic name="Тема текста"/>
+    <type name="Тип текста"/>
+    <style name="Стиль"/>
+
+    <sentences name="Предложений"/>
+    <words name="Словоформ"/>
+
+    <liber name="Книга"/>
+    <meter name="Метр"/>
+    <feet name="Длина строки"/>
+    <clausula name="Клаузула"/>
+    <formula name="Метрическая формула"/>
+    <rhyme name="Рифма"/>
+    <strophe name="Строфика"/>
+    <gr_strophe name="Графическая строфика"/>
+    <verses name="Число строк"/>
+    <extra name="Дополнительные параметры"/>
+
+    <audience_age name="Возраст аудитории"/>
+    <audience_level name="Уровень образования аудитории"/>
+    <audience_size name="Размер аудитории"/>
+
+    <medium name="Тип носителя"/>
+    <source name="Источник"/>
+    <publ_year name="Дата публикации"/>
+    <publication name="Издание"/>
+    <publisher name="Издательство"/>
+
+    <company name="Кинокомпания"/>
+    <producer name="Продюсер"/>
+    <date-ex name="Дата выхода на экран"/>
+
+    <subcorpus name="Подкорпус"/>
+    <!--<tagging name="Омонимия"/>-->
+
+    <town name="Город"/>
+    <state_of_preservation name="Степень сохранности"/>
+    <lang name="Язык"/>
+    <translator name="Переводчик"/>
+    <lang_trans name="Язык перевода"/>
+    <date_trans name="Год перевода"/>
+
+    <ngb_volume name="Том НГБ"/>
+    <dnd_page name="Статья ДНД"/>
+    <stratigraphic_date name="Стратиграфическая дата"/>
+    <approx_date name="Условная дата"/>
+    <summary name="Содержание"/>
+    <freq name="Частота"/>
+    <docs name="Количество документов"/>
+    <link name="Ссылка"/>
+    <location name="Место написания (авторская запись)"/>
+    <location_normalized name="Место написания (унифицированное название)"/>
+
+    <source_name name="Лицо, предоставившее текст"/>
+    <source_address name="Лицо, предоставившее текст: информация для связи"/>
+    <source_position name="Лицо, предоставившее текст: научное звание, должность, место работы"/>
+    <recorder name="Кем производилась запись"/>
+    <district name="Место записи: район"/>
+    <village name="Место записи: населённый пункт"/>
+    <year_recorded name="Год записи"/>
+    <speaker_name name="Информант"/>
+    <speaker_age name="Возраст информанта"/>
+    <speaker_birthdate name="Год рождения информанта"/>
+    <speaker_birthplace name="Место рождения информанта"/>
+    <speaker_education name="Образование информанта"/>
+    <speaker_occupation name="Профессия информанта"/>
+    <speaker_other name="Другие сведения об информанте"/>
+    <published_in name="Где публиковался текст"/>
+    <stored_in name="Место хранения записи"/>
+    <genre_oral_nonfolk name="Жанр: устные нефольклорные тексты"/>
+    <genre_written_nonfolk name="Жанр: письменные нефольклорные тексты"/>
+    <genre_folk name="Жанр: фольклорные тексты"/>
+    <topic_period name="Место и время описываемых событий"/>
+    <stressed_svet name="Каким звуком реализуется старый ять в позиции после мягкого перед твердым согласными под ударением?"/>
+    <stressed_svechka name="Каким звуком реализуется старый ять в позиции между мягкими согласными под ударением?"/>
+    <stressed_gulyat name="Каким звуком реализуется *a в позиции между мягкими согласными под ударением?"/>
+    <unstressed name="Тип безударного вокализма после твердых согласных"/>
+    <consonant_g name="Реализация /г/ в позиции перед гласным, не в окончании -ого)"/>
+    <consonant_ch name="Звук на месте /ч’/"/>
+    <consonant_ts name="Звук на месте /ц/"/>
+    <consonant_affricates name="Наблюдается ли в говоре совпадение аффрикат?"/>
+    <normalized_spelling name="Орфографизированная ли запись?"/>
+    <audio name="Аудиозапись"/>
+  </doc-info>
+  <search-in-other-corpora name="Поискать в других корпусах:"/>
+  <corpora-list name="корпус">
+    <corpus mode="main" name="Основной" gen="основном" in="в&#160;основном&#160;корпусе" page="search.xml"/>
+    <corpus mode="accent" name="Акцентологический" gen="акцентологическом" in="в&#160;акцентологическом&#160;корпусе" page="search.xml"/>
+    <corpus mode="paper" name="Газетный" gen="газетном" in="в&#160;газетном&#160;корпусе" page="search.xml"/>
+    <corpus mode="dialect" name="Диалектный" gen="диалектном" in="в&#160;диалектном&#160;корпусе" page="search.xml"/>
+    <corpus mode="murco" name="Мультимедийный" gen="мультимедийном" in="в&#160;мультимедийном&#160;корпусе" page="search.xml"/>
+    <corpus mode="school" name="Обучающий" gen="обучающем" in="в&#160;обучающем&#160;корпусе" page="search.xml"/>
+    <corpus mode="para" name="Параллельный" gen="параллельном" in="в&#160;параллельном&#160;корпусе" page="search.xml"/>
+    <corpus mode="poetic" name="Поэтический" gen="поэтическом" in="в&#160;поэтическом&#160;корпусе" page="search.xml"/>
+    <corpus mode="syntax" name="Синтаксический" gen="синтаксическом" in="в&#160;синтаксическом&#160;корпусе" page="syntax.xml"/>
+    <corpus mode="spoken" name="Устный" gen="устном" in="в&#160;устном&#160;корпусе" page="search.xml"/>
+  </corpora-list>
+  <freq>
+    <page-stat-title>Частоты найденного для этой страницы</page-stat-title>
+    <title>Частотный словарь по результатам поиска</title>
+    <subtitle>Наиболее употребительные леммы и словоформы в подкорпусе документов, найденных по запросу</subtitle>
+    <prelink>Посмотреть</prelink>
+    <link>частотный словарь подкорпуса документов, найденных по запросу</link>
+    <lemma>Леммы</lemma>
+    <form>Словоформы</form>
+  </freq>
+  <attrs>
+    <atom key="S">сущ</atom>
+    <atom key="V">глаг</atom>
+    <atom key="A">прил</atom>
+    <atom key="ADV">н</atom>
+    <atom key="SPRO">мс-сущ</atom>
+    <atom key="APRO">мс-прил</atom>
+    <atom key="NUM">числ</atom>
+    <atom key="ANUM">числ-прил</atom>
+    <atom key="PRAEDIC">предик</atom>
+    <atom key="PARENTH">вводн</atom>
+    <atom key="ADVPRO">мс-н</atom>
+    <atom key="PRAEDICPRO">мс-предик</atom>
+    <atom key="PR">предлог</atom>
+    <atom key="CONJ">союз</atom>
+    <atom key="PART">част</atom>
+    <atom key="INTJ">межд</atom>
+    <atom key="m">м</atom>
+    <atom key="f">ж</atom>
+    <atom key="mf">м-ж</atom>
+    <atom key="n">с</atom>
+    <atom key="anim">одуш</atom>
+    <atom key="inan">неод</atom>
+    <atom key="sg">ед</atom>
+    <atom key="pl">мн</atom>
+    <atom key="nom">им</atom>
+    <atom key="gen">род</atom>
+    <atom key="dat">дат</atom>
+    <atom key="acc">вин</atom>
+    <atom key="ins">твор</atom>
+    <atom key="loc">предл</atom>
+    <atom key="gen2">род2</atom>
+    <atom key="acc2">вин2</atom>
+    <atom key="loc2">предл2</atom>
+    <atom key="voc">зв</atom>
+    <atom key="adnum">сч</atom>
+    <atom key="brev">кратк</atom>
+    <atom key="plen">полн</atom>
+    <atom key="comp">сравн</atom>
+    <atom key="comp2">сравн2</atom>
+    <atom key="supr">превосх</atom>
+    <atom key="pf">св</atom>
+    <atom key="ipf">нсв</atom>
+    <atom key="intr">нп</atom>
+    <atom key="tran">перех</atom>
+    <atom key="act">действ</atom>
+    <atom key="pass">страд</atom>
+    <atom key="med">мед</atom>
+    <atom key="inf">инф</atom>
+    <atom key="partcp">прич</atom>
+    <atom key="ger">деепр</atom>
+    <atom key="indic">изъяв</atom>
+    <atom key="imper">повел</atom>
+    <atom key="imper2">повел2</atom>
+    <atom key="praet">прош</atom>
+    <atom key="praes">наст</atom>
+    <atom key="fut">буд</atom>
+    <atom key="1p">1л</atom>
+    <atom key="2p">2л</atom>
+    <atom key="3p">3л</atom>
+    <atom key="persn">имя</atom>
+    <atom key="patrn">отч</atom>
+    <atom key="famn">фам</atom>
+    <atom key="0">0</atom>
+    <atom key="ciph">циф</atom>
+    <atom key="bastard">несловарн</atom>
+    <atom key="dialflex">диалфлекс</atom>
+    <atom key="dialstem">диалкорень</atom>
+    <atom key="1decl">1скл</atom>
+    <atom key="2decl">2скл</atom>
+    <atom key="3decl">3скл</atom>
+    <atom key="1conj">1спр</atom>
+    <atom key="2conj">2спр</atom>
+    <atom key="adjdecl">адъект-скл</atom>
+    <atom key="anom">аном</atom>
+    <atom key="distort">искаж</atom>
+    <atom key="topon">геогр</atom>
+    <atom key="zoon">зоон</atom>
+    <atom key="perf">перфект</atom>
+    <atom key="imperf">имперфект</atom>
+    <atom key="du">дв</atom>
+    <atom key="praet2">прош2</atom>
+    <atom key="aor">аор</atom>
+    <atom key="fut">буд</atom>
+    <atom key="poss">притяж</atom>
+    <atom key="norm">словарн</atom>
+    <!-- Birchbark -->
+    <atom key="topn">топоним</atom>
+    <atom key="ethn">этноним</atom>
+    <atom key="possess">притяжательное</atom>
+    <atom key="as_S">в знач. сущ.</atom>
+    <atom key="as_S">в знач. сущ. м.</atom>
+    <atom key="as_S">в знач. сущ. ж.</atom>
+    <atom key="as_S">в знач. сущ. ср.</atom>
+    <atom key="as_persn">в знач. личн.</atom>
+    <atom key="as_persn">в знач. прозвища</atom>
+    <atom key="as_topn">в знач. топонима</atom>
+    <atom key="as_ethn">в знач. этнонима</atom>
+    <atom key="as_SPRO">в знач. мест.</atom>
+    <atom key="as_SPRO">в знач. отн. мест.</atom>
+    <atom key="as_deb">в знач. долж.</atom>
+    <atom key="as_ADV">в знач. нар.</atom>
+    <atom key="as_voc">в знач. зват.</atom>
+    <atom key="as_PRAEDIC">в знач. пред.</atom>
+    <atom key="as_ART">в знач. артикля</atom>
+    <atom key="as_CONJ">в знач. союза</atom>
+    <atom key="as_PARENTH">в знач. вв. сл.</atom>
+    <atom key="accgen">вин-род</atom>
+    <atom key="presum">предположит</atom>
+    <atom key="cond">сосл</atom>
+    <atom key="pqperf">плюсквамперфект</atom>
+    <atom key="iperf">имперфект</atom>
+    <atom key="past">прошедшее</atom>
+    <atom key="fut1">будущее 1-е</atom>
+    <atom key="fut2">будущее 2-е</atom>
+    <atom key="nonpast">наст.-буд.</atom>
+    <atom key="supin">супин</atom>
+    <atom key="gov_gen">с родительным</atom>
+    <atom key="gov_acc">с винительным</atom>
+    <atom key="gov_dat">с дательным</atom>
+    <atom key="gov_ins">с творительным</atom>
+    <atom key="gov_loc">с местным</atom>
+    <atom key="pl_tant">только множественное</atom>
+    <atom key="coll">собирательное сущ.</atom>
+    <atom key="coll">собирательное</atom>
+    <atom key="card">количественное</atom>
+    <atom key="refl">возвратное</atom>
+    <atom key="stressed">ударная</atom>
+    <atom key="clitic">клитическая</atom>
+    <atom key="!">!</atom>
+    <atom key="*">*</atom>
+    <atom key="?">?</atom>
+    <atom key="redundant">лишнее</atom>
+    <atom key="damaged">порча</atom>
+    <atom key="without_copula">без связки</atom>
+    <atom key="in_CONJ">в составе союза</atom>
+    <atom key="in_PR">в составе предлога</atom>   
+    <atom key="in_persn">в составе личного имени</atom>
+    <atom key="in_NUM">в составе числит.</atom>
+    <atom key="reverse_voices">обратное отношение залогов</atom>
+    <atom key="incorrect">некорр</atom>
+    <!-- Flags -->
+    <!--
+    <atom key="adot">после точки</atom>
+    <atom key="acomma">после запятой</atom>
+    <atom key="bdot">перед точкой</atom>
+    <atom key="bcomma">перед запятой</atom>
+    <atom key="first">в начале предл.</atom>
+    <atom key="last">в конце предл.</atom>
+    <atom key="capital">с загл. буквы</atom>
+    <atom key="lexred">повтор лексемы</atom>
+    -->
+  </attrs>
+  <created-distribution>Распределение по годам</created-distribution>
+  <metaattrs-stat>Статистика</metaattrs-stat>
+  <metaattrs>
+   <author>Автор</author>
+   <sex>Пол автора</sex>
+   <sphere>Сфера функционирования</sphere>
+   <type>Тип текста</type>
+   <topic>Тематика текста</topic>
+   <genre_fi>Жанр</genre_fi>
+   <values>
+    <empty>(нет)</empty>
+   </values>
+  </metaattrs>
+</ru>
+<en>
+  <header>
+    <title>Russian national corpus</title>
+    <link rel="shortcut icon" href="http://ruscorpora.ru/favicon.ico"/>
+  </header>
+  <conj>
+   <sentences f="sentences" f1="sentence" />
+   <words f="words" f1="word" />
+   <documents f="documents" f1="document" />
+   <fragments f="fragments" f1="fragment" />
+   <contexts f="contexts" f1="context" />
+  </conj>
+  <logo>
+    <a href="http://ruscorpora.ru/en/index.html">
+      <img src="http://ruscorpora.ru/en/i/logo.gif"/>
+    </a>
+  </logo>
+  <corp_name>Russian national corpus</corp_name>
+  <results>Search results</results>
+  <attributes>attributes</attributes>
+  <to_search>
+    <name>to the search page</name>
+    <url_prefix>http://ruscorpora.ru/saas/</url_prefix>
+    <url_infix>en/search-</url_infix>
+    <url_postfix>.html</url_postfix>
+  </to_search>
+  <language href="ru">русская версия</language>
+  <accent_no>hide accents</accent_no>
+  <accent_yes>show accents</accent_yes>
+  <settings>settings</settings>
+  <choose_corp>
+    <name>select subcorpus</name>
+    <url_prefix>http://ruscorpora.ru/saas/</url_prefix>
+    <url_infix>en/mycorpora-</url_infix>
+    <url_postfix>.html</url_postfix>
+    <save_and_go>Save the subcorpus and go to the search page</save_and_go>
+  </choose_corp>
+  <reset_corp>reset subcorpus</reset_corp>
+  <search>
+    <search_on>Search executed in a user-defined subcorpus</search_on>
+    <value>of</value>
+    <not_found>No results match the search query</not_found>
+  </search>
+  <pages>Pages</pages>
+  <prev_page>previous page</prev_page>
+  <next_page>next page</next_page>
+  <prev_fragment>previous fragment</prev_fragment>
+  <next_fragment>next fragment</next_fragment>
+  <result>
+    <found>Found</found>
+    <sorted>Sorted</sorted>
+    <total-amount>consisting of</total-amount>
+    <sentences>sentences</sentences>
+    <documents>documents</documents>
+    <contexts>contexts</contexts>
+  </result>
+  <corp-stat>
+    <corp-prefix>Corpus total</corp-prefix>
+    <subcorp-prefix>Subcorpus total</subcorp-prefix>
+  </corp-stat>
+  <format>
+    <ordinary>ordinary format</ordinary>
+    <kwic>KWIC format</kwic>
+  </format>
+  <download>Download top search results:</download>
+  <query>
+    <distance>distance:</distance>
+    <from>from</from>
+    <to>to</to>
+    <connection>with link type</connection>
+    <any_alone>any word</any_alone>
+    <any_dist>any word</any_dist>
+  </query>
+  <form>
+    <apply>Apply</apply>
+    <reset>Reset defaults</reset>
+    <sort>Order</sort>
+    <show>Show</show>
+    <output>Output format</output>   
+  </form>
+  <all_contexts>All examples</all_contexts>
+  <omo_on>not disambiguated</omo_on>
+  <omo_off>disambiguated</omo_off>
+  <footer>
+    <p>Searched by <a href="http://company.yandex.ru/technology/server/">Yandex.Server</a></p>
+    <p>Please insert a reference to the Russian National Corpus when citing the search results</p>
+  </footer>
+  <error>
+    <unavailable>We're sorry, the site is temporarily out of service</unavailable>
+    <later>Please try to refresh the page, or come back later</later>
+    <empty>Search query is empty</empty>
+    <blocked>We have received too many requests from your IP address. Your access to the Corpus is temporarily blocked.</blocked>
+  </error>
+  <word-info>
+    <lex name="Lemma"/>
+    <gramm name="Grammar"/>
+    <sem name="Semantics main"/>
+    <sem2 name="Semantic shifts"/>
+    <semf name="Semantics filtered 1"/>
+    <semf2 name="Semantics filtered 2"/>
+    <flags name="Additional properties"/>
+    <word_formation name="Word formation"/>
+    <source_el name="Greek form"/>
+    <lex_el name="Greek lemma"/>
+  </word-info>
+  <doc-info>
+    <author name="Author"/>
+    <sex name="Gender"/>
+    <birthday name="Birth date"/>
+    <header name="Title"/>
+    <cyclus name="Cyclus"/>
+    <created name="Date of creation"/>
+    <exact name="Exact date"/>
+    <original name="Original author"/>
+    <language name="Original language"/>
+    <interviewer name="Dialectologist"/>
+    <region name="Region where material is recorded"/>
+    <not_place name="Place of recording"/>
+
+    <sphere name="Domain"/>
+    <genre_fi name="Genre"/>
+    <chronotop name="Time and place"/>
+    <topic name="Тheme"/>
+    <type name="Тype"/>
+    <style name="Style"/>
+
+    <sentences name="Sentences"/>
+    <words name="Words"/>
+
+    <liber name="Book"/>
+    <meter name="Meter"/>
+    <feet name="Line length"/>
+    <clausula name="Clausula"/>
+    <formula name="Formula"/>
+    <rhyme name="Rhyme"/>
+    <strophe name="Stanza"/>
+    <gr_strophe name="Visual presentation"/>
+    <verses name="Lines"/>
+    <extra name="Additional features"/>
+
+    <audience_age name="Audience age"/>
+    <audience_level name="Audience educational level"/>
+    <audience_size name="Audience size"/>
+
+    <medium name="Medium"/>
+    <source name="Source"/>
+    <publ_year name="Date of publication"/>
+    <publication name="Publication"/>
+    <publisher name="Publishing house"/>
+
+    <company name="Company"/>
+    <producer name="Producer"/>
+    <date-ex name="Released"/>
+
+    <subcorpus name="Subcorpus"/>
+    <tagging name="Tagging"/>
+
+    <lang name="Language"/>
+    <translator name="Translator"/>
+    <lang_trans name="Language of translation"/>
+    <date_trans name="Date of translation"/>
+
+    <link name="Link"/>
+  </doc-info>
+  <search-in-other-corpora name="Search in other corpora:"/>
+  <corpora-list name="corpus">
+    <corpus mode="main" name="Main" gen="main" in="(main&#160;corpus)" page="search.xml"/>
+    <!--<corpus mode="accent" name="Accent" gen="accent" in="in the accent corpus page="search.xml""/>-->
+    <!--<corpus mode="paper" name="Paper" gen="paper" in="in the paper corpus page="search.xml""/>-->
+    <!--<corpus mode="dialect" name="Dialect" gen="dialect" in="in the dialect corpus page="search.xml""/>-->
+    <!--<corpus mode="murco" name="Multimedia" gen="multimedia" in="in the multimedia corpus page="murco-beta.xml""/>-->
+    <!--<corpus mode="school" name="School" gen="school" in="in the school corpus page="search.xml""/>-->
+    <!--<corpus mode="para" name="Parallel" gen="parallel" in="in the parallel corpus page="search.xml""/>-->
+    <!--<corpus mode="poetic" name="Poetic" gen="poetic" in="in the poetic corpus page="search.xml""/>-->
+    <corpus mode="spoken" name="Spoken" gen="spoken" in="(spoken&#160;corpus)" page="search.xml"/>
+    <corpus mode="syntax" name="Syntax" gen="syntax" in="(syntax&#160;corpus)" page="syntax.xml"/>
+  </corpora-list>
+  <freq>
+    <page-stat-title>Frequencies for this page</page-stat-title>
+    <title>Frequency dictionary for search results</title>
+    <subtitle>The most common lemmas and wordforms in the collection of retrieved documents</subtitle>
+    <prelink>Build</prelink>
+    <link>frequency dictionary for the collection of retrieved documents</link>
+    <lemma>Lemmas</lemma>
+    <form>Wordforms</form>
+  </freq>
+</en>
+<ua>
+  <header>
+    <title>Національний корпус російської мови</title>
+    <link rel="shortcut icon" href="http://ruscorpora.ru/favicon.ico"/>
+  </header>
+  <conj>
+   <sentences f="речень" f1="речення" f234="речення" />
+   <words f="слів" f1="слово" f234="слова" />
+   <documents f="документів" f1="документ" f234="документи" />
+   <fragments f="фрагментів" f1="фрагмент" f234="фрагменти" />
+   <contexts f="входжень" f1="входження" f234="входження" />
+  </conj>
+  <logo>
+    <a href="http://ruscorpora.ru/">
+      <img src="http://ruscorpora.ru/verstka/i/logo.gif"/>
+    </a>
+  </logo>
+  <corp_name>Національний корпус російської мови</corp_name>
+  <results>Результати пошуку</results>
+  <attributes>атрибути</attributes>
+  <to_search>
+    <name>перейти на сторінку пошуку</name>
+    <url_prefix>http://ruscorpora.ru/search-</url_prefix>
+    <url_postfix>.html</url_postfix>
+  </to_search>
+  <language href="en">English</language>
+  <accent_no>версія без наголосів</accent_no>
+  <accent_yes>версія з наголосами</accent_yes>
+  <settings>налаштування</settings>
+  <choose_corp>
+    <name>вибрати підкорпус</name>
+    <url_prefix>http://ruscorpora.ru/mycorpora-</url_prefix>
+    <url_postfix>.html</url_postfix>
+    <save_and_go>Зберегти підкорпус і перейти на сторінку пошуку</save_and_go>
+  </choose_corp>
+  <reset_corp>відхилити підкорпус</reset_corp>
+  <search>
+    <search_on>Пошук здійснюється в користувацькому підкорпусі</search_on>
+    <value>обсягом</value>
+    <not_found>За цим запитом нічого не знайдено</not_found>
+  </search>
+  <pages>Сторінки</pages>
+  <prev_page>попередня сторінка</prev_page>
+  <next_page>наступна сторінка</next_page>
+  <prev_fragment>попередній фрагмент</prev_fragment>
+  <next_fragment>наступний фрагмент</next_fragment>
+  <result>
+    <found>Знайдено</found>
+    <sorted>Відсортовано</sorted>
+    <total-amount>загальним обсягом</total-amount>
+    <sentences>речень</sentences>
+    <documents>документів</documents>
+    <contexts>входжень</contexts>
+  </result>
+  <corp-stat>
+    <corp-prefix>Обсяг усього корпусу</corp-prefix>
+    <subcorp-prefix>Усього в підкорпусі</subcorp-prefix>
+  </corp-stat>
+  <format>
+    <ordinary>звичайний формат</ordinary>
+    <kwic>формат KWIC</kwic>
+  </format>
+  <download>Заватажити кілька перших результатів виведення у форматі</download>
+  <query>
+    <distance>на відстані</distance>
+    <from>від</from>
+    <to>до</to>
+    <connection>зі зв'язком</connection>
+    <any_alone>будь-яке слово</any_alone>
+    <any_dist>будь-якого слова</any_dist>
+  </query>
+  <form>
+    <apply>Застосувати</apply>
+    <reset>Відновити вихідні значення</reset>
+    <sort>Упорядкувати</sort>
+    <show>Показувати</show>
+    <output>Формат виведення</output>
+  </form>
+  <all_contexts>Усі приклади</all_contexts>
+  <omo_on>омонімію не знято</omo_on>
+  <omo_off>омонімію знято</omo_off>
+  <footer>
+    <p>Пошук здійснено системою <a href="http://company.yandex.ru/technology/server/">Яндекс.Сервер</a></p>
+    <p>У випадку цитування прикладів просимо посилатися на Національний корпус російської мови</p>
+  </footer>
+  <error>
+    <unavailable>Вибачте, сервіс тимчасово недосяжний</unavailable>
+    <later>Спробуйте перезавантажити сторінку або зайти пізніше</later>
+    <empty>Задано порожній пошуковий запит</empty>
+    <blocked>Вы робот? С Вашего IP-адреса было задано слишком много запросов. Ваш доступ к корпусу временно ограничен.</blocked>
+  </error>
+  <word-info>
+    <lex name="Лема"/>
+    <gramm name="Граматика"/>
+    <sem name="Семантика основна"/>
+    <sem2 name="Семантика додаткова"/>
+    <semf name="Семантика з фільтрами 1"/>
+    <semf2 name="Семантика з фільтрами 2"/>
+    <flags name="Дод. ознаки"/>
+    <word_formation name="Словотвір"/>
+    <source_el name="Грецька форма"/>
+    <lex_el name="Грецька лема"/>
+  </word-info>
+  <doc-info>
+    <editor_id name="Анотатор"/>
+    <author name="Автор"/>
+    <sex name="Стать автора"/>
+    <birthday name="Дата народження автора"/>
+    <header name="Назва"/>
+    <cyclus name="Цикл"/>
+    <created name="Дата створення"/>
+    <exact name="Точність дати"/>
+    <original name="Автор оригіналу"/>
+    <language name="Мова оригіналу"/>
+    <interviewer name="Діалектолог (запис)"/>
+    <region name="Регіон запису"/>
+    <not_place name="Місце запису"/>
+
+    <sphere name="Сфера функціонування"/>
+    <genre_fi name="Жанр художньої літератури"/>
+    <chronotop name="Час і місце дії"/>
+    <topic name="Тема тексту"/>
+    <type name="Тип тексту"/>
+    <style name="Стиль"/>
+
+    <sentences name="Речень"/>
+    <words name="Словоформ"/>
+
+    <meter name="Метр"/>
+    <feet name="Довжина рядка"/>
+    <clausula name="Клаузула"/>
+    <formula name="Метрична формула"/>
+    <rhyme name="Рима"/>
+    <strophe name="Строфіка"/>
+    <gr_strophe name="Графічна строфіка"/>
+    <verses name="Число рядків"/>
+    <extra name="Додаткові параметри"/>
+
+    <audience_age name="Вік аудиторії"/>
+    <audience_level name="Рівень освіти аудиторії"/>
+    <audience_size name="Розмір аудиторії"/>
+
+    <medium name="Тип носія"/>
+    <source name="Джерело"/>
+    <publ_year name="Дата публікації"/>
+    <publication name="Видання"/>
+    <publisher name="Видавництво"/>
+
+    <company name="Кінокомпанія"/>
+    <producer name="Продюсер"/>
+    <date-ex name="Дата виходу на екран"/>
+
+    <subcorpus name="Підкорпус"/>
+    <tagging name="Зняття омонімії"/>
+
+    <translator name="Перекладач"/>
+  </doc-info>
+  <search-in-other-corpora name="Пошукати в інших корпусах:"/>
+  <corpora-list name="корпус">
+    <corpus mode="main" name="Основний" gen="основному" in="в&#160;основному&#160;корпусі" page="search.xml"/>
+    <corpus mode="accent" name="Акцентологічний" gen="акцентологічному" in="в&#160;акцентологічному&#160;корпусі" page="search.xml"/>
+    <corpus mode="paper" name="Газетний" gen="газетному" in="у&#160;газетному&#160;корпусі" page="search.xml"/>
+    <corpus mode="dialect" name="Діалектний" gen="діалектному" in="у&#160;діалектному&#160;корпусі" page="search.xml"/>
+    <corpus mode="murco" name="Мультимедійний" gen="мультимедійному" in="у&#160;мультимедійному&#160;корпусі" page="search.xml"/>
+    <corpus mode="school" name="Навчальний" gen="навчальному" in="у&#160;навчальному&#160;корпусі" page="search.xml"/>
+    <corpus mode="para" name="Паралельний" gen="паралельному" in="у&#160;паралельному&#160;корпусі" page="search.xml"/>
+    <corpus mode="poetic" name="Поетичний" gen="поетичному" in="у&#160;поетичному&#160;корпусі" page="search.xml"/>
+    <corpus mode="syntax" name="Синтаксичний" gen="синтаксичному" in="у&#160;синтаксичному&#160;корпусі" page="syntax.xml"/>
+    <corpus mode="spoken" name="Усний" gen="усному" in="в&#160;усному&#160;корпусі" page="search.xml"/>
+  </corpora-list>
+  <freq>
+    <page-stat-title>Частоти знайденого для цієї сторінки</page-stat-title>
+    <title>Частотний словник за результатами пошуку</title>
+    <subtitle>Найуживаніші леми та словоформи в підкорпусі документів, знайдених за запитом</subtitle>
+    <prelink>Переглянути</prelink>
+    <link>частотний словник підкорпусу документів, знайдених за запитом</link>
+    <lemma>Леми</lemma>
+    <form>Словоформи</form>
+  </freq>
+  <attrs>
+    <atom key="S">імен</atom>
+    <atom key="V">дієсл</atom>
+    <atom key="A">прикм</atom>
+    <atom key="ADV">присл</atom>
+    <atom key="SPRO">займ-імен</atom>
+    <atom key="APRO">займ-прикм</atom>
+    <atom key="NUM">числ</atom>
+    <atom key="ANUM">числ-прикм</atom>
+    <atom key="PRAEDIC">предик</atom>
+    <atom key="PARENTH">вставн</atom>
+    <atom key="ADVPRO">займ-присл</atom>
+    <atom key="PRAEDICPRO">займ-предик</atom>
+    <atom key="PR">прийм</atom>
+    <atom key="CONJ">спол</atom>
+    <atom key="PART">част</atom>
+    <atom key="INTJ">виг</atom>
+    <atom key="m">ч</atom>
+    <atom key="f">ж</atom>
+    <atom key="mf">ч-ж</atom>
+    <atom key="n">с</atom>
+    <atom key="anim">істота</atom>
+    <atom key="inan">неістота</atom>
+    <atom key="sg">одн</atom>
+    <atom key="pl">мн</atom>
+    <atom key="nom">наз</atom>
+    <atom key="gen">род</atom>
+    <atom key="dat">дав</atom>
+    <atom key="acc">знах</atom>
+    <atom key="ins">орудн</atom>
+    <atom key="loc">місц</atom>
+    <atom key="gen2">род2</atom>
+    <atom key="acc2">знах2</atom>
+    <atom key="loc2">місц2</atom>
+    <atom key="voc">кличн</atom>
+    <atom key="adnum">облік</atom>
+    <atom key="brev">коротк</atom>
+    <atom key="plen">повн</atom>
+    <atom key="comp">порівн</atom>
+    <atom key="comp2">порівн2</atom>
+    <atom key="supr">найв</atom>
+    <atom key="pf">док</atom>
+    <atom key="ipf">недок</atom>
+    <atom key="intr">неперех</atom>
+    <atom key="tran">перех</atom>
+    <atom key="act">дійсн</atom>
+    <atom key="pass">пас</atom>
+    <atom key="med">мед</atom>
+    <atom key="inf">інф</atom>
+    <atom key="partcp">дієприкм</atom>
+    <atom key="ger">дієприсл</atom>
+    <atom key="indic">дійсн</atom>
+    <atom key="imper">наказ</atom>
+    <atom key="imper2">наказ2</atom>
+    <atom key="praet">мин</atom>
+    <atom key="praes">теп</atom>
+    <atom key="fut">майб</atom>
+    <atom key="1p">1ос</atom>
+    <atom key="2p">2ос</atom>
+    <atom key="3p">3ос</atom>
+    <atom key="persn">ім'я</atom>
+    <atom key="patrn">по батьк</atom>
+    <atom key="famn">прізв</atom>
+    <atom key="0">0</atom>
+    <atom key="ciph">циф</atom>
+    <atom key="bastard">несловарн</atom>
+    <atom key="norm">словарн</atom>
+    <atom key="dialflex">діалфлекс</atom>
+    <atom key="dialstem">діалкорінь</atom>
+    <atom key="1decl">1відм</atom>
+    <atom key="2decl">2відм</atom>
+    <atom key="3decl">3відм</atom>
+    <atom key="1conj">1дієв</atom>
+    <atom key="2conj">2дієв</atom>
+    <atom key="adjdecl">ад'єкт відм</atom>
+    <atom key="praes">теп</atom>
+    <atom key="fut">майб</atom>
+    <atom key="1p">1ос</atom>
+    <atom key="2p">2ос</atom>
+    <atom key="3p">3ос</atom>
+    <atom key="persn">ім'я</atom>
+    <atom key="patrn">по батьк</atom>
+    <atom key="famn">прізв</atom>
+    <atom key="0">0</atom>
+    <atom key="ciph">циф</atom>
+    <atom key="bastard">несловарн</atom>
+    <atom key="dialflex">діалфлекс</atom>
+    <atom key="dialstem">діалкорінь</atom>
+    <atom key="anom">аном</atom>
+    <atom key="distort">спотвор</atom>
+    <atom key="topon">геогр</atom>
+    <atom key="zoon">зоон</atom>
+  </attrs>
+  <metaattrs>
+   <author>Автор</author>
+   <sex>Стать автора</sex>
+   <sphere>Сфера функціонування</sphere>
+   <type>Тип тексту</type>
+   <topic>Тематика тексту</topic>
+   <genre_fi>Жанр</genre_fi>
+   <values>
+    <empty>(немає)</empty>
+   </values>
+  </metaattrs>
+</ua>
+</langs>

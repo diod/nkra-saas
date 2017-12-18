@@ -1,0 +1,12 @@
+#!/usr/bin/python
+import os
+import sys
+import urlparse
+sys.path[0:0]=['/home/htmlcoder/saas']
+import search
+import args
+
+print("Content-type: text/html; charset=UTF-8\n\n")
+
+params = urlparse.parse_qs(os.environ["QUERY_STRING"])
+search.word_info(params, sys.stdout, args.args)

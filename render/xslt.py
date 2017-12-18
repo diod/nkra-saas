@@ -1,0 +1,48 @@
+#!/usr/bin/python
+
+# -*- encoding: utf-8 -*-
+
+import StringIO
+import logging
+import lxml.etree as ET
+
+parser = ET.XMLParser(load_dtd=True)
+report_xslt = ET.parse("render/xsl/report.xsl", parser)
+report_transformation = ET.XSLT(report_xslt)
+explain_xslt = ET.parse("render/xsl/explain.xsl", parser)
+explain_transformation = ET.XSLT(explain_xslt)
+
+with open("render/xsl/langs.xml") as f:
+    f.readline()
+    langs = f.read().decode("utf-8").encode("utf-8")
+    langs += "\n"
+
+with open("render/xsl/settings.xml") as f:
+    f.readline()
+    settings = f.read().decode("utf-8").encode("utf-8")
+    settings += "\n"
+
+
+def transform(search_result, params):
+    output = StringIO.StringIO()
+    output.write('<?xml version=\'1.0\' encoding=\'utf-8\'?>\n')
+    output.write('<page>\n')
+    output.write('<searchresult>\n')
+    output.write(search_result)
+    output.write('</searchresult>\n')
+    output.write('<state>\n')
+    for key in params:
+        for value in params[key]:
+            if "sem" in key:
+                continue
+            output.write('<param name="%s">%s</param>\n' % (key, value))
+    output.write('</state>\n')
+    output.write(langs)
+    output.write(settings)
+    output.write('</page>\n')
+    source_xml = ET.fromstring(output.getvalue())
+    if params.get("text", [""])[0] in ("document-info", "word-info"):
+        result = explain_transformation(source_xml)
+    else:
+        result = report_transformation(source_xml)
+    return result

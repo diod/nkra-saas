@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+ <ru>
+  <group name="sort" type="select">
+   <item name="по умолчанию" value="gr_tagging" />
+   <item name="случайно" value="random" />
+   <item name="по правому контексту" value="cont2" />
+   <item name="по правому контексту, учитывая форму искомого слова" value="cont1" />
+   <item name="по левому контексту" value="cont-2" />
+   <item name="по левому контексту, учитывая форму искомого слова" value="cont-1" />
+   <item name="по автору" value="gr_author" />
+   <item name="по дате создания" value="gr_created" />
+   <item name="по дате создания в обратном порядке" value="gr_created_inv" />
+   <item name="по дате рождения автора" value="gr_birthday" />
+   <item name="по дате рождения автора в обратном порядке" value="gr_birthday_inv" />
+  </group>
+
+  <group name="output" type="input" value="out">
+   <item name="обычный" value="normal"/>
+   <item name="KWIC (key word in context)" value="kwic"/>
+  </group>
+
+  <group name="per-page" type="input">
+   <item name="слов в контексте KWIC-выдачи" value="kwsz" def="5" format_name="kwic-context-size"/>
+   <item name="документов на странице" value="dpp" def="10" format_name="documents-per-page"/>
+   <item name="примеров в документе" value="spd" def="10" format_name="snippets-per-document"/>
+   <item name="примеров на странице" value="spp" def="50" format_name="snippets-per-page"/>
+  </group>
+ </ru>
+
+ <en>
+  <group name="sort" type="select">
+   <item name="default" value="gr_tagging" />
+   <item name="random" value="random" />
+   <item name="by right context" value="cont2" />
+   <item name="by right context including target word" value="cont1" />
+   <item name="by left context" value="cont-2" />
+   <item name="by left context including target word" value="cont-1" />
+   <item name="by author" value="gr_author" />
+   <item name="by creation date" value="gr_created" />
+   <item name="by creation date inversed" value="gr_created_inv" />
+   <item name="by author birthday" value="gr_birthday" />
+   <item name="by author birthday inversed" value="gr_birthday_inv" />
+  </group>
+
+  <group name="output" type="input" value="out">
+   <item name="normal" value="normal" />
+   <item name="KWIC (key word in context)" value="kwic" />
+  </group>
+
+  <group name="per-page" type="input">
+   <item name="words in KWIC context" value="kwsz" def="5" format_name="kwic-context-size"/>
+   <item name="documents per page" value="dpp" def="10" format_name="documents-per-page"/>
+   <item name="examples per document" value="spd" def="10" format_name="snippets-per-document"/>
+   <item name="examples per document" value="spp" def="50" format_name="snippets-per-page"/>
+  </group>
+ </en>
+</parameters>

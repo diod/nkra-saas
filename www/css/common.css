@@ -1,0 +1,278 @@
+body {font: Arial, Sans-Serif; margin: 0; padding: 0; background: white; color: black; behavior:url("csshover.htc");}
+img {border: 0; margin: 0; }
+/*шапка*/
+td.logo {padding: 7px 0 13px 7px; background: #023F7C url(/i/s_letters.gif) no-repeat; background-position: right; border-bottom:3px solid #FA9108; }
+.line {background: url(i/bottom_hat.gif) repeat-x; height: 9px; font-size: 1px;}
+
+/*содержимое страницы*/
+div.content {padding: 0 15px;}
+
+div.set {float: right; margin: 1em 1em 0em 1em; }
+.set a {color: #023F7C; float: right; margin: 0 0 1em 1em; display: block; cursor: pointer; text-decoration: underline;}
+.set img {vertical-align: bottom;}
+
+h1 {color: #5F5F5F; font-size: 150%; font-weight: normal; float: left; margin-top: 0em; margin-bottom: 0.5em; }
+h1.alt {display: none; }
+
+/*форма с типом поиска*/
+div.search-form  {float: right; margin-right: 30px; padding: 0 0 2em 2em;}
+
+ol li, .snippet-title {font-weight: bold; margin-bottom: 1em;}
+
+li b, b.doc { color: #808080; }
+.off {color: #800000; font-weight: normal;}
+.on {color: #008000; font-weight: normal;}
+.off-doc {color:#ec8c8c; font-size: 80%;}
+.on-doc {color:#8cec8c; font-size: 80%;}
+
+/*внутренние списки со сниппетами*/
+ul {list-style: none;}
+ul li {list-style: none; margin: 0; color: black; font-weight: normal;}
+.fict-ol {list-style: none; margin: 0; color: black; font-weight: normal;}
+
+ul li span.doc {font-size: 80%; color: #bbbbbb;}
+ul li a {color: #bbbbbb;}
+ul li a:visited {color: #551a8b;}
+.b-kwic-expl {color: #bbbbbb; font-weight: normal; }
+a.b-kwic-expl:visited {color: #551a8b; font-weight: normal; }
+.para { padding: 5px; margin-left: -35px; border: 0; border-spacing: 0}
+.para-lang { font-weight: normal; color: #888; width: 25px;} 
+.para-snippet { margin: 5px 0; border-left: 2px solid #ccc; padding-left: 10px;}
+/*страницы*/
+.pager {clear: both;}
+.pager a, .pager b {margin-right: 10px;}
+
+/*найдено*/
+p.res {font-size: 100%; background-color: #efefef; padding: 5px 10px; clear:both;}
+
+p.found {font-size: 100%; background-color: #efefef; padding: 5px 10px; clear:both;}
+
+
+/*показано*/
+.show{clear: left;}
+
+/*результаты поиска*/
+.result{}
+.concor td, .concor th {padding: 5px; vertical-align: top; }
+.concor .n {border-right: 1px solid #666666; text-align: right;}
+.concor .nl {border-left: 1px solid #666666; text-align: left;}
+
+/*настройки*/
+#search-form  { background-color: #ffffff; border: 1px solid black; padding: 5px 10px 15px 15px; width: 400px; z-index: 999; display: none; position: absolute;  top: 20%; }
+#blocker {display: none; position: fixed; top: 0;  left: 0; opacity: 0.5; filter: alpha(opacity=50); background-color: #555555; -moz-opacity: 0.5; z-index: 998; width: 100%; height: 100%;}
+* html #blocker { position: absolute; top: 0; left: 0; width: expression(document.getElementsByTagName('body')[0].scrollWidth); height: expression(document.getElementsByTagName('body')[0].scrollHeight); }
+#search-form p {margin: 0.5em 0;}
+a.close {display: block; float: right; padding: 0 3px 3px 3px; margin: 3px -2px 0 0;  cursor: pointer; font-size: 12px; font: Arial, Tahoma, sans-serif; font-weight: bold; border: 1px solid #cccccc; }
+a.close:hover {background-color: #cccccc;}
+.settings { margin-left: 40px; margin-right: 50px }
+.settings td {padding-right: 8px;}
+.settings input {width: 2em; text-align: right}
+.disabled { color: gray }
+
+/*копирайты внизу*/
+.footer {border-top: 1px solid #5F5F5F; padding: 1.5em; margin-bottom: 2em;}
+.footer p {float: right; margin: 0;  clear: right;}
+
+/* ссылки */
+a.linksview { color: #0000cc; }
+
+/* popup "окошки" (begin) */
+    .bug-reporter-caption
+    {
+        color: blue;
+    }
+    .bug-reporter-form
+    {
+        width: 100%
+    }
+    .b-doc-expl
+    {
+        text-decoration: none;
+
+        color: #777;
+        border-bottom: 1px dotted;
+    }
+
+    .b-wrd-expl
+    {
+        text-decoration: none;
+        color: black;
+        border-bottom: 1px dotted white;
+        outline: none;
+    }
+
+    .cs
+    {
+        font-family: BukyVede, Arial Unicode MS;
+        font-size: 100%;
+    }
+
+    .b-doc-expl:hover
+    {
+        color: red;
+        border-bottom: 1px dotted red;
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    .b-wrd-expl:hover
+    {
+        color: red;
+        border-bottom: 1px dotted red;
+        outline: none;
+    cursor: pointer;
+    cursor: hand;
+    }
+
+    .b-tooltip, .b-kwic-tooltip
+    {
+        font: 80% Arial, s;
+
+        position: absolute;
+
+        float: left;
+        padding: 0;
+
+        color: black;
+        border: 1px solid #aaa;
+        background: #e6e6e6;
+        cursor: default;
+    }
+
+    .b-tooltip table
+    {
+        border-collapse: collapse;
+    }
+
+    .b-tooltip table td,
+    .b-tooltip table th
+    {
+        font-weight: normal;
+
+        margin: 0;
+        padding: 6px 0.6em 6px 8px;
+
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .b-tooltip table th
+    {
+        font: bold 120% Arial, a;
+
+        padding: 4px 0.6em 4px 8px;
+    }
+
+    .b-tooltip table th span.cs
+    {
+        font: normal 100% Bukyvede, Arial Unicode MS;
+        padding: 4px 0.6em 4px 8px;
+    }
+
+    .b-tooltip table td.value
+    {
+        background: #fff;
+        max-width: 300px;
+    }
+
+    .b-tooltip table td.value,
+    {
+        width: 300px;
+    }
+
+    .b-tooltip table td.value a
+    {
+        color: blue;
+    }
+
+    .b-tooltip table tr.sep td
+    {
+        border-top: 1px solid #aaa;
+    }
+
+    /*
+    .b-tooltip table td:first-letter
+    {
+        font-weight: bold;
+
+        text-transform: uppercase;
+    }
+    */
+
+     ul {oom: 1; order: 1px solid red;}
+
+/*искомое слово*/
+.g-em {color: #FA9108; font-weight: bold;}
+.g-hidden       {color: white;}
+.g-hidden:hover {color: red;}
+
+/* popup "окошки" (end) */
+
+
+/* для печати */
+
+@media print {
+    *
+    {
+        color: #000!important;
+    }
+
+    div.set,
+    div.hat,
+    div.line,
+    a.b-doc-expl table,
+    a.b-wrd-expl table
+    {
+        display: none;
+    }
+
+    h1.alt
+    {
+        display: block;
+
+        margin: 0.5em 0;
+    }
+
+    h1
+    {
+        float: none;
+    }
+
+    p.res
+    {
+        padding: 0;
+
+        background: #fff;
+    }
+
+}
+
+.gesture, .gestures-th, .gestures-table
+  { 
+   font-weight: normal;
+   border-style: solid;
+   border-width: 1px;
+   border-collapse: collapse;
+   border-color: lightgrey;
+  }
+.gestures-th { font-weight: normal; color: #800000}
+.gesture { font-weight: normal; }
+.murco-table { margin-top: 10px; }
+.murco-snippet { margin-top: 0; text-align:left}
+
+.stat-number { 
+  font-weight: normal;
+}
+.stat-caption {
+  font-weight: normal;
+}
+
+.page-stat {
+  display: block;
+  float: left;
+  margin-right: 50px;
+}
+
+.page-stat-table-title {
+  font-weight: bold;
+}
