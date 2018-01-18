@@ -23,7 +23,7 @@ class ResponseProcessor(object):
         self.num_snippets = 0
         self.num_snippets_per_doc = snippets
 
-    def process(self, params, response, extend_id=None, sort_by=None):
+    def process(self, params, response, extend_id=None, sort_by=None, subcorpus=None):
         """Process a SearchResponse object with "raw" response data.
 
         Args:
@@ -41,9 +41,9 @@ class ResponseProcessor(object):
         min_doc = params.page * params.docs_per_page
         max_doc = min_doc + params.docs_per_page - 1
         for i, group in enumerate(response.get_groups()):
-            if True:
+            if "multiparc" in subcorpus:
                 self._squash_multipart_group(group)
-            self._process_group(i, group, min_doc, max_doc, extend_id, out)
+            self._process_group(i, group, min_doc, max_doc, extend_id, out, subcorpus)
         if params.sort_by in ["random"]:
             random.seed(params.seed)
             random.shuffle(out)
@@ -53,7 +53,7 @@ class ResponseProcessor(object):
     def _squash_multipart_group(group):
         group.obj['documents'] = group.obj['documents'][:1]
 
-    def _process_group(self, i, group, min_doc, max_doc, extend_id, out):
+    def _process_group(self, i, group, min_doc, max_doc, extend_id, out, subcorpus):
         if not (min_doc <= i <= max_doc):
             return
         # Each group is the initial document (as it came to the indexing
@@ -61,14 +61,17 @@ class ResponseProcessor(object):
         # Retrieve results from each document part.
         results = list()
         for doc in group.get_documents():
-            logging.info(doc.obj.keys())
             hits = doc.get_hits()
             doc_url = doc.get_url()
             hchy = doc.get_direct_index()["Hierarchy"]
             index = doc.get_direct_index()["Sents"]
             self._set_source_for_doc(index, doc_url)
-            self._get_result(
-                results, index, hchy, hits, extend_id=extend_id)
+            try:
+                self._get_result(
+                    results, index, hchy, hits, subcorpus, extend_id=extend_id)
+            except Exception as ex:
+                logging.info("! doc %s failed: %s", doc_url, ex)
+                continue
         # Restore the initial document's hierarchy (now with hits only).
         restored_doc = restore_hierarchy(results)
         # Leave not more than self.num_snippets_per_doc snippets.
@@ -172,7 +175,7 @@ class ResponseProcessor(object):
                 word = sent["Words"][word_idx]
                 word["Source"] = "%s\t%s\t%s" % (doc_url, sent_idx, word_idx)
 
-    def _get_result(self, out, direct_index, item_top, hits, extend_id=None):
+    def _get_result(self, out, direct_index, item_top, hits, subcorpus, extend_id=None):
         """
         Args:
             out: A list.
@@ -197,7 +200,6 @@ class ResponseProcessor(object):
             context = (1, 1)
         else:
             context = item_top["context"]
-        # context = item_top["context"]
         # If we have the "extend this snippet" type of query, we need to filter
         # doc parts (i.e., item_tops, i.e., align_items).
         if extend_id:
@@ -208,12 +210,15 @@ class ResponseProcessor(object):
             context[0] += 5
             context[1] += 5
             extend_id = snippet_id
+        # Duct tape for single-file corpora.
+        if subcorpus in ["murco"]:
+            context[0] += 5
+            context[1] += 5
         snip_type = None
-        if "snipet_type" not in item_top:
+        if "snippet_type" not in item_top:
             snip_type = "para_item"
         else:
             snip_type = item_top["snippet_type"]
-        # snip_type = item_top["snippet_type"]
         top_path = self._get_top_path(item_top)
         # We know for sure that item top contains at least one hit (because
         # it was returned by the search server). So mark the hits.
@@ -232,6 +237,11 @@ class ResponseProcessor(object):
         for idx in xrange(len(snip_items)):
             item = snip_items[idx]
             if self._item_contains_hit(item, hits):
+                hit_indices.append(idx)
+            # If a document matches by some attribute, but there was no normal query,
+            # this document will be returned by the search engine, but with hits equalling
+            # {-1: set([-1])}. In this case we take all snippets into the result.
+            if -1 in hits:
                 hit_indices.append(idx)
         # result_hits will store the indices of items that contain hits PLUS
         # context items indices.

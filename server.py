@@ -9,6 +9,8 @@ import urlparse
 import BaseHTTPServer
 import StringIO
 
+import requests
+
 from search import search
 from render import xslt
 
@@ -29,8 +31,19 @@ class ServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
         args = ServerHandler.args
-        self.send_response(200, 'OK')
         output = StringIO.StringIO()
+        query = urlparse.urlparse(self.path).query
+        params = urlparse.parse_qs(query)
+
+        if "video.xml" in self.path:
+            redirect_url = "http://streaming.video.yandex.ru/get/ruscorpora-video/%s/sq.mp4" % params.get("id", ["None"])[0]
+            self.send_response(301)
+            self.send_header("Location", redirect_url)
+            self.send_header("Content-Type", "application/octet-stream")
+            self.end_headers()
+            return
+
+        self.send_response(200, 'OK')
         if args.rendering == 'xml':
             self.send_header('Content-Type', 'text/xml; charset=utf-8')
             self.end_headers()
@@ -38,8 +51,7 @@ class ServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif args.rendering == 'xslt':
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.end_headers()
-        query = urlparse.urlparse(self.path).query
-        params = urlparse.parse_qs(query)
+
         self.engine.search(params, output, args)
         result = output.getvalue()
         if args.rendering == 'xslt':

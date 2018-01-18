@@ -25,6 +25,9 @@ from processing import doc_iters
 from common import xml2json
 from common.utils import replace_last_in_path
 
+SAAS_INDEX_URL = 'http://saas-indexerproxy-outgone.yandex.net:80/service/' \
+                 '2b6087d5f79ee63acbbb64c2ebea3223?timeout=2000000'
+
 SORTING_ATTRS = [
     "gr_author",
     "gr_tagging",
@@ -38,6 +41,10 @@ ATTRS_WITH_COMBINATORIAL_EXPLOSION = (
     'gr',
     'sem'
 )
+
+CROPPED_URLS = [
+    "old_rus",
+]
 
 NODISK_CHUNK_MAX_DOCS = 32
 NODISK_CHUNK_MAX_PARTS = 64
@@ -61,7 +68,6 @@ def load_initial(inpaths,
         sortings = {x: set() for x in SORTING_ATTRS}
         logging.info("Loading attrs...")
         for inpath in inpaths:
-            # inpath = _get_resulting_filename(inpath, paired)
             logging.info("Preloading %s", inpath)
             if paired:
                 for inpath_elem in inpath:
@@ -166,6 +172,14 @@ def _preload_attrs(sortings,
         traceback.print_exc(ex)
 
 
+def _murco_split_attrs(attr_name, attr_val):
+    subattrs = [x.strip().split("=") for x in attr_val.split(" ")]
+    subattrs = [(attr_name + u"_" + x[0], x[1].replace(u"\"", u"")) for x in subattrs]
+    subattrs = [x for x in subattrs if x[1]]
+
+    return subattrs
+
+
 def _normalize_sortings(sortings):
     for sorting_name, seen_values in sortings.items():
         sortings[sorting_name] = list(seen_values)
@@ -197,21 +211,36 @@ def _process_doc(sortings,
                  kps,
                  paired,
                  subcorpus,
-                 corpus_type,
-                 nodisk=False):
+                 corpus_type):
+    if paired:
+        sample_inpath = inpath[0]
+    else:
+        sample_inpath = inpath
     try:
-        inpath = _get_resulting_filename(inpath, paired)
         prepare_cb = prepare.prepare_multifile if paired else prepare.prepare
         doc = prepare_cb(inpath, subcorpus=subcorpus, corpus_type=corpus_type)
+        if corpus_type in [u"murco"]:
+            new_attrs = []
+            for attr_name, attr_val in doc["Attrs"]:
+                if attr_name in [u"act", u"gesture"]:
+                    split_attrs = _murco_split_attrs(attr_name, attr_val)
+                    new_attrs.extend(split_attrs)
+                else:
+                    new_attrs.append((attr_name, attr_val))
+            doc["Attrs"] = new_attrs
         for i, doc_part in enumerate(doc['Parts']):
-            body_xml = _produceXML(attrs_utils.split_attrs(
-                doc_part, attrs_utils.C_INDEX))
-            json_message = _produceJSON(doc, sortings, inpath, i, kps)
-            logging.info('Processing %s, %s', inpath, i)
-            with open(inpath + ".%04d.json" % i, "w") as f:
-                f.write(json_message)
-            with open(inpath + ".%04d.saas" % i, "w") as f:
-                f.write(body_xml)
+            try:
+                body_xml = _produce_xml(attrs_utils.split_attrs(
+                    doc_part, attrs_utils.C_INDEX))
+                json_message = _produce_json(doc, sortings, inpath, i, kps, corpus_type=corpus_type)
+                logging.info('Processing %s, %s', inpath, i)
+                with open(inpath + ".%04d.json" % i, "w") as f:
+                    f.write(json_message)
+                with open(inpath + ".%04d.saas" % i, "w") as f:
+                    f.write(body_xml)
+            except Exception as ex:
+                logging.error('Failed to index %s: %s', sample_inpath, ex)
+                traceback.print_exc(ex)
         logging.info('DONE: %s, %s', inpath, len(doc['Parts']))
         sys.stdout.flush()
     except Exception as ex:
@@ -232,12 +261,22 @@ def _process_doc_nodisk(sortings,
     try:
         prepare_cb = prepare.prepare_multifile if paired else prepare.prepare
         doc = prepare_cb(inpath, subcorpus=subcorpus, corpus_type=corpus_type)
+        if corpus_type in [u"murco"]:
+            new_attrs = []
+            for attr_name, attr_val in doc["Attrs"]:
+                if attr_name in [u"act", u"gesture"]:
+                    split_attrs = _murco_split_attrs(attr_name, attr_val)
+                    new_attrs.extend(split_attrs)
+                else:
+                    new_attrs.append((attr_name, attr_val))
+            doc["Attrs"] = new_attrs
+
         for i, doc_part in enumerate(doc['Parts']):
             try:
-                body_xml = _produceXML(attrs_utils.split_attrs(
+                body_xml = _produce_xml(attrs_utils.split_attrs(
                     doc_part, attrs_utils.C_INDEX))
-                json_message = _produceJSON(
-                    doc, sortings, sample_inpath, i, kps)
+                json_message = _produce_json(
+                    doc, sortings, sample_inpath, i, kps, corpus_type=corpus_type)
                 logging.info('Processing %s, %s', inpath, i)
                 yield (inpath, StringIO.StringIO(
                     json_message), StringIO.StringIO(body_xml),)
@@ -295,7 +334,7 @@ def _get_resulting_filename(inpaths, pair_pattern):
         return inpaths
 
 
-def _produceXML(doc_part):
+def _produce_xml(doc_part):
     out = StringIO.StringIO()
     out.write('<doc_part>\n')
     for sent in doc_part['Sents']:
@@ -318,7 +357,14 @@ def _produceXML(doc_part):
     return out.getvalue().encode('utf-8')
 
 
-def _produceJSON(doc, sortings, url, i, kps):
+def _maybe_crop_url(url, corpus_type):
+    if corpus_type in CROPPED_URLS:
+        return url.split("/")[-1]
+    return url
+
+
+def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
+    url = _maybe_crop_url(url, corpus_type)
     part = doc['Parts'][i]
     # Multipart docs don't have attributes, but their parts do.
     attrs_holder = doc if doc.get("Attrs") else part
@@ -362,13 +408,18 @@ def _produceJSON(doc, sortings, url, i, kps):
     for name, value in attrs_holder.get("Attrs", []):
         s_key = "s_" + name.encode("utf-8")
         p_key = "p_" + name.encode("utf-8")
+
+        if len(value) > 120:
+            value = value[:120]
+        value = value.encode("utf-8")
+
         if "date" in p_key:
             continue
-        parent[s_key] = parent.get(s_key, []) + [{
-            "value": value.encode("utf-8"), "type": "#l"
-        }]
         parent[p_key] = parent.get(p_key, []) + [{
-            "value": value.encode("utf-8"), "type": "#pl"
+            "value": value, "type": "#pl"
+        }]
+        parent[s_key] = parent.get(s_key, []) + [{
+            "value": value, "type": "#l"
         }]
     return json.dumps(obj, ensure_ascii=False)
 

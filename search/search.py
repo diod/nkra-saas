@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import operator
-import logging as l
 from collections import defaultdict, OrderedDict
 
-from render import render_legacy, writers
-from render.document import OutputDocumentWeb
 from params import ParamsProcessor, SearchParams
 from processor import ResponseProcessor
+from render import render_legacy, writers
+from render.document import OutputDocumentWeb
 from search_result import SearchResult
 
 writers.WriterFactory.register_writer('body', writers.BodyWriter)
@@ -15,10 +15,6 @@ writers.WriterFactory.register_writer('body', writers.BodyWriter)
 # MULTIPARC
 writers.WriterFactory.register_writer('para_item', writers.GenericWriter)
 writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
-
-# MULTIPARC_RUS
-# writers.WriterFactory.register_writer('para_item', writers.GenericWriter)
-# writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 
 # MULTILANG
 writers.WriterFactory.register_writer('multilang:top', writers.GenericWriter)
@@ -85,20 +81,22 @@ writers.WriterFactory.register_writer('poetic:se', writers.SimpleTextWriter)
 writers.WriterFactory.register_writer('accent:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 writers.WriterFactory.register_writer('snippet', writers.SnippetWriter)
-writers.WriterFactory.register_writer(
-    'accent_stihi:se', writers.SimpleTextWriter)
-writers.WriterFactory.register_writer(
-    'accent_poetic:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'accent_poetic:snippet', writers.SnippetWriter)
-writers.WriterFactory.register_writer(
-    'accent_poetic:se', writers.SimpleTextWriter)
+writers.WriterFactory.register_writer('accent_stihi:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('accent_stihi:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('accent_stihi:se', writers.SimpleTextWriter)
+writers.WriterFactory.register_writer('accent_poetic:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('accent_poetic:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('accent_poetic:se', writers.SimpleTextWriter)
 
 # SPOKEN
 writers.WriterFactory.register_writer(
     'spoken_spoken:top', writers.GenericWriter)
 writers.WriterFactory.register_writer(
     'spoken_accent:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
+
+# MURCO
+writers.WriterFactory.register_writer('murco:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 
 # MISC
@@ -108,22 +106,43 @@ writers.WriterFactory.register_writer(
 writers.WriterFactory.register_writer('subcorpus:top', writers.GenericWriter)
 
 MODE_TO_KPS = {
-    "test": 0,
-    "old_rus": 700,
-    "mid_rus": 560,
-    "birchbark": 801,
-    "orthlib": 2148,
-    "multiparc": 280,
-    "multiparc_rus": 1490,
-    "multilang": 450,
+    "test": 10010,
+    "old_rus": 10000,
+    "mid_rus": 10010,
+    "birchbark": 10020,
+    "orthlib": 10030,
+    "multiparc": 10040,
+    "multiparc_rus": 10050,
+    "multi": 10060,
     "paper": 6001,
     "standard": 5010,
     "main": 8,
-    "para": 58,
-    "dialect": 10,
-    "poetic": 20,
-    "accent": 66,
-    "spoken": 73,
+    "para": 10101,
+    "dialect": 10110,
+    "poetic": 10120,
+    "accent": 10130,
+    "spoken": 10140,
+    "murco": 10150,
+}
+
+MODE_TO_KPS_NEW = {
+    "test": 0,
+    "old_rus": 10000,
+    "mid_rus": 10010,
+    "birchbark": 10020,
+    "orthlib": 10030,
+    "multiparc": 10040,
+    "multiparc_rus": 10050,
+    "multi": 10060,
+    "paper": 10070,
+    "standard": 10080,
+    "main": 10090,
+    "para": 10100,
+    "dialect": 10110,
+    "poetic": 10120,
+    "accent": 10130,
+    "spoken": 10140,
+    "murco": 10150,
 }
 
 MAX_DOCS_CONTEXT = 100
@@ -136,7 +155,9 @@ class SearchEngine(object):
     types of queries to response callbacks.
     """
     max_snippets = 100
-    stats = {}
+    stats = {
+        10101: (1855, 0, 58283269),
+    }
 
     def __init__(self):
         # this is a mapping from possible values of the 'text' parameter to
@@ -189,13 +210,13 @@ class SearchEngine(object):
         )
         query_info = QueryInfo.get_query_info(params)
         stat = self._get_stat(kps, response, query_len)
-        l.info(stat)
+        logging.info(stat)
         results = ResponseProcessor(snippets=params.snippets_per_doc).process(
-            params, response, extend_id=params.sent_id, sort_by=params.sort_by)
+            params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
         hchy = {"type": "body", "items": results}
         out = OutputDocumentWeb(
             wfile, page=params.page, stat=stat,
-            info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)
+            info=query_info, search_type=params.search_type, subcorpus=params.mode)
         writers.BodyWriter.write(
             out, hchy, nodia=params.diacritic, text=params.text)
         out.finalize()
@@ -218,8 +239,6 @@ class SearchEngine(object):
         if response.is_empty():
             return
         attrs = response.get_first_group().get_attributes()
-        # attrs = response.get_first_group().get_first_document().get_properties()
-        # l.info(attrs.keys())
         results = [{
             'Attrs': attrs,
             'Snippets': list(),
@@ -249,15 +268,15 @@ class SearchEngine(object):
             sentence_num=sent
         )
         if response.is_empty():
-            l.error("SearchEngine._serve_word_info(): no response, failed")
+            logging.error("SearchEngine._serve_word_info(): no response, failed")
             return
         group = response.get_first_group()
         if not group:
-            l.error("SearchEngine._serve_word_info(): no group, failed")
+            logging.error("SearchEngine._serve_word_info(): no group, failed")
             return
         document = group.get_first_document()
         if not document:
-            l.error("SearchEngine._serve_word_info(): no document, failed")
+            logging.error("SearchEngine._serve_word_info(): no document, failed")
             return
         directIndex = document.get_info(sent)
         result = directIndex['Words'][word]
@@ -283,6 +302,8 @@ class SearchEngine(object):
         Used for getting statistics about the current search result.
 
         """
+        if query_len < 1:
+            query_len = 1
         total_docs, total_sents, total_words = self._total_stat(kps)
         return {'Docs': response.get_docs_count(),
                 'Hits': response.get_hits_count() / query_len,
@@ -325,6 +346,7 @@ class QueryInfo(object):
     This operation is required for translating Web-GUI queries into queries to
     the search server.
     """
+
     @classmethod
     def get_query_info(cls, params):
         """Builds a list of dicts with info about the words in the query.
@@ -419,7 +441,7 @@ def all_urls(kps):
         query='url:"*"',
         kps=kps,
         grouping=False,
-        max_docs=2**10,
+        max_docs=2 ** 10,
     )
     result = []
     for group in response.get_groups():
@@ -432,7 +454,7 @@ def all_docs(kps):
     response = SearchResult(
         query='url:"*"',
         kps=kps,
-        max_docs=2**10,
+        max_docs=2 ** 10,
     )
     result = []
     for group in response.get_groups():

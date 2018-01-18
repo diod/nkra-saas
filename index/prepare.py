@@ -14,8 +14,8 @@ def need_simplified_orthography(subcorpus):
     return subcorpus in ('birchbark', 'mid_rus', 'old_rus', 'orthlib')
 
 
-def has_poems(subcorpus):
-    return subcorpus in ('poetic', 'accent', 'accent_stihi', 'spoken')
+def should_keep_accents(subcorpus):
+    return subcorpus in ('poetic', 'accent', 'accent_stihi', 'spoken', 'murco')
 
 
 def has_media(subcorpus):
@@ -44,7 +44,7 @@ def prepare(inpath, subcorpus='', split=True, corpus_type=None):
     if split:
         partition.split_long_sentences(doc)
         partition.make_aligned_parts(doc)
-    if not has_poems(subcorpus):
+    if not should_keep_accents(subcorpus):
         normalization.normalize_accents(doc)
     marks.normalize_punct(doc)
     marks.set_marks(doc)
@@ -55,119 +55,11 @@ def prepare(inpath, subcorpus='', split=True, corpus_type=None):
     groupattrs.set_groupattrs(doc)
     bastardness.move_bastardness_to_flags(doc)
     sorts.set_sorts(doc)
-    if has_poems(subcorpus):
+    if should_keep_accents(subcorpus):
         rhyme.set_rhyme(doc)
     if need_simplified_orthography(subcorpus):
         orthography.simplify_orthography(doc, subcorpus)
     return doc
-
-
-def prepare_multifile_bak(inpaths, subcorpus="", corpus_type=None):
-    """
-    Обрабатываем каждый файл из пары по отдельности, а затем склеиваем их
-    вместе и описываем зоны.
-
-    :param inpaths: list of paths to the .xml files
-    :param subcorpus: a subcorpus name
-
-    :return: the united doc in JSON format
-
-    """
-    docs = [
-        prepare(
-            inpath, subcorpus=subcorpus, split=False, corpus_type=corpus_type
-        ) for inpath in inpaths
-    ]
-    sents = list()
-    hchy = {
-        "type": "multi",
-        "items": list(),
-        "_id": "multi:0",
-        "path": [{
-            "type": "top",
-            "_id": "top:0",
-            "items": list()
-        }],
-        "Attrs": docs[0]["Attrs"],
-        "snippet_type": docs[0]["snippet_type"],
-        "context": docs[0]["context"],
-        "prefix": docs[0]["prefix"]
-    }
-    for doc_idx in xrange(len(docs)):
-        doc = docs[doc_idx]
-        prev_len = len(sents)
-        sents += list(all_sents(doc))
-        item = {
-            "type": "para_item",
-            "_id": "para_item:%s" % doc_idx,
-            "index": {
-                "start": {"sent": prev_len, "word": -1},
-                "end": {"sent": len(sents), "word": -1}
-            },
-            # document attributes -> item attributes
-            "Attrs": doc["Attrs"],
-            "prefix": docs[0]["prefix"],
-
-        }
-        if "items" in doc:
-            item["items"] = doc["items"]
-            update_ranges(item["items"], prev_len)
-        hchy["items"].append(item)
-    united_doc = {
-        "Parts": [{
-            "Sents": sents,
-            "Hierarchy": hchy,
-        }],
-    }
-    return united_doc
-
-
-def prepare_multifile_bak_bak(inpaths, subcorpus="", corpus_type=None):
-    """
-    Обрабатываем каждый файл из пары по отдельности, а затем склеиваем их
-    вместе и описываем зоны.
-
-    :param inpaths: list of paths to the .xml files
-    :param subcorpus: a subcorpus name
-
-    :return: the united doc in JSON format
-
-    """
-    docs = [
-        prepare(
-            inpath, subcorpus=subcorpus, split=False, corpus_type=corpus_type
-        ) for inpath in inpaths
-    ]
-    united_doc = {"Parts": []}
-    for doc_idx in xrange(len(docs)):
-        doc = docs[doc_idx]
-        sents = list(all_sents(doc))
-        item = {
-            "type": "para_item",
-            "_id": "para_item:%s" % doc_idx,
-            "path": [{
-                "type": "top",
-                "_id": "top:0",
-                "items": list()
-            }],
-            "index": {
-                "start": {"sent": 0, "word": -1},
-                "end": {"sent": len(sents), "word": -1}
-            },
-            # document attributes -> item attributes
-            "Attrs": doc["Attrs"],
-            "prefix": docs[0]["prefix"],
-            "context": (1, 1),
-            "snippet_type": doc["snippet_type"]
-        }
-        if "items" in doc:
-            item["items"] = doc["items"]
-        united_doc["Parts"].append({
-            "Attrs": doc["Attrs"],
-            "Sents": sents,
-            "Hierarchy": item,
-        })
-    return united_doc
 
 
 def prepare_multifile(inpaths, subcorpus="", corpus_type=None):

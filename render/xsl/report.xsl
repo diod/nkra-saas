@@ -1587,7 +1587,7 @@
       > </embed>
     </object>
     -->
-    <table><tr><td><a href="/video.xml?id={$id}&amp;name={$new_name}.mp4">Скачать</a></td></tr></table>
+    <table><tr><td><a href="/video.xml?id={$id}&amp;name={$new_name}.mp4" download="{$new_name}.mp4">Скачать</a></td></tr></table>
   </xsl:template>
 
   <xsl:template match="gesture">

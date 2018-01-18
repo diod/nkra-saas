@@ -161,6 +161,7 @@ class SearchParams(object):
             for sub_param in sub_params:
                 subcorpus += self._process_doc_param(
                     sub_param, query[sub_param][0])
+            logging.info(subcorpus)
             return subcorpus
         else:
             return ""
@@ -168,7 +169,7 @@ class SearchParams(object):
     def _process_doc_param(self, param, val):
         """Parses a subcorpus param/value pair.
 
-        What goes on here is translation from initital quuery (as it comes
+        What goes on here is translation from initital query (as it comes
         from frontend) to what can be understood by SAAS.
 
         Args:

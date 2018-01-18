@@ -9,6 +9,7 @@ import xml.sax
 # For such cases we need to add artificial align items of type
 # self.flat_type.
 FLAT_TYPE = "flat"
+SINGLE_FILE_TYPE = "single_file"
 
 # Field align_by defines the item by which the document will be split
 # into subdocuments while indexing. Document splitting is required
@@ -102,7 +103,7 @@ KNOWN_CORPUS_TYPES = {
     },
     "accent": {
         "prefix": "accent",
-        "align_by": "speach",
+        "align_by": SINGLE_FILE_TYPE,
         "snippet_type": "speach",
         "context": (1, 1)
     },
@@ -120,19 +121,19 @@ KNOWN_CORPUS_TYPES = {
     },
     "spoken_spoken": {
         "prefix": "spoken_spoken",
-        "align_by": "speach",
+        "align_by": SINGLE_FILE_TYPE,
         "snippet_type": "speach",
         "context": (1, 1)
     },
     "spoken_accent": {
         "prefix": "spoken_accent",
-        "align_by": "speach",
+        "align_by": SINGLE_FILE_TYPE,
         "snippet_type": "speach",
         "context": (1, 1)
     },
     "murco": {
         "prefix": "murco",
-        "align_by": "speach",
+        "align_by": SINGLE_FILE_TYPE,
         "snippet_type": "speach",
         "context": (1, 1)
     },
@@ -188,7 +189,7 @@ class XMLHandler(xml.sax.handler.ContentHandler):
         self.items = [self.doc]
         # Field item_tags defines the types that go into hierarchy.
         self.item_tags = [
-            "speach", "para", "para_item", "se", "page", "p"
+            SINGLE_FILE_TYPE, "speach", "para", "para_item", "se", "page", "p"
         ]
         # Some elements exist in many corpora, but each corpus may require some
         # special rendering of those elements. Such elements are prefixed.
@@ -215,6 +216,8 @@ class XMLHandler(xml.sax.handler.ContentHandler):
         if self.is_flat():
             self.item_tags.remove("p")
             self.item_type_counts[FLAT_TYPE] = 0
+        if self.is_single_file():
+            self.open_item(SINGLE_FILE_TYPE, [])
         self.ongoing_flat = False
 
     def characters(self, buf):
@@ -256,6 +259,9 @@ class XMLHandler(xml.sax.handler.ContentHandler):
         item, this item is closed. Here we suppose that a flat document is
         _really_ a flat document, with no item types other than "se".
         """
+        if self.is_single_file():
+            self.close_item(SINGLE_FILE_TYPE)
+
         if self.flat_item_tangling():
             self.close_item(FLAT_TYPE)
             self.flat_count = 0
@@ -278,7 +284,11 @@ class XMLHandler(xml.sax.handler.ContentHandler):
         if attrs.get("name"):
             attr_name = self.normalize_attr_name(attrs["name"])
             attr_val = self.normalize_attr_val(attrs["content"])
-            self.doc["Attrs"].append((attr_name, attr_val))
+
+            if attr_name in [u"gesture"]:
+                self.doc["Attrs"].append((attr_name, attrs["content"]))
+            else:
+                self.doc["Attrs"].append((attr_name, attr_val))
 
     def start_paragraph(self, attrs):
         if not set(self.tags).intersection(self.item_tags):
@@ -395,6 +405,9 @@ class XMLHandler(xml.sax.handler.ContentHandler):
 
     def is_flat(self):
         return self.doc["align_by"] == FLAT_TYPE
+
+    def is_single_file(self):
+        return self.doc["align_by"] == SINGLE_FILE_TYPE
 
     def normalize_attr_name(self, attr_name):
         """Replaces forbidden symbols in `attr_name`.

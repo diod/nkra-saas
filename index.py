@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import re
+import argparse
 import logging
 import os.path
-import argparse
-import requests
-import traceback
-import multiprocessing
+import re
 
-from index import index_with_sorting
-from index.index_multipart import SAAS_INDEX_URL
-from index.prepare import prepare, dumps
-from delete import delete_kps
+import requests
+
 from common.utils import get_all_paths_recursive
+from index import index_with_sorting
+from index.index_with_sorting import SAAS_INDEX_URL
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S',
@@ -40,7 +37,6 @@ prepare_group.add_argument('--meta', action='store_true')
 
 delete_group = parser.add_argument_group()
 delete_group.add_argument('--url', type=str, default='ALL')
-
 
 FILE_LIST = list()
 VALID_FILE_EXTENSIONS = ('.xml', '.xhtml')

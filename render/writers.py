@@ -30,6 +30,9 @@ class BaseItemWriter(object):
 
     @classmethod
     def write(cls, out, item, **kwargs):
+        sid = item.get("_extend_at", "")
+        if sid:
+            kwargs["_extend_at"] = sid
         cls.open_item(out, item, **kwargs)
         cls.process_content(out, item, **kwargs)
         cls.close_item(out, item, **kwargs)
@@ -64,6 +67,7 @@ class BodyWriter(BaseItemWriter):
 
 
 class GenericWriter(BaseItemWriter):
+    title_written = False
 
     @classmethod
     def open_item(cls, out, item, **kwargs):
@@ -91,11 +95,19 @@ class GenericWriter(BaseItemWriter):
         out.append(document_header)
         out.append("<attributes>")
         linked_fragments = []
+
         for name in attrs:
+            # Gestures are present only in murco and will be ignored in any other corpus
+            # (gestures are processed in `self.close_item()`, see below).
+            if name == "gesture":
+                continue
             for value in attrs[name]:
                 out.append("<attr name=%s value=%s/>" % (
                     quoteattr(name), quoteattr(value))
                 )
+            out.append("<attr name=%s value=%s/>" % (
+                quoteattr("path"), quoteattr(item.get("document_url")))
+            )
             if name == "linked_fragments":
                 linked_fragments += list(attrs[name])
         if linked_fragments:
@@ -106,6 +118,18 @@ class GenericWriter(BaseItemWriter):
 
     @classmethod
     def close_item(cls, out, item, **kwargs):
+        attrs = collections.defaultdict(list)
+        for key, val in item.get("Attrs", []):
+            attrs[key].append(val)
+
+        if attrs.get("gesture"):
+            out.append("<gestures>")
+            gest_info = ""
+            for gest in attrs.get("gesture"):
+                gest_info += "<gesture %s />\n" % gest
+            out.append(gest_info)
+            out.append("</gestures>")
+
         out.append("</document>")
 
     @classmethod
@@ -128,9 +152,11 @@ class SnippetWriter(BaseItemWriter):
     @classmethod
     def open_item(cls, out, item, **kwargs):
         sid = item.get("_extend_at", "")
+        if not sid:
+            sid = kwargs.get("_extend_at", "")
         lang = dict(item.get("Attrs", {})).get("lang", "")
         out.append(
-            "<snippet sid=\" % s\" language=\" % s\" compound=\"1\">" % (
+            "<snippet sid=\"%s\" language=\" % s\" compound=\"1\">" % (
                 sid, lang)
         )
 
@@ -215,7 +241,6 @@ class SimpleTextWriter(BaseItemWriter):
             word = unicodedata.normalize('NFD', word)
             word = word.replace(u'\u0300', "")
             word = word.replace(u'\u0301', "")
-            # word = word.replace(u'`', "")
             return word
         else:
             dst_idx = None

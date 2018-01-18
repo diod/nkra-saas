@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import logging
 import requests
-import multiprocessing
 
-from index.index_multipart import SAAS_INDEX_URL
-from common.utils import get_all_paths_recursive, print_with_return
+from common.utils import get_all_paths_recursive
 
 CHUNK_SIZE = 128
 ERROR_LOG = "./upload_errors.log"
@@ -14,6 +11,9 @@ PROGRESS_LOG = "./upload_progress.log"
 
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+
+SAAS_INDEX_URL = 'http://saas-indexerproxy-outgone.yandex.net:80/service/' \
+                 '2b6087d5f79ee63acbbb64c2ebea3223?timeout=2000000'
 
 
 def upload_part(args):

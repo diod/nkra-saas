@@ -58,16 +58,30 @@ cd ctemplate-python-master
 sudo python setup.py install
 
 
-clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent/ --kps 66 --corpus_type accent_stihi --subcorpus accent --meta
-clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_main/ --kps 66 --corpus_type accent --subcorpus accent --nodisk
-clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_stihi/ --kps 66 --corpus_type accent_stihi --subcorpus poetic --nodisk
-clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_poetic/ --kps 66 --corpus_type accent_poetic --subcorpus poetic --nodisk
+1. /place/ruscorpora/corpora/accent/accent_main --> /place/ruscorpora/texts/finalized/accent/accent_main
+2. /place/ruscorpora/corpora/accent/accent_stihi --> /place/ruscorpora/texts/finalized/accent/accent_stihi
+3. /place/ruscorpora/corpora/poetic/ --> /place/ruscorpora/texts/finalized/accent/accent_poetic
+
+clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent_main/ --kps 66 --corpus_type accent --subcorpus accent --nodisk
+clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent_stihi/ --kps 66 --corpus_type accent_stihi --subcorpus poetic --nodisk
+clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/accent_poetic/ --kps 66 --corpus_type accent_poetic --subcorpus poetic --nodisk
+
+
+
+
+
 
 
 clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/ --kps 74 --corpus_type spoken_spoken --subcorpus spoken --meta
 clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/spoken/ --kps 74 --corpus_type spoken_spoken --subcorpus spoken --nodisk
 clear && sudo python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/accent_main/ --kps 74 --corpus_type spoken_accent --subcorpus accent --nodisk
 
-python index.py --index --paired=".*(?=[0-9]{4}.xml)" --dir /place/ruscorpora/texts/finalized/multiparc_rus/ --kps 1488 --corpus_type multiparc_rus --nodisk
+
+
+
+
+
+
+
 
 python delete.py 74 ALL
