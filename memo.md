@@ -56,7 +56,7 @@ svn up
 cd /place/ruscorpora/processing/
 sh multiparc_rus.sh > multiparc_rus.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f multiparc_rus* && clear && python index.py --index --paired=".*(?=[0-9]{4}.xml)" --dir /place/ruscorpora/texts/finalized/multiparc_rus/ --kps 10050 --subcorpus multiparc_rus --corpus_type multiparc_rus --nodisk
+rm -f multiparc_rus* && clear && python index.py --index --paired=".*(?=[0-9]{4}.xml)" --dir /place/ruscorpora/texts/finalized/multiparc_rus/ --kps 10050 --subcorpus multiparc_rus --corpus_type multiparc_rus --nodisk > multiparc_rus.log 2>&1
 ```
 
 # MULTILANG +
@@ -64,9 +64,35 @@ rm -f multiparc_rus* && clear && python index.py --index --paired=".*(?=[0-9]{4}
 cd /place/ruscorpora/corpora/multi/
 svn up
 cd /place/ruscorpora/processing/
-sh multilang.sh > multilang.log 2>&1
+sh multi.sh > multi.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f multilang* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/multi/ --kps 10060 --subcorpus multilang --corpus_type multilang --nodisk
+rm -f multilang* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/multi/ --kps 10060 --subcorpus multilang --corpus_type multilang --nodisk > multilang.log 2>&1
+```
+
+# PAPER
+```
+cd /place/ruscorpora/corpora/paper/
+svn up
+cd /place/ruscorpora/processing/
+sh paper.sh > paper.log 2>&1
+cd /home/zavgorodny/saas/
+rm -f paper* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/paper/ --kps 10070 --subcorpus paper --corpus_type paper --nodisk > paper.log 2>&1
+```
+
+# MAIN
+```
+cd /place/ruscorpora/corpora/main/
+svn up
+cd /place/ruscorpora/processing/
+sh source.sh > source.log 2>&1
+sh standard.sh > standard.log 2>&1
+rm -rf /place/ruscorpora/texts/finalized/main/
+mkdir -p /place/ruscorpora/texts/finalized/main/standard
+mkdir -p /place/ruscorpora/texts/finalized/main/source
+lndir /place/ruscorpora/texts/finalized/standard /place/ruscorpora/texts/finalized/main/standard
+lndir /place/ruscorpora/texts/finalized/source /place/ruscorpora/texts/finalized/main/source
+cd /home/zavgorodny/saas/
+rm -f main* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/main/ --kps 10090 --subcorpus main --corpus_type main --nodisk > main.log 2>&1
 ```
 
 # PARA +

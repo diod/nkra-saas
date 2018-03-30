@@ -71,12 +71,6 @@ KNOWN_CORPUS_TYPES = {
         "snippet_type": "se",
         "context": (1, 1)
     },
-    "standard": {
-        "prefix": "standard",
-        "align_by": FLAT_TYPE,
-        "snippet_type": "se",
-        "context": (1, 1)
-    },
     "main": {
         "prefix": "main",
         "align_by": FLAT_TYPE,
@@ -419,7 +413,8 @@ class XMLHandler(xml.sax.handler.ContentHandler):
         attr_name_clean = attr_name.replace("-", "_")
         return attr_name_clean
 
-    def normalize_attr_val(self, attr_val):
+    @staticmethod
+    def normalize_attr_val(attr_val):
         attr_val_clean = attr_val[:250]
         return attr_val_clean
 

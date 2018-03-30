@@ -46,8 +46,8 @@ CROPPED_URLS = [
     "old_rus",
 ]
 
-NODISK_CHUNK_MAX_DOCS = 32
-NODISK_CHUNK_MAX_PARTS = 64
+NODISK_CHUNK_MAX_DOCS = 128
+NODISK_CHUNK_MAX_PARTS = 256
 
 
 def load_initial(inpaths,
@@ -73,13 +73,11 @@ def load_initial(inpaths,
                 for inpath_elem in inpath:
                     _preload_attrs(sortings,
                                    inpath_elem,
-                                   subcorpus=subcorpus,
                                    corpus_type=corpus_type,
                                    only_meta=only_meta)
             else:
                 _preload_attrs(sortings,
                                inpath,
-                               subcorpus=subcorpus,
                                corpus_type=corpus_type,
                                only_meta=only_meta)
         _normalize_sortings(sortings)
@@ -158,12 +156,11 @@ def index(sortings,
 
 def _preload_attrs(sortings,
                    inpath,
-                   subcorpus="",
                    corpus_type="",
                    only_meta=False):
     try:
         doc = xml2json.process(
-            inpath, corpus_type=corpus_type, only_meta=False)
+            inpath, corpus_type=corpus_type, only_meta=only_meta)
         doc_attrs = _get_doc_sorting_attrs(doc)
         for attr_name, attr_val in doc_attrs.items():
             sortings[attr_name].add(attr_val)

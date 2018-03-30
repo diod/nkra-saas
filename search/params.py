@@ -151,10 +151,13 @@ class SearchParams(object):
         if 'mode' not in query:
             return ""
         if 'mycorp' in query:
-            out = urllib.unquote(query['mycorp'][0])
-            out = out.replace("lang", "s_lang")
-            out = " " + out.replace("|", " | ")
-            return out
+            mycorp = urllib.unquote(query['mycorp'][0])
+            if "main" in mycorp:
+                return " s_tagging:\"manual\""
+            else:
+                out = mycorp.replace("lang", "s_lang")
+                out = " " + out.replace("|", " | ")
+                return out
         subcorpus = ""
         sub_params = [k for k in query.keys() if k.startswith('doc_')]
         if sub_params:
