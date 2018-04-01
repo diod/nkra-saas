@@ -115,7 +115,7 @@ MODE_TO_KPS = {
     "multiparc_rus": 10050,
     "multi": 10060,
     "paper": 10070,
-    "main": 8,
+    "main": 10090,
     "para": 10101,
     "dialect": 10110,
     "poetic": 10120,
