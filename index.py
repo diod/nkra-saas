@@ -8,8 +8,8 @@ import re
 import requests
 
 from common.utils import get_all_paths_recursive
-from index import index_with_sorting
-from index.index_with_sorting import SAAS_INDEX_URL
+from index import index
+from index.index import SAAS_INDEX_URL
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S',
@@ -48,13 +48,13 @@ def main():
         prepare_file_list(args.dir, in_handler=_append_path)
         if args.paired:
             tuple_files(args.paired)
-        sortings = index_with_sorting.load_initial(
+        sortings = index.load_initial(
             FILE_LIST, paired=args.paired, kps=args.kps,
             subcorpus=args.subcorpus,
             corpus_type=args.corpus_type,
             only_meta=args.meta)
         if not args.meta:
-            index_with_sorting.index(
+            index.index(
                 sortings, FILE_LIST, paired=args.paired, kps=args.kps,
                 subcorpus=args.subcorpus,
                 corpus_type=args.corpus_type, nodisk=args.nodisk)
