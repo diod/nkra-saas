@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import json
 
 from common.doc_iters import all_sents
 from common import xml2json
 from processing import partition, normalization, marks, positions, repetition
 from processing import reversion, groupattrs, bastardness, sorts, rhyme
 from processing import orthography
-from index import attrs
 
 
 def need_simplified_orthography(subcorpus):
@@ -138,11 +136,6 @@ def update_ranges(items, delta):
         item["index"]["end"]["sent"] += delta
         if "items" in item:
             update_ranges(item["items"], delta)
-
-
-def dumps(doc):
-    doc = attrs.split_attrs(doc, attrs.C_INFO)
-    return json.dumps(doc, indent=1, ensure_ascii=False).encode('utf-8')
 
 
 if __name__ == '__main__':

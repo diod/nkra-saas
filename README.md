@@ -433,7 +433,7 @@ svn up
 cd /place/ruscorpora/processing/
 sh para.sh > para.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f para* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/para/ --kps 10101 --corpus_type para --subcorpus para --nodisk > para.log 2>&1
+rm -f para* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/para/ --kps 10103 --corpus_type para --subcorpus para --nodisk > para.log 2>&1
 ```
 
 ##### DIALECT
@@ -470,12 +470,12 @@ lndir /place/ruscorpora/texts/finalized/accent_main /place/ruscorpora/texts/fina
 lndir /place/ruscorpora/texts/finalized/accent_stihi /place/ruscorpora/texts/finalized/accent/accent_stihi
 lndir /place/ruscorpora/texts/finalized/poetic /place/ruscorpora/texts/finalized/accent/accent_poetic
 cd /home/zavgorodny/saas/
-rm -f accent* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/ --kps 10130 --corpus_type accent --subcorpus accent --meta > accent.log 2>&1
+rm -f accent* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/ --kps 10131 --corpus_type accent --subcorpus accent --meta > accent.log 2>&1
 cp accent.sortings accent_stihi.sortings
 cp accent.sortings accent_poetic.sortings
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_main/ --kps 10130 --corpus_type accent --subcorpus accent --nodisk > poetic.log 2>&1
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_stihi/ --kps 10130 --corpus_type accent_stihi --subcorpus poetic --nodisk > poetic.log 2>&1
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_poetic/ --kps 10130 --corpus_type accent_poetic --subcorpus poetic --nodisk > poetic.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_main/ --kps 10131 --corpus_type accent --subcorpus accent --nodisk > accent_main.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_stihi/ --kps 10131 --corpus_type accent_stihi --subcorpus poetic --nodisk > accent_stihi.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_poetic/ --kps 10131 --corpus_type accent_poetic --subcorpus poetic --nodisk > accent_poetic.log 2>&1
 ```
 
 ##### SPOKEN

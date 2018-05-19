@@ -8,8 +8,8 @@ import re
 import requests
 
 from common.utils import get_all_paths_recursive
-from index import index
-from index.index import SAAS_INDEX_URL
+from index import index_dir
+from index.index_dir import SAAS_INDEX_URL
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S',
@@ -48,13 +48,13 @@ def main():
         prepare_file_list(args.dir, in_handler=_append_path)
         if args.paired:
             tuple_files(args.paired)
-        sortings = index.load_initial(
+        sortings = index_dir.load_initial(
             FILE_LIST, paired=args.paired, kps=args.kps,
             subcorpus=args.subcorpus,
             corpus_type=args.corpus_type,
             only_meta=args.meta)
         if not args.meta:
-            index.index(
+            index_dir.index(
                 sortings, FILE_LIST, paired=args.paired, kps=args.kps,
                 subcorpus=args.subcorpus,
                 corpus_type=args.corpus_type, nodisk=args.nodisk)
@@ -106,11 +106,11 @@ def upload_directory(inpath):
 
 if __name__ == '__main__':
     # find ./multiparc_deep/ -mindepth 2 -type f -exec cp -t ./multipark_flat -i '{}' +
-    # clear && python index.py --index --paired="eng|rus" --dir ../res/mp/ --kps 280 --corpus_type multiparc
+    # clear && python index_dir.py --index --paired="eng|rus" --dir ../res/mp/ --kps 280 --corpus_type multiparc
     # clear && python server.py -p 8888 --rendering xml --kps 134
     # sh index_folder.sh ../../../res/mp/
     # scp ./* zavgorodny@ruscorpora.ru:/var/www/saas/
-    # clear && python index.py --index --paired=".*(?=[0-9]{4}.xml)" --dir
+    # clear && python index_dir.py --index --paired=".*(?=[0-9]{4}.xml)" --dir
     # /place/ruscorpora/texts/finalized/multiparc_rus/ --kps 1488
     # --corpus_type multiparc_rus --meta
     main()

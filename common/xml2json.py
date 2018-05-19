@@ -97,7 +97,7 @@ KNOWN_CORPUS_TYPES = {
     },
     "accent": {
         "prefix": "accent",
-        "align_by": SINGLE_FILE_TYPE,
+        "align_by": "speach",
         "snippet_type": "speach",
         "context": (1, 1)
     },
@@ -115,13 +115,13 @@ KNOWN_CORPUS_TYPES = {
     },
     "spoken_spoken": {
         "prefix": "spoken_spoken",
-        "align_by": SINGLE_FILE_TYPE,
+        "align_by": "speach",
         "snippet_type": "speach",
         "context": (1, 1)
     },
     "spoken_accent": {
         "prefix": "spoken_accent",
-        "align_by": SINGLE_FILE_TYPE,
+        "align_by": "speach",
         "snippet_type": "speach",
         "context": (1, 1)
     },

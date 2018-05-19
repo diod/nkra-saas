@@ -41,9 +41,12 @@ class ResponseProcessor(object):
         min_doc = params.page * params.docs_per_page
         max_doc = min_doc + params.docs_per_page - 1
         for i, group in enumerate(response.get_groups()):
-            if "multiparc" in subcorpus:
-                self._squash_multipart_group(group)
-            self._process_group(i, group, min_doc, max_doc, extend_id, out, subcorpus)
+            try:
+                if "multiparc" in subcorpus:
+                    self._squash_multipart_group(group)
+                self._process_group(i, group, min_doc, max_doc, extend_id, out, subcorpus)
+            except Exception as ex:
+                logging.error("failed to _process_group: %s", ex)
         if params.sort_by in ["random"]:
             random.seed(params.seed)
             random.shuffle(out)

@@ -403,6 +403,7 @@ def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
         }
     parent = obj["docs"][0]
     for name, value in attrs_holder.get("Attrs", []):
+        print("%s --> %s" % (name.encode("utf-8"), value.encode("utf-8")))
         s_key = "s_" + name.encode("utf-8")
         p_key = "p_" + name.encode("utf-8")
 

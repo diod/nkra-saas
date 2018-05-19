@@ -119,26 +119,7 @@ MODE_TO_KPS = {
     "para": 10101,
     "dialect": 10110,
     "poetic": 10120,
-    "accent": 10130,
-    "spoken": 10140,
-    "murco": 10150,
-}
-
-MODE_TO_KPS_NEW = {
-    "test": 0,
-    "old_rus": 10000,
-    "mid_rus": 10010,
-    "birchbark": 10020,
-    "orthlib": 10030,
-    "multiparc": 10040,
-    "multiparc_rus": 10050,
-    "multi": 10060,
-    "paper": 10070,
-    "main": 10090,
-    "para": 10100,
-    "dialect": 10110,
-    "poetic": 10120,
-    "accent": 10130,
+    "accent": 10131,
     "spoken": 10140,
     "murco": 10150,
 }
@@ -154,7 +135,21 @@ class SearchEngine(object):
     """
     max_snippets = 100
     stats = {
-        10101: (1855, 0, 58283269),
+        MODE_TO_KPS["old_rus"]: (16, 0, 500292),
+        MODE_TO_KPS["mid_rus"]: (5876, 0, 8074107),
+        MODE_TO_KPS["birchbark"]: (879, 0, 19002),
+        MODE_TO_KPS["orthlib"]: (1160 , 0, 4476006),
+        MODE_TO_KPS["multiparc"]: (3652, 0, 421226),
+        MODE_TO_KPS["multiparc_rus"]: (1315, 0, 960738),
+        MODE_TO_KPS["multi"]: (12, 0, 5022425),
+        MODE_TO_KPS["paper"]: (0, 0, 0),
+        MODE_TO_KPS["main"]: (0, 0, 0),
+        MODE_TO_KPS["para"]: (2013, 0, 71033352),
+        MODE_TO_KPS["dialect"]: (627, 0, 285281),
+        MODE_TO_KPS["poetic"]: (78852, 0, 10923513),
+        MODE_TO_KPS["spoken"]: (3821, 0, 11318245),
+        MODE_TO_KPS["accent"]: (238318, 0, 25254284),
+        MODE_TO_KPS["murco"]: (187230, 0, 4497729),
     }
 
     def __init__(self):
