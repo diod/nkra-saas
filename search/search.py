@@ -203,13 +203,12 @@ class SearchEngine(object):
         )
         query_info = QueryInfo.get_query_info(params)
         stat = self._get_stat(kps, response, query_len)
-        logging.info(stat)
         results = ResponseProcessor(snippets=params.snippets_per_doc).process(
             params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
         hchy = {"type": "body", "items": results}
         out = OutputDocumentWeb(
             wfile, page=params.page, stat=stat,
-            info=query_info, search_type=params.search_type, subcorpus=params.mode)
+            info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)
         writers.BodyWriter.write(
             out, hchy, nodia=params.diacritic, text=params.text)
         out.finalize()

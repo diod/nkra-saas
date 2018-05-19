@@ -19,7 +19,6 @@ class OutputDocumentSimple(object):
 
 
 class OutputDocumentWeb(object):
-
     def __init__(self,
                  out,
                  page=0,
