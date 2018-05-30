@@ -410,7 +410,10 @@ def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
             value = value[:120]
         value = value.encode("utf-8")
 
-        if "date" in p_key:
+        # I don't what kind of bullshit this `"date" in p_key` is, but it breaks subcorpus search
+        # for `para` corpus. I'm a little bit afraid to simply remove this check (maybe it was necessary
+        # for some other corpus), so I'll just make this work for `para`.
+        if corpus_type not in ["para"] and "date" in p_key:
             continue
         parent[p_key] = parent.get(p_key, []) + [{
             "value": value, "type": "#pl"
