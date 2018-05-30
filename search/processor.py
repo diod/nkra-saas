@@ -103,12 +103,15 @@ class ResponseProcessor(object):
                         any_hit = hit_entries.pop()
                         sorting_key = self._get_sorting_key(
                             words, punct, any_hit, params.sort_by)
-                        sorted_entries.append((sorting_key.lower(), words,
+                        sorted_entries.append([sorting_key.lower(), words,
                                                punct, doc_url, len(hits),
-                                               attrs))
-                except Exception:
+                                               attrs])
+                except Exception as ex:
+                    logging.info(ex)
                     pass
         sorted_entries.sort(key=operator.itemgetter(0))
+        for item in sorted_entries:
+            logging.info(item[0])
         for _, sent, punct, doc_url, total_hits, attrs in sorted_entries:
             entry = {
                 "type": "context:top",
@@ -133,7 +136,7 @@ class ResponseProcessor(object):
         """
         out = ""
         start, end = None, None
-        # Sort by right context, icluding current word.
+        # Sort by right context, including current word.
         if context == "cont1":
             start, end = hit_idx, len(words)
         # Sort by right context, ignoring current word.
@@ -155,8 +158,10 @@ class ResponseProcessor(object):
         if context in ["cont1", "cont2"]:
             out += end_punct
         out = re.sub("\n", "", out)
+        out = re.sub("^[!,?-«―]", "", out)
         if context in ["cont-1", "cont-2"]:
             out = "".join(reversed(out))
+
         return out
 
     @staticmethod
