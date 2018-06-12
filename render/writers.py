@@ -200,18 +200,23 @@ class SimpleTextWriter(BaseItemWriter):
     @classmethod
     def process_content(cls, out, item, **kwargs):
         nodia = kwargs.get("nodia", True)
+        strip = False
         for sent in item["content"]:
             for word_idx in xrange(len(sent["Words"])):
                 word = sent["Words"][word_idx]
                 prev_word = sent["Words"][word_idx - 1]
-                word["Text"] = cls.fix_accent(
-                    word["Text"], nodia=nodia)
+                word["Text"] = cls.fix_accent(word["Text"], nodia=nodia)
                 if word["Punct"]:
-                    # WARNING: we add a space after each punctuation char.
+                    if word["Punct"] in ["-"]:
+                        strip = True
                     out.append("<text>%s</text>" % escape(word["Punct"]))
                 if prev_word.get("Rhyme"):
                     out.append("<br />")
-                text = quoteattr(word["Text"])
+                if strip:
+                    text = quoteattr(word["Text"].strip())
+                    strip = False
+                else:
+                    text = quoteattr(word["Text"])
                 src = quoteattr(base64.b64encode(word["Source"]))
                 target = "target=\"1\"" if word.get("is_hit", False) else ""
                 out.append("<word text=%s source=%s %s/>" %

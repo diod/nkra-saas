@@ -33,14 +33,12 @@ writers.WriterFactory.register_writer('mid_rus:se', writers.SimpleTextWriter)
 
 # BIRCHBARK
 writers.WriterFactory.register_writer('birchbark:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'birchbark:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('birchbark:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('birchbark:se', writers.SimpleTextWriter)
 
 # ORTHLIB
 writers.WriterFactory.register_writer('orthlib:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'orthlib:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('orthlib:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('orthlib:se', writers.SimpleTextWriter)
 
 # PAPER
@@ -50,14 +48,12 @@ writers.WriterFactory.register_writer('paper:se', writers.SimpleTextWriter)
 
 # STANDARD
 writers.WriterFactory.register_writer('standard:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'standard:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('standard:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('standard:se', writers.SimpleTextWriter)
 
 # MAIN
 writers.WriterFactory.register_writer('main:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'main:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('main:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('main:se', writers.SimpleTextWriter)
 
 # PARA
@@ -67,14 +63,12 @@ writers.WriterFactory.register_writer('para:se', writers.SnippetWriter)
 
 # DIALECT
 writers.WriterFactory.register_writer('dialect:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'dialect:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('dialect:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('dialect:se', writers.SimpleTextWriter)
 
 # POETIC
 writers.WriterFactory.register_writer('poetic:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'poetic:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('poetic:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('poetic:se', writers.SimpleTextWriter)
 
 # ACCENT
@@ -89,10 +83,8 @@ writers.WriterFactory.register_writer('accent_poetic:snippet', writers.SnippetWr
 writers.WriterFactory.register_writer('accent_poetic:se', writers.SimpleTextWriter)
 
 # SPOKEN
-writers.WriterFactory.register_writer(
-    'spoken_spoken:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'spoken_accent:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('spoken_spoken:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('spoken_accent:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 
 # MURCO
@@ -101,8 +93,7 @@ writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 
 # MISC
 writers.WriterFactory.register_writer('context:top', writers.GenericWriter)
-writers.WriterFactory.register_writer(
-    'context:entry', writers.SnippetWriter)
+writers.WriterFactory.register_writer('context:entry', writers.SnippetWriter)
 writers.WriterFactory.register_writer('subcorpus:top', writers.GenericWriter)
 
 MODE_TO_KPS = {
