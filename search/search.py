@@ -107,12 +107,13 @@ MODE_TO_KPS = {
     "multi": 10060,
     "paper": 10070,
     "main": 10090,
-    "para": 10107,
+    "para": 10100,
     "dialect": 10110,
     "poetic": 10120,
     "accent": 10131,
     "spoken": 10140,
     "murco": 10150,
+    "regional_rus": 10160,
 }
 
 MAX_DOCS_CONTEXT = 100
@@ -141,6 +142,7 @@ class SearchEngine(object):
         MODE_TO_KPS["spoken"]: (3821, 0, 11318245),
         MODE_TO_KPS["accent"]: (238318, 0, 25254284),
         MODE_TO_KPS["murco"]: (187230, 0, 4497729),
+        MODE_TO_KPS["regional_rus"]: (0, 0, 0),
     }
 
     def __init__(self):

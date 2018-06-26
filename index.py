@@ -4,6 +4,7 @@ import argparse
 import logging
 import os.path
 import re
+import sys
 
 import requests
 
@@ -26,6 +27,7 @@ index_group.add_argument('--dir', type=str)
 index_group.add_argument('--kps', type=int, default=42)
 index_group.add_argument('--single', action='store_true')
 index_group.add_argument('--jobs', type=int, default=1)
+index_group.add_argument('--only_listed', type=str, default="")
 
 prepare_group = parser.add_argument_group()
 prepare_group.add_argument('--inpath', default='/dev/stdin', nargs='?')
@@ -46,6 +48,16 @@ def main():
     args = parser.parse_args()
     if os.path.isdir(args.dir):
         prepare_file_list(args.dir, in_handler=_append_path)
+        if args.only_listed:
+            targets = args.only_listed.split(",")
+            filtered = []
+            for filename in FILE_LIST:
+                for target in targets:
+                    if target in filename:
+                        filtered.append(filename)
+            del FILE_LIST[:]
+            for filename in filtered:
+                FILE_LIST.append(filename)
         if args.paired:
             tuple_files(args.paired)
         sortings = index_dir.load_initial(

@@ -410,6 +410,16 @@ cd /home/zavgorodny/saas/
 rm -f paper* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/paper/ --kps 10070 --subcorpus paper --corpus_type paper --nodisk > paper.log 2>&1
 ```
 
+##### REGIONAL_RUS
+```
+cd /place/ruscorpora/corpora/regional_grodno/
+svn up
+cd /place/ruscorpora/processing/
+sh regional_grodno_rus.sh > regional_grodno_rus.log 2>&1
+cd /home/zavgorodny/saas/
+rm -f paper* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/paper/ --kps 10070 --subcorpus paper --corpus_type paper --nodisk > paper.log 2>&1
+```
+
 ##### MAIN
 ```
 cd /place/ruscorpora/corpora/main/

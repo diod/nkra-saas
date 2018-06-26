@@ -131,6 +131,12 @@ KNOWN_CORPUS_TYPES = {
         "snippet_type": "speach",
         "context": (1, 1)
     },
+    "regional_rus": {
+        "prefix": "regional_rus",
+        "align_by": FLAT_TYPE,
+        "snippet_type": "se",
+        "context": (1, 1)
+    },
 }
 
 
