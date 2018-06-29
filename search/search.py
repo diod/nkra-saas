@@ -91,6 +91,11 @@ writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 writers.WriterFactory.register_writer('murco:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('speach', writers.SpeechWriter)
 
+# REGIONAL_RUS
+writers.WriterFactory.register_writer('regional_rus:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('regional_rus:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('regional_rus:se', writers.SimpleTextWriter)
+
 # MISC
 writers.WriterFactory.register_writer('context:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('context:entry', writers.SnippetWriter)
