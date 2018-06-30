@@ -188,7 +188,7 @@ class SearchParams(object):
         # `(s_sex="муж" | s_sex="жен")`.
         if "|" in val:
             decomposed_query = " | ".join(
-                ['%s:"%s"' % (s_param, x) for x in val.split("|")])
+                ['%s:"%s"' % (s_param, x.strip()) for x in val.split("|")])
             return " (%s)" % decomposed_query
         # Less than queries. `doc_l_created=1900` should be translated to
         # `s_created:<1900`.
