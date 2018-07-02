@@ -184,6 +184,9 @@ class SearchParams(object):
             for SAAS).
         """
         s_param = param.replace("doc_", "s_")
+        # It's a logical "not".
+        if val.startswith("-"):
+            return '(%s:"*" ~~ %s:"%s")' % (s_param, s_param, val[1:])
         # Disjunctive queries. `doc_sex=муж|жен` should be translated to
         # `(s_sex="муж" | s_sex="жен")`.
         if "|" in val:
