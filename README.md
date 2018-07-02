@@ -443,7 +443,7 @@ svn up
 cd /place/ruscorpora/processing/
 sh dialect.sh > dialect.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f dialect* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/dialect/ --kps 10110 --corpus_type dialect --subcorpus dialect --nodisk > dialect.log 2>&1
+rm -f dialect* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/dialect/ --kps 10111 --corpus_type dialect --subcorpus dialect --nodisk > dialect.log 2>&1
 ```
 
 ##### POETIC

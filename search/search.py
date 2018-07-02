@@ -113,7 +113,7 @@ MODE_TO_KPS = {
     "paper": 10070,
     "main": 10090,
     "para": 10100,
-    "dialect": 10110,
+    "dialect": 10111,
     "poetic": 10120,
     "accent": 10131,
     "spoken": 10140,
