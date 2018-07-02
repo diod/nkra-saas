@@ -1943,70 +1943,71 @@
     <xsl:param name="document"/>
     <li>
       <xsl:if test="$allowLineBreaks and position() &gt; 2">
-       <br/>
       </xsl:if>
       <xsl:apply-templates select="word | text | br | p | i | b | sub | sup | em" />
-      <xsl:text> </xsl:text>
-      <xsl:if test="not(key('param', 'notitle'))">
-        <xsl:if test="$allowLineBreaks"><br/></xsl:if>
-        <span class="doc">
-         <xsl:choose>
-          <xsl:when test="$mode='para' and position() != 1">
-           <xsl:text>[</xsl:text><xsl:value-of select="$document/attributes/attr[@name='author_trans']/@value" disable-output-escaping="yes"/><xsl:text>. </xsl:text>
-            <xsl:value-of select="$document/attributes/attr[@name='header_trans']/@value" disable-output-escaping="yes"/>
-            <xsl:if test="$document/attributes/attr[@name='translator']/@value != '' or $document/attributes/attr[@name='date_trans']/@value != ''">
-              <xsl:text> (</xsl:text><xsl:if test="$document/attributes/attr[@name='translator']/@value != ''">
-                 <xsl:value-of select="$document/attributes/attr[@name='translator']/@value" disable-output-escaping="yes"/><xsl:text>, </xsl:text>
-              </xsl:if>
-              <xsl:value-of select="$document/attributes/attr[@name='date_trans']/@value" disable-output-escaping="yes"/><xsl:text>)</xsl:text>
-            </xsl:if><xsl:text>]</xsl:text>
-          </xsl:when>
-          <xsl:otherwise>
-           <xsl:text>[</xsl:text><xsl:value-of select="$document/@title" disable-output-escaping="yes"/><xsl:text>]</xsl:text>
-          </xsl:otherwise>
-         </xsl:choose>
-        </span>
-      </xsl:if>
+      <xsl:if test="@is_last='1'">
+          <xsl:text> </xsl:text>
+          <xsl:if test="not(key('param', 'notitle'))">
+            <xsl:if test="$allowLineBreaks"><br/></xsl:if>
+            <span class="doc">
+             <xsl:choose>
+              <xsl:when test="$mode='para' and position() != 1">
+               <xsl:text>[</xsl:text><xsl:value-of select="$document/attributes/attr[@name='author_trans']/@value" disable-output-escaping="yes"/><xsl:text>. </xsl:text>
+                <xsl:value-of select="$document/attributes/attr[@name='header_trans']/@value" disable-output-escaping="yes"/>
+                <xsl:if test="$document/attributes/attr[@name='translator']/@value != '' or $document/attributes/attr[@name='date_trans']/@value != ''">
+                  <xsl:text> (</xsl:text><xsl:if test="$document/attributes/attr[@name='translator']/@value != ''">
+                     <xsl:value-of select="$document/attributes/attr[@name='translator']/@value" disable-output-escaping="yes"/><xsl:text>, </xsl:text>
+                  </xsl:if>
+                  <xsl:value-of select="$document/attributes/attr[@name='date_trans']/@value" disable-output-escaping="yes"/><xsl:text>)</xsl:text>
+                </xsl:if><xsl:text>]</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                 <xsl:text>[</xsl:text><xsl:value-of select="$document/@title" disable-output-escaping="yes"/><xsl:text>]</xsl:text>
+              </xsl:otherwise>
+             </xsl:choose>
+            </span>
+          </xsl:if>
 
-      <xsl:text> </xsl:text>
-      <xsl:apply-templates select="$document" mode="omo"/>
-      <xsl:text> </xsl:text>
-      <xsl:choose>
-        <xsl:when test="@url">
-          <xsl:apply-templates select="/page/parameters/*[name() = $ln]/group[@name='urls']/item" mode="report-links">
-            <xsl:with-param name="val" select="@url"/>
-          </xsl:apply-templates>
-        </xsl:when>
-        <xsl:when test="(key('param','ell') or not(key('param','nolinks'))) and not ($document/../@search-type = 'snippet')">
-          <a>
-            <xsl:attribute name="href">
-              <xsl:value-of select="concat($page-name, '?')" />
-              <xsl:for-each select="/page/state/param[@name!='ps']">
-                <xsl:value-of select="concat(@name, '=', node(), '&amp;')" />
-              </xsl:for-each>
-              <xsl:choose>
-                <xsl:when test="$document/../@search-type = 'all-documents'">
-                  <xsl:value-of select="concat('docid=', $document/@id, '&amp;sid=', @sid )"/>
-                </xsl:when>
-                <xsl:when test="$document/../@search-type = 'document'">
-                  <xsl:value-of select="concat('sid=', @sid )" />
-                </xsl:when>
-              </xsl:choose>
-              <xsl:if test="$mode='poetic' or $mode='birchbark' or $mode='dialect'">
-               <xsl:text>&amp;expand=full</xsl:text>
-              </xsl:if>
-            </xsl:attribute>
-            <xsl:choose>
-             <xsl:when test="key('param','ell')">
-              <xsl:text>&hellip;</xsl:text>
-             </xsl:when>
-             <xsl:otherwise>
-              <xsl:text>&larr;&hellip;&rarr;</xsl:text>
-             </xsl:otherwise>
-            </xsl:choose>
-          </a>
-        </xsl:when>
-      </xsl:choose>
+          <xsl:text> </xsl:text>
+          <xsl:apply-templates select="$document" mode="omo"/>
+          <xsl:text> </xsl:text>
+          <xsl:choose>
+            <xsl:when test="@url">
+              <xsl:apply-templates select="/page/parameters/*[name() = $ln]/group[@name='urls']/item" mode="report-links">
+                <xsl:with-param name="val" select="@url"/>
+              </xsl:apply-templates>
+            </xsl:when>
+            <xsl:when test="(key('param','ell') or not(key('param','nolinks'))) and not ($document/../@search-type = 'snippet')">
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:value-of select="concat($page-name, '?')" />
+                  <xsl:for-each select="/page/state/param[@name!='ps']">
+                    <xsl:value-of select="concat(@name, '=', node(), '&amp;')" />
+                  </xsl:for-each>
+                  <xsl:choose>
+                    <xsl:when test="$document/../@search-type = 'all-documents'">
+                      <xsl:value-of select="concat('docid=', $document/@id, '&amp;sid=', @sid )"/>
+                    </xsl:when>
+                    <xsl:when test="$document/../@search-type = 'document'">
+                      <xsl:value-of select="concat('sid=', @sid )" />
+                    </xsl:when>
+                  </xsl:choose>
+                  <xsl:if test="$mode='poetic' or $mode='birchbark' or $mode='dialect'">
+                   <xsl:text>&amp;expand=full</xsl:text>
+                  </xsl:if>
+                </xsl:attribute>
+                <xsl:choose>
+                 <xsl:when test="key('param','ell')">
+                  <xsl:text>&hellip;</xsl:text>
+                 </xsl:when>
+                 <xsl:otherwise>
+                  <xsl:text>&larr;&hellip;&rarr;</xsl:text>
+                 </xsl:otherwise>
+                </xsl:choose>
+              </a>
+            </xsl:when>
+          </xsl:choose>
+      </xsl:if>
 
       <xsl:if test="key('param', 'notitle')">
         <span class="b-doc-expl" explain="{$document/@id}">

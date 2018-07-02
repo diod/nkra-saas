@@ -46,9 +46,14 @@ class BaseItemWriter(object):
         if "content" in item:
             SimpleTextWriter.write(out, item, **kwargs)
         if "items" in item:
-            for item in item["items"]:
-                writer = WriterFactory.get_writer(item)
-                writer.write(out, item, **kwargs)
+            for item_idx in range(len(item["items"])):
+                sub_item = item["items"][item_idx]
+                if item_idx == len(item["items"]) - 1:
+                    kwargs["is_last"] = "1"
+                else:
+                    kwargs["is_last"] = "0"
+                writer = WriterFactory.get_writer(sub_item)
+                writer.write(out, sub_item, **kwargs)
 
     @classmethod
     def close_item(cls, out, item, **kwargs):
@@ -79,7 +84,7 @@ class GenericWriter(BaseItemWriter):
         title = cls._get_title(attrs)
         # This section is made for the `orthlib` corpus to work. It seems like
         # the sources have inconsistent attribute names. Maybe we should
-        # contanct the people who maintain those sources.
+        # contact the people who maintain those sources.
         if not title:
             title = ". ".join(attrs.get("title", []))
         tagging = "manual" if "manual" in attrs.get("tagging", []) else "none"
@@ -155,17 +160,15 @@ class SnippetWriter(BaseItemWriter):
         if not sid:
             sid = kwargs.get("_extend_at", "")
         lang = dict(item.get("Attrs", {})).get("lang", "")
+        is_last = kwargs.get("is_last")
         out.append(
-            "<snippet sid=\"%s\" language=\" % s\" compound=\"1\">" % (
-                sid, lang)
+            "<snippet sid=\"%s\" language=\" % s\" compound=\"1\" is_last=%s>" % (sid, lang, quoteattr(is_last))
         )
 
     @classmethod
     def close_item(cls, out, item, **kwargs):
         out.append("</snippet>")
 
-
-# Multilangual and parallel corpora
 
 class ParaWriter(BaseItemWriter):
 
@@ -182,8 +185,9 @@ class SpeechWriter(BaseItemWriter):
 
     @classmethod
     def open_item(cls, out, item, **kwargs):
+        is_last = kwargs.get("is_last")
         sp_attrs = dict(item.get("Attrs", {})).values()
-        out.append("<snippet>")
+        out.append("<snippet is_last=%s>" % tuple(map(quoteattr, is_last)))
         out.append("<text>[%s] </text>" % escape(", ".join(sp_attrs)))
 
     @classmethod
