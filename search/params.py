@@ -60,6 +60,8 @@ class SearchParams(object):
         self.raw = query
         self.expand_all_snippets = False
         self.search_type = self._load_search_type()
+        if self.mode in ["murco"] and self.text == "meta":
+            self.group_by = "gr_author"
 
     def __iter__(self):
         """
