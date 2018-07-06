@@ -157,6 +157,7 @@ class XMLHandler(xml.sax.handler.ContentHandler):
     def __init__(self, corpus_type=None, only_meta=False):
         if not corpus_type or corpus_type not in KNOWN_CORPUS_TYPES:
             raise Exception("Bad corpus type: %s" % corpus_type)
+        self.last_speach_attrs = []
         self.only_meta = only_meta
         # Buffer for characters read from the document. Required because sax
         # parser may not always return the whole text in a single characters()
@@ -277,7 +278,10 @@ class XMLHandler(xml.sax.handler.ContentHandler):
             raise OnlyMetaError("O.K., only meta")
         self.total_sents += 1
         self.flat_count += 1
-        self.get_last_part()["Sents"].append({"Words": []})
+        self.get_last_part()["Sents"].append({
+            "Words": [],
+            "Attrs": self.last_speach_attrs
+        })
         self.char_buffer = ""
 
     def start_meta(self, attrs):
@@ -342,6 +346,8 @@ class XMLHandler(xml.sax.handler.ContentHandler):
     def open_item(self, name, attrs):
         if "items" not in self.get_last_item():
             self.get_last_item()["items"] = list()
+        if "speach" in name:
+            self.last_speach_attrs = [("sp_%s" % attr, value) for attr, value in attrs]
         item = {
             "type": self.prefixed_types.get(name, name),
             "_id": "%s:%s" % (name, self.item_type_counts[name]),

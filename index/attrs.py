@@ -24,6 +24,10 @@ INDEX_ATTRS = frozenset((
     "Text",
     "type",
     "Attrs",
+    "sp_age",
+    "sp_birth",
+    "sp_actor",
+    "sp_sex"
 ))
 
 SERP_ATTRS = frozenset((
@@ -48,6 +52,10 @@ INFO_ATTRS = frozenset((
     "source_el",
     "Text",
     "type",
+    "sp_age",
+    "sp_birth",
+    "sp_actor",
+    "sp_sex"
 ))
 
 C_INDEX = 0x01

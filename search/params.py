@@ -161,12 +161,11 @@ class SearchParams(object):
                 out = " " + out.replace("|", " | ")
                 return out
         subcorpus = ""
-        sub_params = [k for k in query.keys() if k.startswith('doc_')]
+        sub_params = [k for k in query.keys() if k.startswith('doc_') or "_sp_" in k]
         if sub_params:
             for sub_param in sub_params:
                 subcorpus += self._process_doc_param(
                     sub_param, query[sub_param][0])
-            logging.info(subcorpus)
             return subcorpus
         else:
             return ""

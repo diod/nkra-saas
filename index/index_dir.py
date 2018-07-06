@@ -335,10 +335,13 @@ def _produce_xml(doc_part):
     out = StringIO.StringIO()
     out.write('<doc_part>\n')
     for sent in doc_part['Sents']:
+        sent_attrs = sent.get("Attrs", [])
         out.write('<sent>\n')
         _append_attrs(sent, out)
         for word in sent['Words']:
             out.write('<w sz_%s=%s>' % ('form', quoteattr(word['Text'])))
+            for attr, value in sent_attrs:
+                out.write(' <e sz_%s=\'%s\'/>\n' % (attr, value))
             for attr in ATTRS_WITH_COMBINATORIAL_EXPLOSION:
                 for item in _combinatorial_explosion(word['Anas'], attr):
                     out.write(' <e sz_%s=\'%s\'/>\n' % (attr, item))
