@@ -494,8 +494,9 @@ lndir /place/ruscorpora/texts/finalized/accent_main /place/ruscorpora/texts/fina
 cd /home/zavgorodny/saas/
 rm -f spoken* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/ --kps 10140 --corpus_type spoken_spoken --subcorpus spoken --meta > spoken.log 2>&1
 cp spoken_spoken.sortings spoken_accent.sortings
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/spoken/ --kps 10140 --corpus_type spoken_spoken --subcorpus spoken --nodisk > spoken_spoken.log 2>&1
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/accent_main/ --kps 10140 --corpus_type spoken_accent --subcorpus accent --nodisk > spoken_accent.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/spoken/ --kps 10144 --corpus_type spoken_spoken --subcorpus spoken --nodisk > spoken_spoken.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/accent_main/ --kps 10144--corpus_type spoken_accent --subcorpus accent --nodisk > spoken_accent.log 2>&1
+
 ```
 
 ##### MURCO
