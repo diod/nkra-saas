@@ -341,7 +341,8 @@ def _produce_xml(doc_part):
         for word in sent['Words']:
             out.write('<w sz_%s=%s>' % ('form', quoteattr(word['Text'])))
             for attr, value in sent_attrs:
-                out.write(' <e sz_%s=\'%s\'/>\n' % (attr, value))
+                for value_part in split_attr_value_duct_tape(value):
+                    out.write(' <e sz_%s=\'%s\'/>\n' % (attr, value_part))
             for attr in ATTRS_WITH_COMBINATORIAL_EXPLOSION:
                 for item in _combinatorial_explosion(word['Anas'], attr):
                     out.write(' <e sz_%s=\'%s\'/>\n' % (attr, item))
@@ -413,17 +414,18 @@ def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
             value = value[:120]
         value = value.encode("utf-8")
 
-        # I don't what kind of bullshit this `"date" in p_key` is, but its absence breaks subcorpus search
-        # for `para` and `dialect` corpora. I'm a little bit afraid to simply remove this check (maybe it was necessary
-        # for some other corpus), so I'll just make this work where it should work.
-        if corpus_type not in ["para", "dialect"] and "date" in p_key:
-            continue
-        parent[p_key] = parent.get(p_key, []) + [{
-            "value": value, "type": "#pl"
-        }]
-        parent[s_key] = parent.get(s_key, []) + [{
-            "value": value, "type": "#l"
-        }]
+        for value_part in split_attr_value_duct_tape(value):
+            # I don't what kind of bullshit this `"date" in p_key` is, but its absence breaks subcorpus search
+            # for `para` and `dialect` corpora. I'm a little bit afraid to simply remove this check (maybe it was
+            # necessary for some other corpus), so I'll just make this work where it should work.
+            if corpus_type not in ["para", "dialect"] and "date" in p_key:
+                continue
+            parent[p_key] = parent.get(p_key, []) + [{
+                "value": value_part, "type": "#pl"
+            }]
+            parent[s_key] = parent.get(s_key, []) + [{
+                "value": value_part, "type": "#l"
+            }]
     return json.dumps(obj, ensure_ascii=False)
 
 
@@ -447,3 +449,17 @@ def _combinatorial_explosion(anas, attr):
 
 def _pack(obj):
     return base64.b64encode(zlib.compress(cjson.encode(obj)))
+
+
+def split_attr_value_duct_tape(value):
+    """
+    This goddamn duct tape enables us to search not only by _exact_ author name (А.С. Пушкин),
+    but also by its parts like Пушкин.
+    This can be done better using zone attributes.
+    TODO: do it better.
+    """
+    clean_value = value.replace(".", ". ")
+    out = [x.strip() for x in clean_value.split(" ") if x] + [value]
+    if len(out) == 2:
+        return [value]
+    return out
