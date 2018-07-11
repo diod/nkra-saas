@@ -470,12 +470,13 @@ lndir /place/ruscorpora/texts/finalized/accent_main /place/ruscorpora/texts/fina
 lndir /place/ruscorpora/texts/finalized/accent_stihi /place/ruscorpora/texts/finalized/accent/accent_stihi
 lndir /place/ruscorpora/texts/finalized/poetic /place/ruscorpora/texts/finalized/accent/accent_poetic
 cd /home/zavgorodny/saas/
-rm -f accent* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/ --kps 10131 --corpus_type accent --subcorpus accent --meta > accent.log 2>&1
+rm -f accent* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/ --kps 10132 --corpus_type accent --subcorpus accent --meta > accent.log 2>&1
 cp accent.sortings accent_stihi.sortings
 cp accent.sortings accent_poetic.sortings
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_main/ --kps 10131 --corpus_type accent --subcorpus accent --nodisk > accent_main.log 2>&1
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_stihi/ --kps 10131 --corpus_type accent_stihi --subcorpus poetic --nodisk > accent_stihi.log 2>&1
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_poetic/ --kps 10131 --corpus_type accent_poetic --subcorpus poetic --nodisk > accent_poetic.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_main/ --kps 10132 --corpus_type accent --subcorpus accent --nodisk > accent_main.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_stihi/ --kps 10132 --corpus_type accent_stihi --subcorpus poetic --nodisk > accent_stihi.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/accent/accent_poetic/ --kps 10132 --corpus_type accent_poetic --subcorpus poetic --nodisk > accent_poetic.log 2>&1
+
 ```
 
 ##### SPOKEN
@@ -492,10 +493,10 @@ mv /place/ruscorpora/texts/finalized/spoken_spoken /place/ruscorpora/texts/final
 mkdir /place/ruscorpora/texts/finalized/spoken/accent_main/
 lndir /place/ruscorpora/texts/finalized/accent_main /place/ruscorpora/texts/finalized/spoken/accent_main
 cd /home/zavgorodny/saas/
-rm -f spoken* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/ --kps 10140 --corpus_type spoken_spoken --subcorpus spoken --meta > spoken.log 2>&1
+rm -f spoken* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/ --kps 10144 --corpus_type spoken_spoken --subcorpus spoken --meta > spoken.log 2>&1
 cp spoken_spoken.sortings spoken_accent.sortings
 clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/spoken/ --kps 10144 --corpus_type spoken_spoken --subcorpus spoken --nodisk > spoken_spoken.log 2>&1
-clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/accent_main/ --kps 10144--corpus_type spoken_accent --subcorpus accent --nodisk > spoken_accent.log 2>&1
+clear && python index.py --index --dir /place/ruscorpora/texts/finalized/spoken/accent_main/ --kps 10144 --corpus_type spoken_accent --subcorpus accent --nodisk > spoken_accent.log 2>&1
 
 ```
 
@@ -506,7 +507,7 @@ svn up
 cd /place/ruscorpora/processing/
 sh murco.sh > murco.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f murco* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/murco/ --kps 10150 --corpus_type murco --subcorpus murco --nodisk > murco.log 2>&1
+rm -f murco* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/murco/ --kps 10151 --corpus_type murco --subcorpus murco --nodisk > murco.log 2>&1
 ```
 
 ##### REGIONAL_RUS

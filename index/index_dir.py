@@ -415,6 +415,8 @@ def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
         value = value.encode("utf-8")
 
         for value_part in split_attr_value_duct_tape(value):
+            if not value_part:
+                continue
             # I don't what kind of bullshit this `"date" in p_key` is, but its absence breaks subcorpus search
             # for `para` and `dialect` corpora. I'm a little bit afraid to simply remove this check (maybe it was
             # necessary for some other corpus), so I'll just make this work where it should work.
