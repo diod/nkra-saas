@@ -74,6 +74,7 @@ class ResponseProcessor(object):
                     results, index, hchy, hits, subcorpus, extend_id=extend_id)
             except Exception as ex:
                 logging.info("! doc %s failed: %s", doc_url, ex)
+                traceback.print_exc()
                 continue
         # Restore the initial document's hierarchy (now with hits only).
         restored_doc = restore_hierarchy(results)
