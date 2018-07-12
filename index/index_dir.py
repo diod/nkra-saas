@@ -338,11 +338,11 @@ def _produce_xml(doc_part):
         sent_attrs = sent.get("Attrs", [])
         out.write('<sent>\n')
         _append_attrs(sent, out)
+        for attr, value in sent_attrs:
+            for value_part in split_attr_value_duct_tape(value):
+                out.write(' <e sz_%s=\'%s\'/>\n' % (attr, value_part))
         for word in sent['Words']:
             out.write('<w sz_%s=%s>' % ('form', quoteattr(word['Text'])))
-            for attr, value in sent_attrs:
-                for value_part in split_attr_value_duct_tape(value):
-                    out.write(' <e sz_%s=\'%s\'/>\n' % (attr, value_part))
             for attr in ATTRS_WITH_COMBINATORIAL_EXPLOSION:
                 for item in _combinatorial_explosion(word['Anas'], attr):
                     out.write(' <e sz_%s=\'%s\'/>\n' % (attr, item))

@@ -157,8 +157,10 @@ class SearchParams(object):
             if "main" in mycorp:
                 return " s_tagging:\"manual\""
             else:
-                out = mycorp.replace("lang", "s_lang")
-                out = " " + out.replace("|", " | ")
+                out = " " + mycorp.replace("|", " | ")
+                out = out.replace("lang", "s_lang")
+                out = out.replace("(sz_", "<< (sz_")
+                out = out.replace(") (", ") & (")
                 return out
         subcorpus = ""
         sub_params = [k for k in query.keys() if k.startswith('doc_') or "_sp_" in k]

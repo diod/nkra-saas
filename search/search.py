@@ -115,9 +115,9 @@ MODE_TO_KPS = {
     "para": 10100,
     "dialect": 10111,
     "poetic": 10120,
-    "accent": 10132,
-    "spoken": 10144,
-    "murco": 10151,
+    "accent": 10134,
+    "spoken": 10145,
+    "murco": 10152,
     "regional_rus": 10160,
 }
 
