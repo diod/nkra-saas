@@ -1739,8 +1739,12 @@
   <xsl:choose>
   <xsl:when test="$snippet/@url">
      <xsl:apply-templates select="/page/parameters/*[name() = $ln]/group[@name='urls']/item" mode="report-links">
-     <xsl:with-param name="val" select="$snippet/@url"/>
-   </xsl:apply-templates>
+       <xsl:with-param name="val" select="$snippet/@url"/>
+     </xsl:apply-templates>
+     <!-- Показ pdf для Синтаксического корпуса -->
+     <a class="linksview" href="http://ruscorpora.ru/syntax/{$snippet/@url}.pdf" target="_blank" >
+         <xsl:text>[Показать структуру]</xsl:text>
+     </a>
   </xsl:when>
   <xsl:when test="(key('param','ell') or not(key('param','nolinks'))) and not ($document/../@search-type = 'snippet')">
    <a class="b-kwic-expl">
@@ -1943,6 +1947,7 @@
     <xsl:param name="document"/>
     <li>
       <xsl:if test="$allowLineBreaks and position() &gt; 2">
+        <br/>
       </xsl:if>
       <xsl:apply-templates select="word | text | br | p | i | b | sub | sup | em" />
       <xsl:if test="@is_last='1'">
@@ -1966,6 +1971,15 @@
               </xsl:otherwise>
              </xsl:choose>
             </span>
+            <!-- Показ pdf для Синтаксического корпуса -->
+            <xsl:choose>
+              <xsl:when test="@url">
+                <xsl:text>&nbsp;&nbsp;</xsl:text>
+                  <a class="linksview" href="http://ruscorpora.ru/syntax/{@url}.pdf" target="_blank" >
+                    <xsl:text>[Показать структуру]</xsl:text>
+                  </a>
+              </xsl:when>
+            </xsl:choose>
           </xsl:if>
 
           <xsl:text> </xsl:text>
