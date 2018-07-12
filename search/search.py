@@ -9,6 +9,8 @@ from processor import ResponseProcessor
 from render import render_legacy, writers
 from render.document import OutputDocumentWeb
 from search_result import SearchResult
+from syntax.syntax_search import syntax_search_process
+
 
 writers.WriterFactory.register_writer('body', writers.BodyWriter)
 
@@ -119,6 +121,7 @@ MODE_TO_KPS = {
     "spoken": 10145,
     "murco": 10152,
     "regional_rus": 10160,
+    "syntax": 10910,
 }
 
 MAX_DOCS_CONTEXT = 100
@@ -167,9 +170,13 @@ class SearchEngine(object):
             wfile: ServerHandler's @wfile (writable response for client).
             args: ServerHandler's parsed arguments (as received from stdin).
         """
-        params = SearchParams(raw_query)
-        response_callback = self.response_mapping[params.text]
-        response_callback(params, wfile, args)
+        if raw_query.get('mode', [None])[0] == 'syntax':
+            syntax_search_process(raw_query, wfile)
+
+        else:
+            params = SearchParams(raw_query)
+            response_callback = self.response_mapping[params.text]
+            response_callback(params, wfile, args)
 
     def _serve_lex(self, params, wfile, args):
         """Used for queries by some grammatical marker or by some wordform.

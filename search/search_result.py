@@ -48,7 +48,8 @@ class SearchResult(object):
         :param subcorpus:
 
         """
-        query += subcorpus
+        if subcorpus is not None:
+            query += subcorpus
         query = self._process_query(query, docid)
         params = self._get_params(query, kps, grouping, group_attr, max_docs,
                                   docs_per_group, hits_count, hits_info, sort,

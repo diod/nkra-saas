@@ -35,6 +35,9 @@ class ServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         query = urlparse.urlparse(self.path).query
         params = urlparse.parse_qs(query)
 
+        if params.get('mode', [None])[0] == 'syntax':
+            params = urlparse.parse_qs(query, keep_blank_values=True)
+
         if "video.xml" in self.path:
             redirect_url = "http://streaming.video.yandex.ru/get/ruscorpora-video/%s/sq.mp4" % params.get("id", ["None"])[0]
             self.send_response(301)
