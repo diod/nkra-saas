@@ -1971,15 +1971,6 @@
               </xsl:otherwise>
              </xsl:choose>
             </span>
-            <!-- Показ pdf для Синтаксического корпуса -->
-            <xsl:choose>
-              <xsl:when test="@url">
-                <xsl:text>&nbsp;&nbsp;</xsl:text>
-                  <a class="linksview" href="http://ruscorpora.ru/syntax/{@url}.pdf" target="_blank" >
-                    <xsl:text>[Показать структуру]</xsl:text>
-                  </a>
-              </xsl:when>
-            </xsl:choose>
           </xsl:if>
 
           <xsl:text> </xsl:text>
@@ -2022,6 +2013,21 @@
             </xsl:when>
           </xsl:choose>
       </xsl:if>
+
+      <!-- Показ pdf для Синтаксического корпуса -->
+      <xsl:choose>
+        <xsl:when test="@url">
+          <span class="doc">
+            <xsl:text>[</xsl:text>
+            <xsl:value-of select="$document/attributes/attr[@name='author_trans']/@value" disable-output-escaping="yes"/>
+            <xsl:text>. </xsl:text>
+          </span>
+          <xsl:text>&nbsp;&nbsp;</xsl:text>
+            <a class="linksview" href="http://ruscorpora.ru/syntax/{@url}.pdf" target="_blank" >
+              <xsl:text>[Показать структуру]</xsl:text>
+            </a>
+        </xsl:when>
+      </xsl:choose>
 
       <xsl:if test="key('param', 'notitle')">
         <span class="b-doc-expl" explain="{$document/@id}">
