@@ -1,5 +1,8 @@
 # -*- Encoding: utf-8
 
+CREATED_IN_ONE_YEAR_SUFFIX = 2 << 4
+SEVERAL_YEARS_CREATED_SUFFIX = 1 << 4
+
 
 def str_bits36(v):
     if ord(v[0]) < 128:
@@ -72,7 +75,23 @@ def date_parse_int(s):
     year = int(d[0])
     month = int(d[1]) if len(d) > 1 else 0
     day = int(d[2]) if len(d) > 2 else 0
-    return date_int(year, month, day)
+    return date_int(year, month, day), year
+
+
+def created_years_parse_int(s):
+    created_parts = s.split('-')
+    _, start_year = date_parse_int(created_parts[0])
+    dummy = str(start_year)
+    s_year_created = dummy + '-'
+    year_created = start_year << 5
+    if len(created_parts) == 1:
+        year_created += CREATED_IN_ONE_YEAR_SUFFIX + start_year
+        s_year_created += '2-' + dummy
+    else:
+        _, end_year = date_parse_int(created_parts[1])
+        year_created += SEVERAL_YEARS_CREATED_SUFFIX + end_year
+        s_year_created += '1-' + str(end_year)
+    return year_created, s_year_created
 
 
 def set_sorts(doc):
@@ -80,13 +99,15 @@ def set_sorts(doc):
     header = 0
     tagging = 0
     created = 0
+    year_created = 3000
+    s_year_created = '3000-0-3000'
     for k, v in doc["Attrs"]:
         if k == "author" and author == 0:
             author = author_int(v)
         if k == "tagging" and v == "manual":
             tagging = 1
         if k == "grcreated" and created == 0:
-            created = date_parse_int(v)
+            year_created, s_year_created = created_years_parse_int(v)
         if k == "header" and header == 0:
             header = header_int(v)
     created_desc = 65535 - created
@@ -103,5 +124,7 @@ def set_sorts(doc):
             header >> 26),
         "author": (author << 27) + (created << 11) + (header >> 25),
         "created": (created << 47) + (author << 11) + (header >> 25),
-        "created_inv": (created_desc << 47) + (author << 11) + (header >> 25)
+        "created_inv": (created_desc << 47) + (author << 11) + (header >> 25),
+        'year_created': year_created,
+        's_year_created': s_year_created
     }

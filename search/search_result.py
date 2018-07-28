@@ -56,6 +56,7 @@ class SearchResult(object):
                                   asc, add_props, subcorpus, sentence_num)
         url = self._get_url(params)
         logging.info(url)
+        self.url = url
         self.mapping = self._get_mapping(url)
 
     def is_empty(self):

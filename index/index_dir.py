@@ -49,6 +49,9 @@ CROPPED_URLS = [
 NODISK_CHUNK_MAX_DOCS = 128
 NODISK_CHUNK_MAX_PARTS = 256
 
+CREATED_IN_ONE_YEAR_SUFFIX = 2 << 4
+SEVERAL_YEARS_CREATED_SUFFIX = 1 << 4
+
 
 def load_initial(inpaths,
                  kps=0,
@@ -371,6 +374,11 @@ def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
     attrs_holder = doc if doc.get("Attrs") else part
     # This is direct index.
     p_serp_part = _pack(attrs_utils.split_attrs(part, attrs_utils.C_SERP))
+
+    # For graphics
+    i_year_created = doc['Sorts']['year_created']
+    s_year_created = doc['Sorts']['s_year_created']
+
     obj = {
         'prefix': kps,
         'action': 'modify',
@@ -388,6 +396,8 @@ def _produce_json(doc, sortings, url, i, kps, corpus_type=None):
             's_url': [{'value': url, 'type': '#hl'}],
             'p_url': [{'value': url, 'type': '#p'}],
             's_subindex': {'value': i, 'type': '#g'},
+            'i_year_created': {'value': i_year_created, 'type': '#gi'},
+            's_year_created': {'value': s_year_created, 'type': '#pl'},
             'p_serp_part': {'value': p_serp_part, 'type': '#p'},
             'body': {'value': 'body_xml'},
         }],
