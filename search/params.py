@@ -272,6 +272,10 @@ class ParamsProcessor(object):
             node_query = []
             query_len = 0
             for param, value in params.items():
+                # If user runs a gram query but passes the lexeme in quotes,
+                # we have to search for exact entries.
+                if param == "lex" and "\"" in value:
+                    param, value = "form", value.replace("\"", "")
                 if param not in ('min', 'max', 'sem-mod', 'parent', 'level'):
                     subnodes, subquery_len = cls._build_node_query(
                         param, value)

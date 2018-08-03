@@ -113,7 +113,7 @@ MODE_TO_KPS = {
     "multiparc_rus": 10050,
     "multi": 10060,
     "paper": 10070,
-    "main": 10090,
+    "main": 10091,
     "para": 10100,
     "dialect": 10111,
     "poetic": 10120,
@@ -172,7 +172,6 @@ class SearchEngine(object):
         """
         if raw_query.get('mode', [None])[0] == 'syntax':
             syntax_search_process(raw_query, wfile)
-
         else:
             params = SearchParams(raw_query)
             response_callback = self.response_mapping[params.text]
