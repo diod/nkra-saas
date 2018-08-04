@@ -14,6 +14,11 @@ BASE_PARAMS = lambda query, kps: (
     ('fsgta', 's_url'),
 )
 
+GRAPHIC_BASE_PARAMS = lambda query, kps: (
+    ('text', query),
+    ('kps', str(kps)),
+)
+
 # Inject sentence number into query (for info only)
 PROPS_PARAMS = {
     'serp': lambda sentence_num: (
@@ -41,8 +46,16 @@ SORT_PARAMS = lambda sort, asc: (
     ('asc', '1' if asc else '0'),
 )
 
+GRAPHIC_SORT_PARAMS = lambda sort: (
+    ('how', sort),
+)
+
 GRP_PARAMS = lambda grp_attr, max_docs, docs_per_grp: (
     ('g', '1.%s.%d.%d.....s_subindex.1' % (grp_attr, max_docs, docs_per_grp)),
+)
+
+GRAPHIC_GRP_PARAMS = lambda grp_attr, max_docs, docs_per_grp: (
+    ('g', '1.%s.%d.%d......1' % (grp_attr, max_docs, docs_per_grp)),
 )
 
 DEFAULT_GRP_PARAMS = lambda max_docs: (

@@ -269,3 +269,88 @@ class SimpleTextWriter(BaseItemWriter):
         else:
             word = " %s" % word
         return word
+
+
+class GraphicWriter(BaseItemWriter):
+
+    @classmethod
+    def open_item(cls, out, item, **kwargs):
+        result = cls.__compose_one_result(item)
+        cls.__write(out, item, result, **kwargs)
+
+    @classmethod
+    def __compose_one_result(cls, item):
+        start_year = int(item['params'].raw['startyear'][0])
+        end_year = int(item['params'].raw['endyear'][0])
+
+        data = item['results']
+        parted_queries = data.keys()
+
+        table_years = set(data[parted_queries[0]]['table'].keys())
+        for key in parted_queries:
+            table_years = table_years.union(data[key]['multiply_years'].keys())
+        table_years = list(table_years)
+        table_years.sort(reverse=True)
+
+        table_result = [None] * len(table_years)
+        for i, years in enumerate(table_years):
+            begin_year, mode_years, finish_year = years.split('-')
+            i_begin_year = int(begin_year)
+
+            if mode_years == '2':
+                table_result[i] = [
+                    begin_year,
+                    {key: data[key]['graphic'][i_begin_year] for key in parted_queries},
+                    years
+                ]
+
+            else:
+                i_begin_year = max(start_year, i_begin_year)
+                i_finish_year = min(end_year, int(finish_year))
+                if i_finish_year == i_begin_year:
+                    div = 1
+                else:
+                    div = float(i_finish_year - i_begin_year + 1)
+
+                table_result[i] = [
+                    begin_year + '-' + finish_year,
+                    {},
+                    years
+                ]
+                for key in parted_queries:
+                    if years in data[key]['multiply_years']:
+                        table_result[i][1][key] = data[key]['multiply_years'][years]
+
+                        cnt = data[key]['multiply_years'][years] / div
+                        for add_to_year in range(i_begin_year, i_finish_year + 1):
+                            data[key]['graphic'][add_to_year] += cnt
+
+                    else:
+                        table_result[i][1][key] = 0
+
+        graphic_years = list(data[parted_queries[0]]['graphic'].keys())
+        graphic_years.sort()
+        graphic_result = {}
+        for key in parted_queries:
+            graphic_result[key] = [data[key]['graphic'][year] for year in graphic_years]
+
+        return {'table': table_result, 'years': graphic_years, 'graphic': graphic_result}
+
+    @classmethod
+    def __write(cls, out, item, result, **kwargs):
+        data = item['results']
+        parted_queries = data.keys()
+
+        out.append('\n<tables>')
+
+        for key in parted_queries:
+            text = quoteattr(key.strip())
+            out.append('\n  <table query=%s>' % (text.decode('utf-8')))
+            for values in result['table']:
+                cnt = values[1][key]
+                if cnt != 0:
+                    out.append('\n    <row year=%s cnt=%s s_created=%s />' % (
+                               quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
+            out.append('\n  </table>')
+
+        out.append('\n</tables>')
