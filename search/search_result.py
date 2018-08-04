@@ -118,7 +118,7 @@ class SearchResult(object):
         Form a list of parameters for the request to SaaS host.
 
         """
-        if mode.startswith('graphic'):
+        if (mode is not None) and mode.startswith('graphic'):
             params = defaults.GRAPHIC_BASE_PARAMS(query, kps)
             if sort:
                 params += defaults.GRAPHIC_SORT_PARAMS(sort)
