@@ -31,7 +31,8 @@ class SearchResult(object):
                  docid=None,
                  add_props=None,
                  subcorpus="",
-                 sentence_num=None):
+                 sentence_num=None,
+                 mode=None):
         """
         :param query:
         :param kps:
@@ -53,7 +54,7 @@ class SearchResult(object):
         query = self._process_query(query, docid)
         params = self._get_params(query, kps, grouping, group_attr, max_docs,
                                   docs_per_group, hits_count, hits_info, sort,
-                                  asc, add_props, subcorpus, sentence_num)
+                                  asc, add_props, subcorpus, sentence_num, mode)
         url = self._get_url(params)
         logging.info(url)
         self.url = url
@@ -111,24 +112,36 @@ class SearchResult(object):
                     asc=True,
                     add_props=None,
                     subcorpus=None,
-                    sentence_num=None):
+                    sentence_num=None,
+                    mode=None):
         """
         Form a list of parameters for the request to SaaS host.
 
         """
-        params = defaults.BASE_PARAMS(query, kps)
+        if mode.startswith('graphic'):
+            params = defaults.GRAPHIC_BASE_PARAMS(query, kps)
+            if sort:
+                params += defaults.GRAPHIC_SORT_PARAMS(sort)
+            if grouping:
+                params += defaults.GRAPHIC_GRP_PARAMS(group_attr, max_docs, docs_per_group)
+            else:
+                params += defaults.DEFAULT_GRP_PARAMS(max_docs)
+
+        else:
+            params = defaults.BASE_PARAMS(query, kps)
+            if sort:
+                params += defaults.SORT_PARAMS(sort, asc)
+            if grouping:
+                params += defaults.GRP_PARAMS(group_attr, max_docs, docs_per_group)
+            else:
+                params += defaults.DEFAULT_GRP_PARAMS(max_docs)
+
         if add_props:
             params += defaults.PROPS_PARAMS[add_props](sentence_num)
         if hits_count:
             params += defaults.HITS_COUNT_PARAMS
         if hits_info:
             params += defaults.HITS_INFO_PARAMS
-        if sort:
-            params += defaults.SORT_PARAMS(sort, asc)
-        if grouping:
-            params += defaults.GRP_PARAMS(group_attr, max_docs, docs_per_group)
-        else:
-            params += defaults.DEFAULT_GRP_PARAMS(max_docs)
         return params
 
     def _get_mapping(self, url):

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 import logging
 import operator
 from collections import defaultdict, OrderedDict
@@ -11,6 +12,7 @@ from render.document import OutputDocumentWeb
 from search_result import SearchResult
 from syntax.syntax_search import syntax_search_process
 
+from graphic.walker import PagesWalker
 
 writers.WriterFactory.register_writer('body', writers.BodyWriter)
 
@@ -103,6 +105,10 @@ writers.WriterFactory.register_writer('context:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('context:entry', writers.SnippetWriter)
 writers.WriterFactory.register_writer('subcorpus:top', writers.GenericWriter)
 
+# GRAPHICS
+writers.WriterFactory.register_writer('graphics', writers.GraphicWriter)
+
+
 MODE_TO_KPS = {
     "test": 10010,
     "old_rus": 10000,
@@ -122,6 +128,7 @@ MODE_TO_KPS = {
     "murco": 10152,
     "regional_rus": 10160,
     "syntax": 10910,
+    'graphics_main': 19703,
 }
 
 MAX_DOCS_CONTEXT = 100
@@ -194,23 +201,66 @@ class SearchEngine(object):
             max_docs = MAX_DOCS_CONTEXT
         else:
             max_docs = (params.page + 1) * params.docs_per_page
-        response = SearchResult(
-            query=saas_query,
-            kps=kps,
-            max_docs=max_docs,
-            docs_per_group=params.snippets_per_doc,
-            group_attr=params.group_by,
-            sort=params.sort_by,
-            hits_info=True,
-            hits_count=True,
-            docid=params.doc_id,
-            subcorpus=params.subcorpus,
-        )
+
+        if params.mode.startswith('graphics'):
+            pos = saas_query.find(':"')
+            all_saas_queries = [
+                s.strip()
+                for s in saas_query[pos + 2:][:-1].split(',')]
+            saas_query = saas_query[:pos + 2] + '%s"'
+
+            results = {}
+            for parted_query in all_saas_queries:
+                parted_saas_query = saas_query % (parted_query)
+                response = SearchResult(
+                    query=parted_saas_query,
+                    kps=kps,
+                    max_docs=max_docs,
+                    docs_per_group=params.snippets_per_doc,
+                    group_attr=params.group_by,
+                    sort=params.sort_by,
+                    hits_info=False,
+                    hits_count=False,
+                    docid=params.doc_id,
+                    subcorpus=params.subcorpus,
+                    mode=params.mode
+                )
+
+                with open(
+                        '/home/kua/Documents/ruscorpora/RUSCORPORA/task2_05_graphiki/out/walker/%s_p0.json'
+                            % (parted_query),
+                        'r') as inf:
+                    response.mapping = json.load(inf)
+
+                walker = PagesWalker(params, response, parted_query)
+                walker.walk()
+
+                results[parted_query] = walker.parsed
+
+            hchy = {"type": "graphics",
+                    "items": [{"type": "graphics", 'results': results, 'params': params}]}
+
+        else:
+            response = SearchResult(
+                query=saas_query,
+                kps=kps,
+                max_docs=max_docs,
+                docs_per_group=params.snippets_per_doc,
+                group_attr=params.group_by,
+                sort=params.sort_by,
+                hits_info=True,
+                hits_count=True,
+                docid=params.doc_id,
+                subcorpus=params.subcorpus,
+                mode=params.mode
+            )
+            results = ResponseProcessor(snippets=params.snippets_per_doc).process(
+                params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
+
+            hchy = {"type": "body", "items": results}
+
         query_info = QueryInfo.get_query_info(params)
         stat = self._get_stat(kps, response, query_len)
-        results = ResponseProcessor(snippets=params.snippets_per_doc).process(
-            params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
-        hchy = {"type": "body", "items": results}
         out = OutputDocumentWeb(
             wfile, page=params.page, stat=stat,
             info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)

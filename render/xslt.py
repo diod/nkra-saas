@@ -12,6 +12,9 @@ report_transformation = ET.XSLT(report_xslt)
 explain_xslt = ET.parse("render/xsl/explain.xsl", parser)
 explain_transformation = ET.XSLT(explain_xslt)
 
+graphic_report_xslt = ET.parse("render/xsl/graphic_report.xsl", parser)
+graphic_report_transformation = ET.XSLT(graphic_report_xslt)
+
 with open("render/xsl/langs.xml") as f:
     f.readline()
     langs = f.read().decode("utf-8").encode("utf-8")
@@ -24,6 +27,8 @@ with open("render/xsl/settings.xml") as f:
 
 
 def transform(search_result, params):
+    mode = params.get('mode', [''])[0]
+
     output = StringIO.StringIO()
     output.write('<?xml version=\'1.0\' encoding=\'utf-8\'?>\n')
     output.write('<page>\n')
@@ -31,18 +36,33 @@ def transform(search_result, params):
     output.write(search_result)
     output.write('</searchresult>\n')
     output.write('<state>\n')
-    for key in params:
-        for value in params[key]:
-            if "sem" in key:
-                continue
+
+    if mode.startswith('graphics'):
+        for key in ('lang', 'mode'):
+            value = params[key][0]
+            if key == 'mode':
+                value = value.replace('graphics_', '')
             output.write('<param name="%s">%s</param>\n' % (key, value))
-    output.write('</state>\n')
-    output.write(langs)
-    output.write(settings)
-    output.write('</page>\n')
-    source_xml = ET.fromstring(output.getvalue())
-    if params.get("text", [""])[0] in ("document-info", "word-info"):
-        result = explain_transformation(source_xml)
+        output.write('</state>\n')
+        output.write(langs)
+        output.write(settings)
+        output.write('</page>\n')
+        source_xml = ET.fromstring(output.getvalue())
+        result = graphic_report_transformation(source_xml)
+
     else:
-        result = report_transformation(source_xml)
+        for key in params:
+            for value in params[key]:
+                if "sem" in key:
+                    continue
+                output.write('<param name="%s">%s</param>\n' % (key, value))
+        output.write('</state>\n')
+        output.write(langs)
+        output.write(settings)
+        output.write('</page>\n')
+        source_xml = ET.fromstring(output.getvalue())
+        if params.get("text", [""])[0] in ("document-info", "word-info"):
+            result = explain_transformation(source_xml)
+        else:
+            result = report_transformation(source_xml)
     return result
