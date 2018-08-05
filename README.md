@@ -423,7 +423,7 @@ mkdir -p /place/ruscorpora/texts/finalized/main/source
 lndir /place/ruscorpora/texts/finalized/standard /place/ruscorpora/texts/finalized/main/standard
 lndir /place/ruscorpora/texts/finalized/source /place/ruscorpora/texts/finalized/main/source
 cd /home/zavgorodny/saas/
-rm -f main* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/main/ --kps 10090 --subcorpus main --corpus_type main --nodisk > main.log 2>&1
+rm -f main* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/main/ --kps 10091 --subcorpus main --corpus_type main --nodisk > logs/main.log 2>&1
 ```
 
 ##### PARA

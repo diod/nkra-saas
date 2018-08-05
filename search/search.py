@@ -179,7 +179,6 @@ class SearchEngine(object):
         """
         if raw_query.get('mode', [None])[0] == 'syntax':
             syntax_search_process(raw_query, wfile)
-
         else:
             params = SearchParams(raw_query)
             response_callback = self.response_mapping[params.text]
