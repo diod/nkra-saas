@@ -202,16 +202,9 @@ class SearchEngine(object):
             max_docs = (params.page + 1) * params.docs_per_page
 
         if params.mode.startswith('graphic'):
-            pos = saas_query.find(':"')
-            all_saas_queries = [
-                s.strip()
-                for s in saas_query[pos + 2:][:-1].split(',')]
-            saas_query = saas_query[:pos + 2] + '%s"'
-            params.queries_in_order = all_saas_queries
-
             results = {}
-            for parted_query in all_saas_queries:
-                parted_saas_query = saas_query % (parted_query)
+            params.queries_in_order = [None] * len(saas_query)
+            for i, parted_saas_query in enumerate(saas_query):
                 response = SearchResult(
                     query=parted_saas_query,
                     kps=kps,
@@ -225,18 +218,15 @@ class SearchEngine(object):
                     subcorpus=params.subcorpus,
                     mode=params.mode
                 )
-
-                with open(
-                        '/home/kua/Documents/ruscorpora/RUSCORPORA/task2_05_graphiki/out/walker/%s_p0.json'
-                            % (parted_query),
-                        'r') as inf:
-                    response.mapping = json.load(inf)
+                pos = parted_saas_query.find(':"')
+                parted_query = parted_saas_query[pos + 2:][:-1]
+                params.queries_in_order[i] = parted_query
 
                 walker = PagesWalker(params, response, parted_query)
                 walker.walk()
-
                 results[parted_query] = walker.parsed
 
+            query_len = query_len[0]
             hchy = {"type": "graphic",
                     "items": [{"type": "graphic", 'results': results, 'params': params}]}
 

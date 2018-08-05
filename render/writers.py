@@ -340,8 +340,11 @@ class GraphicWriter(BaseItemWriter):
     def __write(cls, out, item, result, **kwargs):
         parted_queries = item['params'].queries_in_order
 
-        out.append('\n<tables>')
+        for key in parted_queries:
+            text = quoteattr(key.strip())
+            out.append('\n  <parted_query query=%s />' % (text.decode('utf-8')))
 
+        out.append('\n<tables>')
         for key in parted_queries:
             text = quoteattr(key.strip())
             out.append('\n  <table query=%s>' % (text.decode('utf-8')))
@@ -351,5 +354,15 @@ class GraphicWriter(BaseItemWriter):
                     out.append('\n    <row year=%s cnt=%s s_created=%s />' % (
                                quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
             out.append('\n  </table>')
-
         out.append('\n</tables>')
+
+        years = result['years']
+        years.sort()
+        for key in parted_queries:
+            text = quoteattr(key.strip())
+            out.append('\n<graphic query=%s>' % (text.decode('utf-8')))
+            for i, year in enumerate(years):
+                cnt = result['graphic'][key][i]
+                out.append('\n    <year year=%s cnt=%s />' % (
+                    quoteattr(str(year)), quoteattr(str(cnt))))
+            out.append('\n  </graphic>')

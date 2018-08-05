@@ -236,6 +236,22 @@ class ParamsProcessor(object):
         :return: a query string
 
         """
+        if params.mode.startswith('graphic'):
+            parted_queries = [s.strip() for s in params.req.split(',')]
+            full_query = []
+            query_len = []
+            for part in parted_queries:
+                params.req = part
+                fq, ql = ParamsProcessor._do_parse_lexform_cgi(params)
+                full_query.append(fq)
+                query_len.append(ql)
+            params.req = ','.join(parted_queries)
+            return full_query, query_len
+        else:
+            return ParamsProcessor._do_parse_lexform_cgi(params)
+
+    @classmethod
+    def _do_parse_lexform_cgi(cls, params):
         words = params.req.split(' ')
         query_len = len(words)
         nodes = []
