@@ -50,7 +50,7 @@ class PagesWalker(object):
             logging.error("read_json_from_url(): failed with %s", ex)
 
     def _parse(self, result):
-        if 'response' in result:
+        if 'results' in result['response']:
             if not 'groups' in result['response']['results'][0]:
                 return False
 

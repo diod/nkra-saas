@@ -105,8 +105,8 @@ writers.WriterFactory.register_writer('context:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('context:entry', writers.SnippetWriter)
 writers.WriterFactory.register_writer('subcorpus:top', writers.GenericWriter)
 
-# GRAPHICS
-writers.WriterFactory.register_writer('graphics', writers.GraphicWriter)
+# GRAPHIC
+writers.WriterFactory.register_writer('graphic', writers.GraphicWriter)
 
 
 MODE_TO_KPS = {
@@ -119,7 +119,7 @@ MODE_TO_KPS = {
     "multiparc_rus": 10050,
     "multi": 10060,
     "paper": 10070,
-    "main": 10090,
+    "main": 10092,
     "para": 10100,
     "dialect": 10111,
     "poetic": 10120,
@@ -128,7 +128,7 @@ MODE_TO_KPS = {
     "murco": 10152,
     "regional_rus": 10160,
     "syntax": 10910,
-    'graphics_main': 19703,
+    'graphic_main': 10092,
 }
 
 MAX_DOCS_CONTEXT = 100
@@ -202,12 +202,13 @@ class SearchEngine(object):
         else:
             max_docs = (params.page + 1) * params.docs_per_page
 
-        if params.mode.startswith('graphics'):
+        if params.mode.startswith('graphic'):
             pos = saas_query.find(':"')
             all_saas_queries = [
                 s.strip()
                 for s in saas_query[pos + 2:][:-1].split(',')]
             saas_query = saas_query[:pos + 2] + '%s"'
+            params.queries_in_order = all_saas_queries
 
             results = {}
             for parted_query in all_saas_queries:
@@ -237,8 +238,8 @@ class SearchEngine(object):
 
                 results[parted_query] = walker.parsed
 
-            hchy = {"type": "graphics",
-                    "items": [{"type": "graphics", 'results': results, 'params': params}]}
+            hchy = {"type": "graphic",
+                    "items": [{"type": "graphic", 'results': results, 'params': params}]}
 
         else:
             response = SearchResult(

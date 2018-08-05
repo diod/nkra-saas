@@ -37,11 +37,11 @@ def transform(search_result, params):
     output.write('</searchresult>\n')
     output.write('<state>\n')
 
-    if mode.startswith('graphics'):
+    if mode.startswith('graphic'):
         for key in ('lang', 'mode'):
             value = params[key][0]
             if key == 'mode':
-                value = value.replace('graphics_', '')
+                value = value.replace('graphic_', '')
             output.write('<param name="%s">%s</param>\n' % (key, value))
         output.write('</state>\n')
         output.write(langs)

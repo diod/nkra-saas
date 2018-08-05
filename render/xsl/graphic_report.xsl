@@ -106,8 +106,8 @@
     <xsl:variable name="s_created" select="attribute::s_created"/>
     <tr>
       <td>
-        <!--a target="_blank" href="http://processing.ruscorpora.ru:8888/search.xml?mode=main&amp;env=alpha&amp;text=lexform&amp;req={$query_words}&amp;mycorp=s_year_created:{s_year_created}*&amp;sort=gr_tagging"-->
-        <a target="_blank" href="http://localhost.ru:8001/search.xml?mode=main&amp;env=alpha&amp;text=lexform&amp;req={$query_words}&amp;mycorp=s_year_created:%22{$s_created}%22&amp;sort=gr_tagging">
+        <a target="_blank" href="http://processing.ruscorpora.ru:8888/search.xml?mode=main&amp;env=alpha&amp;text=lexform&amp;req={$query_words}&amp;mycorp=s_year_created:%22{$s_created}%22&amp;sort=gr_tagging">
+        <!--a target="_blank" href="http://localhost.ru:8001/search.xml?mode=main&amp;env=alpha&amp;text=lexform&amp;req={$query_words}&amp;mycorp=s_year_created:%22{$s_created}%22&amp;sort=gr_tagging"-->
           <xsl:value-of select="$year" />
         </a>
       </td>

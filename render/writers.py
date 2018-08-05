@@ -338,8 +338,7 @@ class GraphicWriter(BaseItemWriter):
 
     @classmethod
     def __write(cls, out, item, result, **kwargs):
-        data = item['results']
-        parted_queries = data.keys()
+        parted_queries = item['params'].queries_in_order
 
         out.append('\n<tables>')
 
