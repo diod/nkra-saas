@@ -34,6 +34,10 @@ class ServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             with open('www/favicon.ico', 'rb') as infile:
                 self.wfile.write(infile.read())
 
+        elif self.path.startswith('/www/js/graphic.js'):
+            with open('www/js/graphic/graphic.js', 'r') as infile:
+                self.wfile.write(infile.read())
+
         else:
             args = ServerHandler.args
             output = StringIO.StringIO()

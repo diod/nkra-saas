@@ -32,13 +32,6 @@ class PagesWalker(object):
             url = self.url + str(self.page)
             logging.info('graphic walk for %s' % (url,))
             result = self._read_json_from_url(url)
-
-            with open(
-                    '/home/kua/Documents/ruscorpora/RUSCORPORA/task2_05_graphiki/out/walker/%s_p%d.json'
-                        % (self.parted_query, self.page),
-                    'r') as inf:
-                result = json.load(inf)
-
             if not self._parse(result):
                 break
 
@@ -50,7 +43,7 @@ class PagesWalker(object):
             logging.error("read_json_from_url(): failed with %s", ex)
 
     def _parse(self, result):
-        if 'response' in result:
+        if 'results' in result['response']:
             if not 'groups' in result['response']['results'][0]:
                 return False
 

@@ -25,6 +25,11 @@ with open("render/xsl/settings.xml") as f:
     settings = f.read().decode("utf-8").encode("utf-8")
     settings += "\n"
 
+with open("render/xsl/graphic_years.xml") as f:
+    f.readline()
+    graphic_years = f.read().decode("utf-8").encode("utf-8")
+    graphic_years += "\n"
+
 
 def transform(search_result, params):
     mode = params.get('mode', [''])[0]
@@ -37,15 +42,16 @@ def transform(search_result, params):
     output.write('</searchresult>\n')
     output.write('<state>\n')
 
-    if mode.startswith('graphics'):
-        for key in ('lang', 'mode'):
+    if mode.startswith('graphic'):
+        for key in ('lang', 'mode', 'startyear', 'endyear', 'smoothing'):
             value = params[key][0]
             if key == 'mode':
-                value = value.replace('graphics_', '')
+                value = value.replace('graphic_', '')
             output.write('<param name="%s">%s</param>\n' % (key, value))
         output.write('</state>\n')
         output.write(langs)
         output.write(settings)
+        output.write(graphic_years)
         output.write('</page>\n')
         source_xml = ET.fromstring(output.getvalue())
         result = graphic_report_transformation(source_xml)
