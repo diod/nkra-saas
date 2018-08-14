@@ -407,7 +407,7 @@ svn up
 cd /place/ruscorpora/processing/
 sh paper.sh > paper.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f paper* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/paper/ --kps 10070 --subcorpus paper --corpus_type paper --nodisk > paper.log 2>&1
+rm -f paper* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/paper/ --kps 10071 --subcorpus paper --corpus_type paper --nodisk > paper.log 2>&1
 ```
 
 ##### MAIN
