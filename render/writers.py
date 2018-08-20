@@ -104,7 +104,7 @@ class GenericWriter(BaseItemWriter):
         for name in attrs:
             # Gestures are present only in murco and will be ignored in any other corpus
             # (gestures are processed in `self.close_item()`, see below).
-            if name == "gesture":
+            if name in ("gesture", 'ngrams_counter'):
                 continue
             for value in attrs[name]:
                 out.append("<attr name=%s value=%s/>" % (

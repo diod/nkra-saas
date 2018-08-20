@@ -108,6 +108,15 @@ writers.WriterFactory.register_writer('subcorpus:top', writers.GenericWriter)
 # GRAPHIC
 writers.WriterFactory.register_writer('graphic', writers.GraphicWriter)
 
+# NGRAMS
+writers.WriterFactory.register_writer('ngrams_2_forms:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('ngrams_2_forms:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('ngrams_2_forms:se', writers.SimpleTextWriter)
+writers.WriterFactory.register_writer('ngrams_2_lexgr:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('ngrams_2_lexgr:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('ngrams_2_lexgr:se', writers.SimpleTextWriter)
+
+
 
 MODE_TO_KPS = {
     "test": 10010,
@@ -129,6 +138,8 @@ MODE_TO_KPS = {
     "regional_rus": 10160,
     "syntax": 10910,
     'graphic_main': 10092,
+    "ngrams_2_forms": 10820,
+    "ngrams_2_lexgr": 10822,
 }
 
 MAX_DOCS_CONTEXT = 100

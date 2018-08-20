@@ -19,6 +19,11 @@ GRAPHIC_BASE_PARAMS = lambda query, kps: (
     ('kps', str(kps)),
 )
 
+NGRAMS_BASE_PARAMS = lambda query, kps: (
+    ('text', query),
+    ('kps', str(kps)),
+)
+
 # Inject sentence number into query (for info only)
 PROPS_PARAMS = {
     'serp': lambda sentence_num: (

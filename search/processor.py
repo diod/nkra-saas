@@ -294,7 +294,11 @@ class ResponseProcessor(object):
         for idx in result_indices:
             # Just to initialize the list
             if not idx_curr_snippet:
-                idx_curr_snippet.append(idx)
+                if snippet_items[idx]['type'].startswith('ngrams'):
+                    if 'hits' in snippet_items[idx] and idx == snippet_items[idx]['hits'][0]:
+                        idx_curr_snippet.append(idx)
+                else:
+                    idx_curr_snippet.append(idx)
             else:
                 # We start forming actual snippets by extracting strictly
                 # adjacent items (their indices must not differ by more than
@@ -303,7 +307,11 @@ class ResponseProcessor(object):
                     idx_snippets.append(idx_curr_snippet)
                     idx_curr_snippet = [idx]
                 else:
-                    idx_curr_snippet.append(idx)
+                    if snippet_items[idx]['type'].startswith('ngrams'):
+                        if 'hits' in snippet_items[idx] and idx == snippet_items[idx]['hits'][0]:
+                            idx_curr_snippet.append(idx)
+                    else:
+                        idx_curr_snippet.append(idx)
         idx_snippets.append(idx_curr_snippet)
         # Now we merge the snippets.
         # A few words about the "extend_id" key. A user might ask us to extend

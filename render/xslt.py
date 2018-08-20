@@ -15,6 +15,9 @@ explain_transformation = ET.XSLT(explain_xslt)
 graphic_report_xslt = ET.parse("render/xsl/graphic_report.xsl", parser)
 graphic_report_transformation = ET.XSLT(graphic_report_xslt)
 
+ngram_xslt = ET.parse("render/xsl/ngram.xsl", parser)
+ngram_transformation = ET.XSLT(ngram_xslt)
+
 with open("render/xsl/langs.xml") as f:
     f.readline()
     langs = f.read().decode("utf-8").encode("utf-8")
@@ -67,6 +70,10 @@ def transform(search_result, params):
         output.write(settings)
         output.write('</page>\n')
         source_xml = ET.fromstring(output.getvalue())
+
+        if mode.startswith('ngram'):
+            return ngram_transformation(source_xml)
+
         if params.get("text", [""])[0] in ("document-info", "word-info"):
             result = explain_transformation(source_xml)
         else:
