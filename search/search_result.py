@@ -127,6 +127,15 @@ class SearchResult(object):
             else:
                 params += defaults.DEFAULT_GRP_PARAMS(max_docs)
 
+        elif (mode is not None) and mode.startswith('ngrams'):
+            params = defaults.NGRAMS_BASE_PARAMS(query, kps)
+            if sort:
+                params += defaults.SORT_PARAMS(sort, asc)
+            if grouping:
+                params += defaults.GRP_PARAMS(group_attr, max_docs, docs_per_group)
+            else:
+                params += defaults.DEFAULT_GRP_PARAMS(max_docs)
+
         else:
             params = defaults.BASE_PARAMS(query, kps)
             if sort:
