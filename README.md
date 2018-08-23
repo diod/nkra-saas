@@ -433,7 +433,7 @@ svn up
 cd /place/ruscorpora/processing/
 sh para.sh > para.log 2>&1
 cd /home/zavgorodny/saas/
-rm -f para* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/para/ --kps 10105 --corpus_type para --subcorpus para --nodisk > para.log 2>&1
+rm -f para* && clear && python index.py --index --dir /place/ruscorpora/texts/finalized/para/ --kps 10100 --corpus_type para --subcorpus para --nodisk > para.log 2>&1
 ```
 
 ##### DIALECT
