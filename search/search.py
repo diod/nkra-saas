@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 import json
 import logging
@@ -201,34 +201,21 @@ class SearchEngine(object):
         else:
             max_docs = (params.page + 1) * params.docs_per_page
 
-        if params.mode.startswith('graphic'):
+        if params.mode.startswith('graphic') is not None and params.mode.startswith('graphic'):
             results = {}
             params.queries_in_order = [None] * len(saas_query)
             for i, parted_saas_query in enumerate(saas_query):
-                response = SearchResult(
-                    query=parted_saas_query,
-                    kps=kps,
-                    max_docs=max_docs,
-                    docs_per_group=params.snippets_per_doc,
-                    group_attr=params.group_by,
-                    sort=params.sort_by,
-                    hits_info=False,
-                    hits_count=False,
-                    docid=params.doc_id,
-                    subcorpus=params.subcorpus,
-                    mode=params.mode
-                )
                 pos = parted_saas_query.find(':"')
                 parted_query = parted_saas_query[pos + 2:][:-1]
                 params.queries_in_order[i] = parted_query
 
-                walker = PagesWalker(params, response, parted_query)
+                walker = PagesWalker(params, parted_query)
                 walker.walk()
                 results[parted_query] = walker.parsed
 
-            query_len = query_len[0]
             hchy = {"type": "graphic",
                     "items": [{"type": "graphic", 'results': results, 'params': params}]}
+            stat = {'Docs': 0, 'Hits': 0, 'TotalDocs': 0, 'TotalSents': 0, 'TotalWords': 0}
 
         else:
             response = SearchResult(
@@ -248,9 +235,9 @@ class SearchEngine(object):
                 params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
 
             hchy = {"type": "body", "items": results}
+            stat = self._get_stat(kps, response, query_len)
 
         query_info = QueryInfo.get_query_info(params)
-        stat = self._get_stat(kps, response, query_len)
         out = OutputDocumentWeb(
             wfile, page=params.page, stat=stat,
             info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)

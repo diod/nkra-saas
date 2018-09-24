@@ -286,50 +286,47 @@ class GraphicWriter(BaseItemWriter):
         data = item['results']
         parted_queries = data.keys()
 
-        table_years = set(data[parted_queries[0]]['table'].keys())
+        multiply_table_years = set()
         for key in parted_queries:
-            table_years = table_years.union(data[key]['multiply_years'].keys())
-        table_years = list(table_years)
-        table_years.sort(reverse=True)
+            for inkey, invalue in data[key]['multiply_years'].items():
+                multiply_table_years.add((inkey, invalue[0], invalue[1],))
 
-        table_result = [None] * len(table_years)
-        for i, years in enumerate(table_years):
-            begin_year, mode_years, finish_year = years.split('-')
-            i_begin_year = int(begin_year)
+        table_result = [None] * (len(data[parted_queries[0]]['table']) + len(multiply_table_years))
+        for i in range(len(data[parted_queries[0]]['table'])):
+            # [str(i) + '-2-' + str(i), i, 0]
+            years = data[parted_queries[0]]['table'][i][0]
+            i_begin_year = data[parted_queries[0]]['table'][i][1]
 
-            if mode_years == '2':
-                table_result[i] = [
-                    begin_year,
-                    {key: data[key]['graphic'][i_begin_year] for key in parted_queries},
-                    years
-                ]
+            table_result[i] = [
+                str(i_begin_year),
+                {key: data[key]['graphic'][i_begin_year] for key in parted_queries},
+                years
+            ]
 
-            else:
-                i_begin_year = max(start_year, i_begin_year)
-                i_finish_year = min(end_year, int(finish_year))
-                if i_finish_year == i_begin_year:
-                    div = 1
+        index_start = len(data[parted_queries[0]]['table'])
+        for i, years in enumerate(multiply_table_years):
+            i_begin_year = max(start_year, years[1])
+            i_finish_year = min(end_year, years[2])
+            index = index_start + i
+
+            table_result[index] = [str(years[1]) + '-' + str(years[2]), {}, years[0]]
+
+            for key in parted_queries:
+                value = data[key]['multiply_years'].get(years[0], None)
+                if value is None:
+                    value = 0
                 else:
-                    div = float(i_finish_year - i_begin_year + 1)
+                    # (year[1], year[2], frequency)
+                    for add_to_year in range(i_begin_year, i_finish_year + 1):
+                        data[key]['graphic'][add_to_year] += 1
 
-                table_result[i] = [
-                    begin_year + '-' + finish_year,
-                    {},
-                    years
-                ]
-                for key in parted_queries:
-                    if years in data[key]['multiply_years']:
-                        table_result[i][1][key] = data[key]['multiply_years'][years]
+                    value = value[2]
 
-                        cnt = data[key]['multiply_years'][years] / div
-                        for add_to_year in range(i_begin_year, i_finish_year + 1):
-                            data[key]['graphic'][add_to_year] += cnt
+                table_result[index][1][key] = value
 
-                    else:
-                        table_result[i][1][key] = 0
+        table_result.sort(key=lambda x: x[2], reverse=True)
 
-        graphic_years = list(data[parted_queries[0]]['graphic'].keys())
-        graphic_years.sort()
+        graphic_years = [years[1] for years in data[parted_queries[0]]['table']]
         graphic_result = {}
         for key in parted_queries:
             graphic_result[key] = [data[key]['graphic'][year] for year in graphic_years]
@@ -350,8 +347,8 @@ class GraphicWriter(BaseItemWriter):
             out.append('\n  <table query=%s>' % (text.decode('utf-8')))
             for values in result['table']:
                 cnt = values[1][key]
-                if cnt != 0:
-                    out.append('\n    <row year=%s cnt=%s s_created=%s />' % (
+                #if cnt != 0:
+                out.append('\n    <row year=%s cnt=%s s_created=%s />' % (
                                quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
             out.append('\n  </table>')
         out.append('\n</tables>')
