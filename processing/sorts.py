@@ -1,5 +1,7 @@
 # -*- Encoding: utf-8
 
+import re
+
 CREATED_IN_ONE_YEAR_SUFFIX = 2 << 4
 SEVERAL_YEARS_CREATED_SUFFIX = 1 << 4
 
@@ -79,7 +81,7 @@ def date_parse_int(s):
 
 
 def created_years_parse_int(s):
-    created_parts = s.split('-')
+    created_parts = re.split('-|', s)
     _, start_year = date_parse_int(created_parts[0])
     dummy = str(start_year)
     s_year_created = dummy + '-'

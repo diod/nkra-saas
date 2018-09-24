@@ -363,7 +363,9 @@ class XMLHandler(xml.sax.handler.ContentHandler):
 
     def close_item(self, name):
         last_item_type = self.get_last_item().get("type")
-        assert self.prefixed_types.get(name, name) == last_item_type
+        if self.prefixed_types.get(name, name) != last_item_type:
+            raise Exception("closed item (%s) vs last item (%s) type mismatch" %
+                            (self.prefixed_types.get(name, name), last_item_type))
         self.get_last_item()["index"]["end"]["sent"] = self.total_sents
         del self.items[-1]
 
