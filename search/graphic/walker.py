@@ -42,7 +42,7 @@ class PagesWalker(object):
     def walk(self):
         for index, year in enumerate(self.parsed['table']):
 
-            url = PagesWalker._URL.format(self.parted_query, year)
+            url = PagesWalker._URL.format(self.parted_query, year[0])
             result = self._read_json_from_url(url)
 
             self._parse(result, index, year, True)
@@ -61,7 +61,7 @@ class PagesWalker(object):
             # cjson fails to load Unicode fields
             return json.loads(urllib2.urlopen(url).read())
         except Exception as ex:
-            logging.error("read_json_from_url(): failed with %s", ex)
+            logging.error("read_json_from_url(): failed with %s - '%s'", ex, url)
 
     def _parse(self, result, index, year, is_one_year_mode=True):
         if not 'searcher_properties' in result['response']:
