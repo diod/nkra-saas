@@ -116,6 +116,10 @@ writers.WriterFactory.register_writer('ngrams_2_lexgr:top', writers.GenericWrite
 writers.WriterFactory.register_writer('ngrams_2_lexgr:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('ngrams_2_lexgr:se', writers.SimpleTextWriter)
 
+# SCHOOL
+writers.WriterFactory.register_writer('school:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('school:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('school:se', writers.SimpleTextWriter)
 
 
 MODE_TO_KPS = {
@@ -138,6 +142,7 @@ MODE_TO_KPS = {
     "regional_rus": 10160,
     "syntax": 10910,
     'graphic_main': 10092,
+    'school': 10301,
     "ngrams_2_forms": 10820,
     "ngrams_2_lexgr": 10822,
 }

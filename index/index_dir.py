@@ -126,9 +126,9 @@ def index(sortings,
                 if not doc_part:
                     with open("./%s.upload.err" % corpus_type, "a") as w:
                         if paired:
-                            w.write(inpath[0] + "\n")
+                            w.write('not doc_part: "' + inpath[0] + '"\n')
                         else:
-                            w.write(inpath)
+                            w.write('not doc_part: "' + inpath + '"\n')
                     continue
                 chunk.append(doc_part)
                 docs_exceeded = num_processed >= NODISK_CHUNK_MAX_DOCS
