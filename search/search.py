@@ -217,7 +217,7 @@ class SearchEngine(object):
         else:
             max_docs = (params.page + 1) * params.docs_per_page
 
-        if params.mode.startswith('graphic') is not None and params.mode.startswith('graphic'):
+        if params.mode is not None and params.mode.startswith('graphic'):
             results = {}
             params.queries_in_order = [None] * len(saas_query)
             for i, parted_saas_query in enumerate(saas_query):

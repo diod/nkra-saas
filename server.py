@@ -11,8 +11,12 @@ import StringIO
 
 import requests
 
+from cgi import parse_header, parse_multipart
+
 from search import search
 from render import xslt
+from integration.bug_report import ruscopora_bug_reporter
+
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S',
@@ -70,6 +74,34 @@ class ServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 result = xslt.transform(result, params)
             self.wfile.write(result)
 
+    def do_POST(self):
+        if self.path.startswith('/bug-report.xml'):
+            params = self.parse_POST()
+            msg = params.get('msg', ['<Message not found>'])
+            url = params.get('url', ['<Url not found>'])
+
+            ruscopora_bug_reporter.process_bug_report(msg[0], url[0]);
+
+            self.wfile.write("Ok")
+
+    def parse_POST(self):
+        if 'content-type' in self.headers:
+            ctype, pdict = parse_header(self.headers['content-type'])
+            if ctype == 'multipart/form-data':
+                postvars = parse_multipart(self.rfile, pdict)
+            elif ctype == 'application/x-www-form-urlencoded':
+                length = int(self.headers['content-length'])
+                postvars = urlparse.parse_qs(
+                        self.rfile.read(length),
+                        keep_blank_values=1)
+            else:
+                postvars = {}
+        else:
+            length = int(self.headers['content-length'])
+            postvars = urlparse.parse_qs(
+                self.rfile.read(length),
+                keep_blank_values=1)
+        return postvars
 
 def main():
     write_pid_file()
