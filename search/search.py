@@ -116,6 +116,10 @@ writers.WriterFactory.register_writer('ngrams_2_lexgr:top', writers.GenericWrite
 writers.WriterFactory.register_writer('ngrams_2_lexgr:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('ngrams_2_lexgr:se', writers.SimpleTextWriter)
 
+# REGIONAL
+writers.WriterFactory.register_writer('regional:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('regional:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('regional:se', writers.SimpleTextWriter)
 
 
 MODE_TO_KPS = {
@@ -136,6 +140,7 @@ MODE_TO_KPS = {
     "spoken": 10145,
     "murco": 10152,
     "regional_rus": 10160,
+    'regional': 10306,
     "syntax": 10910,
     'graphic_main': 10092,
     "ngrams_2_forms": 10820,
@@ -169,6 +174,7 @@ class SearchEngine(object):
         MODE_TO_KPS["accent"]: (238318, 0, 25254284),
         MODE_TO_KPS["murco"]: (187230, 0, 4497729),
         MODE_TO_KPS["regional_rus"]: (0, 0, 0),
+        MODE_TO_KPS["regional"]: (0, 0, 0),
     }
 
     def __init__(self):
