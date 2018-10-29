@@ -143,6 +143,12 @@ KNOWN_CORPUS_TYPES = {
         "snippet_type": "se",
         "context": (1, 1)
     },
+    "regional": {
+        "prefix": "regional",
+        "align_by": FLAT_TYPE,
+        "snippet_type": "se",
+        "context": (1, 1)
+    },
 }
 
 

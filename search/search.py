@@ -121,6 +121,11 @@ writers.WriterFactory.register_writer('school:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('school:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('school:se', writers.SimpleTextWriter)
 
+# REGIONAL
+writers.WriterFactory.register_writer('regional:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('regional:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('regional:se', writers.SimpleTextWriter)
+
 
 MODE_TO_KPS = {
     "test": 10010,
@@ -140,6 +145,7 @@ MODE_TO_KPS = {
     "spoken": 10145,
     "murco": 10152,
     "regional_rus": 10160,
+    'regional': 10306,
     "syntax": 10910,
     'graphic_main': 10092,
     'school': 10301,
