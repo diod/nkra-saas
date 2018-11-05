@@ -1,13 +1,27 @@
 # -*- coding: utf-8 -*-
 
-import logging
 import urllib
 
+from openpyxl import Workbook
+from openpyxl.writer.excel import save_virtual_workbook
 from xml.sax.saxutils import quoteattr
 
 
-class OutputDocumentSimple(object):
+class OutputDocumentExcel(object):
+    def __init__(self):
+        self.w = ""
 
+    def append(self, xlsx_object):
+        self.w = xlsx_object
+
+    def text(self):
+        return save_virtual_workbook(self.w)
+
+    def finalize(self):
+        self.w = save_virtual_workbook(self.w)
+
+
+class OutputDocumentSimple(object):
     def __init__(self):
         self.w = ""
 
@@ -30,7 +44,7 @@ class OutputDocumentWeb(object):
         if not stat:
             raise Exception("No stats for document, rejected")
         if not info:
-            info = [{"lex": u"", "gramm": u"",  "sem": u""}]
+            info = [{"lex": u"", "gramm": u"", "sem": u""}]
         for word in info:
             for k, v in word.items():
                 word[k] = v.encode("utf-8")

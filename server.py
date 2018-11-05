@@ -60,7 +60,11 @@ class ServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 return
 
             self.send_response(200, 'OK')
-            if args.rendering == 'xml':
+            if "xslx" in self.path:
+                self.send_header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                self.send_header("Content-Disposition", "attachment; filename=ruscorpora_content.xlsx")
+                self.end_headers()
+            elif args.rendering == 'xml':
                 self.send_header('Content-Type', 'text/xml; charset=utf-8')
                 self.end_headers()
                 output.write('<?xml version=\'1.0\' encoding=\'utf-8\'?>\n')

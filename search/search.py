@@ -8,7 +8,7 @@ from collections import defaultdict, OrderedDict
 from params import ParamsProcessor, SearchParams
 from processor import ResponseProcessor
 from render import render_legacy, writers
-from render.document import OutputDocumentWeb
+from render.document import OutputDocumentWeb, OutputDocumentExcel
 from search_result import SearchResult
 from syntax.syntax_search import syntax_search_process
 
@@ -167,7 +167,7 @@ class SearchEngine(object):
         MODE_TO_KPS["old_rus"]: (16, 0, 500292),
         MODE_TO_KPS["mid_rus"]: (5876, 0, 8074107),
         MODE_TO_KPS["birchbark"]: (879, 0, 19002),
-        MODE_TO_KPS["orthlib"]: (1160 , 0, 4476006),
+        MODE_TO_KPS["orthlib"]: (1160, 0, 4476006),
         MODE_TO_KPS["multiparc"]: (3652, 0, 421226),
         MODE_TO_KPS["multiparc_rus"]: (1315, 0, 960738),
         MODE_TO_KPS["multi"]: (12, 0, 5022425),
@@ -238,7 +238,6 @@ class SearchEngine(object):
             hchy = {"type": "graphic",
                     "items": [{"type": "graphic", 'results': results, 'params': params}]}
             stat = {'Docs': 0, 'Hits': 0, 'TotalDocs': 0, 'TotalSents': 0, 'TotalWords': 0}
-
         else:
             response = SearchResult(
                 query=saas_query,
@@ -255,14 +254,16 @@ class SearchEngine(object):
             )
             results = ResponseProcessor(snippets=params.snippets_per_doc).process(
                 params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
-
             hchy = {"type": "body", "items": results}
             stat = self._get_stat(kps, response, query_len)
 
         query_info = QueryInfo.get_query_info(params)
-        out = OutputDocumentWeb(
-            wfile, page=params.page, stat=stat,
-            info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)
+        if params.xlsx_export:
+            out = OutputDocumentExcel()
+        else:
+            out = OutputDocumentWeb(
+                wfile, page=params.page, stat=stat,
+                info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)
         writers.BodyWriter.write(
             out, hchy, nodia=params.diacritic, text=params.text)
         out.finalize()

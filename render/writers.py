@@ -27,7 +27,6 @@ class WriterFactory(object):
 
 
 class BaseItemWriter(object):
-
     @classmethod
     def write(cls, out, item, **kwargs):
         sid = item.get("_extend_at", "")
@@ -61,7 +60,6 @@ class BaseItemWriter(object):
 
 
 class BodyWriter(BaseItemWriter):
-
     @classmethod
     def open_item(cls, out, item, **kwargs):
         pass
@@ -109,10 +107,10 @@ class GenericWriter(BaseItemWriter):
             for value in attrs[name]:
                 out.append("<attr name=%s value=%s/>" % (
                     quoteattr(name), quoteattr(value))
-                )
+                           )
             out.append("<attr name=%s value=%s/>" % (
                 quoteattr("path"), quoteattr(item.get("document_url")))
-            )
+                       )
             if name == "linked_fragments":
                 linked_fragments += list(attrs[name])
         if linked_fragments:
@@ -347,9 +345,8 @@ class GraphicWriter(BaseItemWriter):
             out.append('\n  <table query=%s>' % (text.decode('utf-8')))
             for values in result['table']:
                 cnt = values[1][key]
-                #if cnt != 0:
                 out.append('\n    <row year=%s cnt=%s s_created=%s />' % (
-                               quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
+                    quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
             out.append('\n  </table>')
         out.append('\n</tables>')
 
@@ -363,3 +360,22 @@ class GraphicWriter(BaseItemWriter):
                 out.append('\n    <year year=%s cnt=%s />' % (
                     quoteattr(str(year)), quoteattr(str(cnt))))
             out.append('\n  </graphic>')
+
+
+class ExcelWriter(object):
+    @classmethod
+    def open_item(cls, out, item, **kwargs):
+        pass
+
+    @classmethod
+    def write(cls, out, item, **kwargs):
+
+
+    @classmethod
+    def hchy_to_xlsx(cls, out, item):
+        xlsx_object = None
+        out.append(xlsx_object)
+
+    @classmethod
+    def close_item(cls, out, item, **kwargs):
+        pass
