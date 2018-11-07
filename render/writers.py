@@ -369,7 +369,7 @@ class ExcelWriter(object):
 
     @classmethod
     def write(cls, out, item, **kwargs):
-
+        pass
 
     @classmethod
     def hchy_to_xlsx(cls, out, item):
