@@ -47,9 +47,9 @@ class OutputDocumentWeb(object):
             if 'max' in word:
                 out.write('distance-max="%s" ' % word["max"])
             out.write(
-                'lex=%s gramm=%s sem=%s form=%s flags="" />' % tuple(
+                'lex=%s gramm=%s sem=%s form=%s flags=%s />' % tuple(
                     map(quoteattr, (word["lex"], word[
-                        "gramm"], word.get("form", ""), word.get("sem", "")))
+                        "gramm"], word.get("sem", ""), word.get("form", ""), word.get("flags", "")))
                 )
             )
         out.write('</query>')
