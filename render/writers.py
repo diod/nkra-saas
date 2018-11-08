@@ -363,3 +363,24 @@ class GraphicWriter(BaseItemWriter):
                 out.append('\n    <year year=%s cnt=%s />' % (
                     quoteattr(str(year)), quoteattr(str(cnt))))
             out.append('\n  </graphic>')
+
+
+class RegionalGenericWriter(GenericWriter):
+
+    @classmethod
+    def _get_title(cls, attrs):
+        title_author = " ".join(attrs.get("author", []))
+        title_header = " ".join(attrs.get("header", []))
+        title_publication = " ".join(attrs.get("publication", []))
+        title_created = " ".join(attrs.get("created", []))
+        title = ""
+        if title_author:
+            title += "%s." % title_author
+        if title_header:
+            title += " %s" % title_header
+        title += " // "
+        if title_publication:
+            title += "%s, " % title_publication
+        if title_created:
+            title += "%s" % title_created
+        return title

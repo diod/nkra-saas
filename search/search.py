@@ -116,13 +116,20 @@ writers.WriterFactory.register_writer('ngrams_2_lexgr:top', writers.GenericWrite
 writers.WriterFactory.register_writer('ngrams_2_lexgr:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('ngrams_2_lexgr:se', writers.SimpleTextWriter)
 
+writers.WriterFactory.register_writer('ngrams_4_forms:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('ngrams_4_forms:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('ngrams_4_forms:se', writers.SimpleTextWriter)
+writers.WriterFactory.register_writer('ngrams_4_lexgr:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('ngrams_4_lexgr:snippet', writers.SnippetWriter)
+writers.WriterFactory.register_writer('ngrams_4_lexgr:se', writers.SimpleTextWriter)
+
 # SCHOOL
 writers.WriterFactory.register_writer('school:top', writers.GenericWriter)
 writers.WriterFactory.register_writer('school:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('school:se', writers.SimpleTextWriter)
 
 # REGIONAL
-writers.WriterFactory.register_writer('regional:top', writers.GenericWriter)
+writers.WriterFactory.register_writer('regional:top', writers.RegionalGenericWriter)
 writers.WriterFactory.register_writer('regional:snippet', writers.SnippetWriter)
 writers.WriterFactory.register_writer('regional:se', writers.SimpleTextWriter)
 
@@ -151,6 +158,8 @@ MODE_TO_KPS = {
     'school': 10301,
     "ngrams_2_forms": 10820,
     "ngrams_2_lexgr": 10822,
+    "ngrams_4_forms": 10941,
+    "ngrams_4_lexgr": 10943,
 }
 
 MAX_DOCS_CONTEXT = 100
@@ -182,6 +191,7 @@ class SearchEngine(object):
         MODE_TO_KPS["accent"]: (238318, 0, 25254284),
         MODE_TO_KPS["murco"]: (187230, 0, 4497729),
         MODE_TO_KPS["regional_rus"]: (0, 0, 0),
+        MODE_TO_KPS["regional"]: (0, 0, 0),
     }
 
     def __init__(self):
@@ -283,7 +293,8 @@ class SearchEngine(object):
         query_info = QueryInfo.get_query_info(params)
         out = OutputDocumentWeb(
             wfile, page=params.page, stat=stat,
-            info=query_info, search_type=params.search_type, subcorpus=params.subcorpus)
+            info=query_info, search_type=params.search_type, subcorpus=params.subcorpus,
+            docs_per_page=params.docs_per_page, snippets_per_doc=params.snippets_per_doc)
         writers.BodyWriter.write(
             out, hchy, nodia=params.diacritic, text=params.text)
         out.finalize()

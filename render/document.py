@@ -25,7 +25,9 @@ class OutputDocumentWeb(object):
                  stat=None,
                  info=None,
                  search_type=None,
-                 subcorpus=""):
+                 subcorpus="",
+                 docs_per_page=10,
+                 snippets_per_doc=5):
         self.w = out
         if not stat:
             raise Exception("No stats for document, rejected")
@@ -37,7 +39,9 @@ class OutputDocumentWeb(object):
         out.write('<body>')
         out.write('<request page="%d">' % page)
         out.write(
-            '<format documents-per-page="10" snippets-per-document="10" snippets-per-page="50"/>')
+            '<format documents-per-page="%s" snippets-per-document="%s" snippets-per-page="%s"/>'
+            %
+            (docs_per_page, snippets_per_doc, docs_per_page * snippets_per_doc))
         out.write('<query request="123" document=%s type="%s">' %
                   (quoteattr(urllib.quote(subcorpus)), "lexform"))
         for word in info:
