@@ -145,7 +145,7 @@ MODE_TO_KPS = {
     "spoken": 10145,
     "murco": 10152,
     "regional_rus": 10160,
-    'regional': 10306,
+    'regional': 10307,
     "syntax": 10910,
     'graphic_main': 10092,
     'school': 10301,
@@ -440,7 +440,7 @@ class QueryInfo(object):
             tokens = [x.strip() for x in req.split() if x.strip()]
             for token in tokens:
                 out[count] = {
-                    "lex": token, "gramm": u"", "sem1": u"", "form": u"",
+                    "lex": token, "gramm": u"", "sem1": u"", "form": u"", "flags": u""
                 }
                 if count > 1:
                     out[count]["min"] = u"1"
@@ -454,12 +454,14 @@ class QueryInfo(object):
         all_gramm = cls._get_all_by_key(params, "gramm")
         all_form = cls._get_all_by_key(params, "form")
         all_sem1 = cls._get_all_by_key(params, "sem1")
+        all_flags = cls._get_all_by_key(params, "flags")
         all_min = cls._get_all_by_key(params, "min")
         all_max = cls._get_all_by_key(params, "max")
         cls._aggregate_items(out, all_lex, "lex")
         cls._aggregate_items(out, all_gramm, "gramm")
         cls._aggregate_items(out, all_form, "form")
         cls._aggregate_items(out, all_sem1, "sem")
+        cls._aggregate_items(out, all_flags, "flags")
         cls._aggregate_items(out, all_min, "min")
         cls._aggregate_items(out, all_max, "max")
         out.items().sort(key=operator.itemgetter(0))
