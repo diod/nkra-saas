@@ -164,6 +164,8 @@ MODE_TO_KPS = {
 
 MAX_DOCS_CONTEXT = 100
 
+STAT_MAX_DOCS_ON_PAGE = 30000
+
 
 class SearchEngine(object):
     """Implements search logic for all requests received by the server.
@@ -267,7 +269,26 @@ class SearchEngine(object):
                 params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
 
             hchy = {"type": "body", "items": results}
-            stat = self._get_stat(kps, response, query_len)
+
+            stat_response = SearchResult(
+                query=saas_query,
+                kps=kps,
+                max_docs=STAT_MAX_DOCS_ON_PAGE,
+                docs_per_group=0,
+                group_attr=params.group_by,
+                sort=None,
+                hits_info=False,
+                hits_count=True,
+                docid=params.doc_id,
+                subcorpus=params.subcorpus,
+                mode=params.mode
+            )
+            try:
+                stat_response.mapping['response']['searcher_properties']['rty_hits_count_full'] = \
+                    response.get_hits_count()
+            except:
+                pass
+            stat = self._get_stat(kps, stat_response, query_len)
 
         query_info = QueryInfo.get_query_info(params)
         out = OutputDocumentWeb(
