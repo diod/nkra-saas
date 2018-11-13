@@ -81,8 +81,7 @@ class SearchParams(object):
         """
         """
         for k, v in raw_query.items():
-            raw_query[k] = [x.replace(" | ", "|") for x in v]
-            raw_query[k] = [x.replace(" & ", " ") for x in v]
+            raw_query[k] = [x.replace(" | ", "|").replace(" & ", " ") for x in v]
 
     def _load(self, query, key, using=None, default=None):
         """
@@ -166,13 +165,15 @@ class SearchParams(object):
         sub_params = [k for k in query.keys() if k.startswith('doc_') or "_sp_" in k]
         if sub_params:
             for sub_param in sub_params:
+                val = query[sub_param][0]
+                is_use_backquote = ((val.find('«') != -1) or (val.find('»') != -1))
                 subcorpus += self._process_doc_param(
-                    sub_param, query[sub_param][0])
+                    sub_param, val, is_use_backquote)
             return subcorpus
         else:
             return ""
 
-    def _process_doc_param(self, param, val):
+    def _process_doc_param(self, param, val, is_use_backquote=False):
         """Parses a subcorpus param/value pair.
 
         What goes on here is translation from initital query (as it comes
@@ -181,6 +182,7 @@ class SearchParams(object):
         Args:
             param: a string parameter name, always starting with `doc`.
             val: a string parameter value.
+            is_use_backquote: a boolean: True indicates use ` instead of " in param value
 
         Returns:
             A string with finalized param/value representation (suitable
@@ -188,27 +190,50 @@ class SearchParams(object):
         """
         s_param = param.replace("doc_", "s_")
         # It's a logical "not".
-        if val.startswith("-"):
-            return '(%s:"*" ~~ %s:"%s")' % (s_param, s_param, val[1:])
-        # Disjunctive queries. `doc_sex=муж|жен` should be translated to
-        # `(s_sex="муж" | s_sex="жен")`.
-        if "|" in val:
-            decomposed_query = " | ".join(
-                ['%s:"%s"' % (s_param, x.strip()) for x in val.split("|")])
-            return " (%s)" % decomposed_query
-        # Less than queries. `doc_l_created=1900` should be translated to
-        # `s_created:<1900`.
-        if "_l_" in s_param:
-            s_param = s_param.replace("l_", "")
-            val = '<"%s"' % val
-            return ' (%s:%s)' % (s_param, val)
-        # Greater than queries. `doc_g_created=1900` should be translated to
-        # `s_created:>1900`.
-        if "_g_" in s_param:
-            s_param = s_param.replace("g_", "")
-            val = '>"%s"' % val
-            return ' (%s:%s)' % (s_param, val)
-        return ' (%s:"%s")' % (s_param, val)
+        if is_use_backquote:
+            if val.startswith("-"):
+                return '(%s:"*" ~~ %s:`%s`)' % (s_param, s_param, val[1:])
+            # Disjunctive queries. `doc_sex=муж|жен` should be translated to
+            # `(s_sex="муж" | s_sex="жен")`.
+            if "|" in val:
+                decomposed_query = " | ".join(
+                    ['%s:`%s`' % (s_param, x.strip()) for x in val.split("|")])
+                return " (%s)" % decomposed_query
+            # Less than queries. `doc_l_created=1900` should be translated to
+            # `s_created:<1900`.
+            if "_l_" in s_param:
+                s_param = s_param.replace("l_", "")
+                val = '<`%s`' % val
+                return ' (%s:%s)' % (s_param, val)
+            # Greater than queries. `doc_g_created=1900` should be translated to
+            # `s_created:>1900`.
+            if "_g_" in s_param:
+                s_param = s_param.replace("g_", "")
+                val = '>`%s`' % val
+                return ' (%s:%s)' % (s_param, val)
+            return ' (%s:`%s`)' % (s_param, val)
+        else:
+            if val.startswith("-"):
+                return '(%s:"*" ~~ %s:"%s")' % (s_param, s_param, val[1:])
+            # Disjunctive queries. `doc_sex=муж|жен` should be translated to
+            # `(s_sex="муж" | s_sex="жен")`.
+            if "|" in val:
+                decomposed_query = " | ".join(
+                    ['%s:"%s"' % (s_param, x.strip()) for x in val.split("|")])
+                return " (%s)" % decomposed_query
+            # Less than queries. `doc_l_created=1900` should be translated to
+            # `s_created:<1900`.
+            if "_l_" in s_param:
+                s_param = s_param.replace("l_", "")
+                val = '<"%s"' % val
+                return ' (%s:%s)' % (s_param, val)
+            # Greater than queries. `doc_g_created=1900` should be translated to
+            # `s_created:>1900`.
+            if "_g_" in s_param:
+                s_param = s_param.replace("g_", "")
+                val = '>"%s"' % val
+                return ' (%s:%s)' % (s_param, val)
+            return ' (%s:"%s")' % (s_param, val)
 
     def _load_search_type(self):
         search_type = "all-documents"
@@ -345,6 +370,9 @@ class ParamsProcessor(object):
         tree = _parse(value)
         if param == 'gramm':
             param = 'gr'
+            tree = _get_dnf(tree)
+            tree = _join_disjuncts(tree)
+        elif param == 'sem':
             tree = _get_dnf(tree)
             tree = _join_disjuncts(tree)
         result = _get_subs(tree, param)
