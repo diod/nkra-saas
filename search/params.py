@@ -81,8 +81,7 @@ class SearchParams(object):
         """
         """
         for k, v in raw_query.items():
-            raw_query[k] = [x.replace(" | ", "|") for x in v]
-            raw_query[k] = [x.replace(" & ", " ") for x in v]
+            raw_query[k] = [x.replace(" | ", "|").replace(" & ", " ") for x in v]
 
     def _load(self, query, key, using=None, default=None):
         """
@@ -371,6 +370,9 @@ class ParamsProcessor(object):
         tree = _parse(value)
         if param == 'gramm':
             param = 'gr'
+            tree = _get_dnf(tree)
+            tree = _join_disjuncts(tree)
+        elif param == 'sem':
             tree = _get_dnf(tree)
             tree = _join_disjuncts(tree)
         result = _get_subs(tree, param)
