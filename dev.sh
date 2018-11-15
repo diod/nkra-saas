@@ -13,4 +13,5 @@ else
   PYTHON=python2.7
 fi;
 
+export FLASK_ENV=development
 $PYTHON server.py -p 8888 --rendering xslt --kps 150
