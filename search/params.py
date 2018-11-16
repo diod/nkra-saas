@@ -157,7 +157,8 @@ class SearchParams(object):
                 return " s_tagging:\"manual\""
             else:
                 out = " " + mycorp.replace("|", " | ")
-                out = out.replace("lang", "s_lang")
+                if mycorp.find('s_lang') == -1:
+                    out = out.replace("lang", "s_lang")
                 out = out.replace("(sz_", "<< (sz_")
                 out = out.replace(") (", ") & (")
                 return out

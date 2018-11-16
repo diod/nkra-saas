@@ -5,6 +5,7 @@
 import StringIO
 import logging
 import lxml.etree as ET
+import urllib
 
 parser = ET.XMLParser(load_dtd=True)
 report_xslt = ET.parse("render/xsl/report.xsl", parser)
@@ -62,8 +63,11 @@ def transform(search_result, params):
     else:
         for key in params:
             for value in params[key]:
-                if "sem" in key:
-                    continue
+                # Why this is nedeed? - paging on semantic searches are not working with this
+                #if "sem" in key:
+                #    continue
+                if key == 'mycorp':
+                    value = urllib.quote(value)
                 output.write('<param name="%s">%s</param>\n' % (key, value))
         output.write('</state>\n')
         output.write(langs)
