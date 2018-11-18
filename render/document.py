@@ -58,8 +58,8 @@ class OutputDocumentWeb(object):
             )
         out.write('</query>')
         out.write('</request>')
-        out.write('<result documents="%d" contexts="%d" search-type="%s">' % (
-            stat["Docs"], stat["Hits"], search_type))
+        out.write('<result documents="%d" is_documents_number_wrong="%s" contexts="%d" search-type="%s">' % (
+            stat["Docs"], stat['Docs_is_wrong'], stat["Hits"], search_type))
         out.write('<corp-stat>')
         out.write('<documents total="%s"/>' % stat["TotalDocs"])
         out.write('<words total="%s"/>' % stat["TotalWords"])

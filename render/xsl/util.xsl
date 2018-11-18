@@ -48,7 +48,11 @@
  <xsl:param name="caption" />
  <xsl:param name="value" />
  <xsl:param name="lang" value="default" />
+ <xsl:param name="is_number_wrong" value="false" />
  <span class="stat-number"><xsl:number value="$value" grouping-size="3" grouping-separator=" " /></span>
+ <xsl:choose>
+  <xsl:when test="$is_number_wrong='true'"><xsl:text> (приблизительно)</xsl:text></xsl:when>
+ </xsl:choose>
  <xsl:text>&#160;</xsl:text>
  <span class="stat-caption">
   <xsl:call-template name="conj-impl">
@@ -62,12 +66,14 @@
 <xsl:template name="conj-documents">
  <xsl:param name="value" />
  <xsl:param name="mode" />
+ <xsl:param name="is_number_wrong" value="false" />
  <xsl:choose>
   <xsl:when test="$mode='murco'">
    <xsl:call-template name="conj">
     <xsl:with-param name="caption" select="$lang/conj/fragments" />
     <xsl:with-param name="value" select="$value" />
     <xsl:with-param name="lang" select="$ln" />
+    <xsl:with-param name="is_number_wrong" select="$is_number_wrong" />
    </xsl:call-template>
   </xsl:when>
   <xsl:otherwise>
@@ -75,6 +81,7 @@
     <xsl:with-param name="caption" select="$lang/conj/documents" />
     <xsl:with-param name="value" select="$value" />
     <xsl:with-param name="lang" select="$ln" />
+    <xsl:with-param name="is_number_wrong" select="$is_number_wrong" />
    </xsl:call-template>
   </xsl:otherwise>
  </xsl:choose>

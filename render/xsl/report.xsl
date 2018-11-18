@@ -868,6 +868,7 @@
          <xsl:call-template name="conj-documents">
           <xsl:with-param name="value" select="@documents" />
           <xsl:with-param name="mode" select="$mode" />
+          <xsl:with-param name="is_number_wrong" select="@is_documents_number_wrong" />
          </xsl:call-template>
          <xsl:if test="/page/searchresult/body/result/subcorp-stat">
           <xsl:text> </xsl:text>
@@ -936,6 +937,7 @@
            <xsl:call-template name="conj-documents">
             <xsl:with-param name="value" select="@documents" />
              <xsl:with-param name="mode" select="$mode" />
+             <xsl:with-param name="is_number_wrong" select="@is_documents_number_wrong" />
            </xsl:call-template>
            <xsl:if test="@sentences != 0">
             <xsl:text>, </xsl:text>

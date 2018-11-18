@@ -165,6 +165,7 @@ MODE_TO_KPS = {
 MAX_DOCS_CONTEXT = 100
 
 STAT_MAX_DOCS_ON_PAGE = 30000
+WHEN_DOCS_WRONG_STAT_MAX_DOCS_ON_PAGE = 100
 
 
 class SearchEngine(object):
@@ -249,7 +250,8 @@ class SearchEngine(object):
 
             hchy = {"type": "graphic",
                     "items": [{"type": "graphic", 'results': results, 'params': params}]}
-            stat = {'Docs': 0, 'Hits': 0, 'TotalDocs': 0, 'TotalSents': 0, 'TotalWords': 0}
+            stat = {'Docs': 0, 'Hits': 0, 'TotalDocs': 0, 'TotalSents': 0, 'TotalWords': 0,
+                    'Docs_is_wrong': 'false'}
 
         else:
             response = SearchResult(
@@ -283,12 +285,31 @@ class SearchEngine(object):
                 subcorpus=params.subcorpus,
                 mode=params.mode
             )
+            docs_count = stat_response.get_docs_count()
+            docs_is_wrong = False
+            if docs_count == 0 and response.get_hits_count() != 0:
+                stat_response = SearchResult(
+                    query=saas_query,
+                    kps=kps,
+                    max_docs=WHEN_DOCS_WRONG_STAT_MAX_DOCS_ON_PAGE,
+                    docs_per_group=0,
+                    group_attr=params.group_by,
+                    sort=None,
+                    hits_info=False,
+                    hits_count=True,
+                    docid=params.doc_id,
+                    subcorpus=params.subcorpus,
+                    mode=params.mode
+                )
+                docs_is_wrong = True
+                docs_count = stat_response.get_docs_count()
+                if docs_count == 0:
+                    docs_count = 1
             try:
-                stat_response.mapping['response']['searcher_properties']['rty_hits_count_full'] = \
-                    response.get_hits_count()
+                response.mapping['response']['results'][0]['found']['all'] = docs_count
             except:
                 pass
-            stat = self._get_stat(kps, stat_response, query_len)
+            stat = self._get_stat(kps, response, query_len, docs_is_wrong)
 
         query_info = QueryInfo.get_query_info(params)
         out = OutputDocumentWeb(
@@ -375,7 +396,7 @@ class SearchEngine(object):
             return ParamsProcessor.parse_lexform_cgi(params)
         return params.text, 1
 
-    def _get_stat(self, kps, response, query_len):
+    def _get_stat(self, kps, response, query_len, docs_is_wrong=False):
         """
         Used for getting statistics about the current search result.
 
@@ -387,7 +408,8 @@ class SearchEngine(object):
                 'Hits': response.get_hits_count() / query_len,
                 'TotalDocs': total_docs,
                 'TotalSents': total_sents,
-                'TotalWords': total_words}
+                'TotalWords': total_words,
+                'Docs_is_wrong': 'true' if docs_is_wrong else 'false'}
 
     def _total_stat(self, kps):
         """Gets total statistics about a certain corpus.
