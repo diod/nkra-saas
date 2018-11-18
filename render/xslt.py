@@ -35,6 +35,9 @@ with open("render/xsl/graphic_years.xml") as f:
     graphic_years += "\n"
 
 
+def tostring(node, **kwargs):
+    return ET.tostring(node, **kwargs);
+
 def transform(search_result, params):
     mode = params.get('mode', [''])[0]
 

@@ -1,0 +1,15 @@
+uwsgi:
+#  socket: /var/run/saas/saas.sock
+  wsgi-file: server.py
+  http: :8888
+#  chown-socket: nginx:nginx
+#  chmod-socket: 664
+  uid: diod
+  gid: diod
+  master: true
+  processes: 5
+  threads: 1
+  thunder-lock: true
+  vacuum: true
+  pyargv: --rendering xslt --kps 150
+  
