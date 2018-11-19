@@ -45,9 +45,10 @@ class ServerHandler(FlaskView):
             query = request.query_string
             params = urlparse.parse_qs(query)
 
-            if params.get('mode', None) == 'syntax':
+            if params.get('mode', [None])[0] == 'syntax':
                 params = urlparse.parse_qs(query, keep_blank_values=True)
-            elif args.rendering == 'xml':
+
+            if args.rendering == 'xml':
                 content_type = 'text/xml; charset=utf-8'
                 output.write('<?xml version=\'1.0\' encoding=\'utf-8\'?>\n')
             elif args.rendering == 'xslt':

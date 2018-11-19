@@ -12,7 +12,16 @@
   <xsl:output method="html" indent="no" doctype-public="-//W3C//DTD HTML 4.01//EN" doctype-system="http://www.w3.org/TR/html4/strict.dtd"/>
 
   <!-- страница с поиском -->
-  <xsl:variable name="page-name" select="concat(/page/@name, /page/@ext)" />
+  <xsl:variable name="page-name">
+   <xsl:choose>
+    <xsl:when test="concat(/page/@name, /page/@ext)">
+     <xsl:value-of select="concat(/page/@name, /page/@ext)" />
+    </xsl:when>
+    <xsl:otherwise>
+     <xsl:value-of select="'search.xml'" />
+    </xsl:otherwise>
+   </xsl:choose>
+  </xsl:variable>
 
   <!-- параметры страницы -->
   <xsl:key name="param" match="/page/state/param" use="@name" />
