@@ -2,17 +2,13 @@
 
 # -*- encoding: utf-8 -*-
 
-import os
 import logging
 import argparse
 import urlparse
 import StringIO
 
-import requests
-
 from flask import Flask, current_app, redirect, request, Response
 from flask_classful import FlaskView, route
-from cgi import parse_header, parse_multipart
 
 from search import search
 from render import xslt
@@ -24,36 +20,34 @@ logging.basicConfig(format='%(asctime)s %(message)s',
                     level=logging.DEBUG)
 
 
-
 class ServerHandler(FlaskView):
     engine = search.SearchEngine()
 
     @route('/favicon.ico', methods=['GET'])
     def static_favicon(self):
-        return application.send_static_file('favicon.ico');
+        return application.send_static_file('favicon.ico')
 
     @route('/www/js/graphic.js', methods=['GET'])
     def static_graphic(self):
-        return application.send_static_file('js/graphic/graphic.js');
+        return application.send_static_file('js/graphic/graphic.js')
 
     @route('/video.xml', methods=['GET'])
     def get_video(self):
         redirect_url = "http://streaming.video.yandex.ru/get/ruscorpora-video/%s/sq.mp4" % request.args.get("id", "none")
-        return redirect(redirect_url, 301);
+        return redirect(redirect_url, 301)
 
     @route('/<path:path>', methods=['GET'])
-    def search(self,path):
+    def search(self, path):
             args = ServerHandler.args
             output = StringIO.StringIO()
 
-            #raw query string (non utf-8)
+            # raw query string (non utf-8)
             query = request.query_string
             params = urlparse.parse_qs(query)
 
             if params.get('mode', None) == 'syntax':
                 params = urlparse.parse_qs(query, keep_blank_values=True)
-
-            if args.rendering == 'xml':
+            elif args.rendering == 'xml':
                 content_type = 'text/xml; charset=utf-8'
                 output.write('<?xml version=\'1.0\' encoding=\'utf-8\'?>\n')
             elif args.rendering == 'xslt':
@@ -62,20 +56,24 @@ class ServerHandler(FlaskView):
             self.engine.search(params, output, args)
             result = output.getvalue()
 
-            if args.rendering == 'xslt':
+            if args.rendering == 'xslt' and "excel" not in path:
                 result = xslt.transform(result, params)
+                result = xslt.tostring(result, encoding='utf-8')
 
-            result = xslt.tostring(result, encoding='utf-8')
-            return Response(result, content_type=content_type);
+            resp = Response(result, content_type=content_type)
+            if "excel" in path:
+                resp.headers["Content-Type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                resp.headers["Content-Disposition"] = "attachment; filename=ruscorpora_content.xlsx"
+
+            return resp
 
     @route('/bug-report.xml', methods=['POST'])
     def bugreport(self):
-
         params = request.form
-        msg = params.get('msg', '<Message not found>');
-        url = params.get('url', '<Url not found>');
+        msg = params.get('msg', '<Message not found>')
+        url = params.get('url', '<Url not found>')
 
-        ruscopora_bug_reporter.process_bug_report(msg, url);
+        ruscopora_bug_reporter.process_bug_report(msg, url)
         return Response("Ok\n", content_type="text/plain; charset=UTF-8")
 
 

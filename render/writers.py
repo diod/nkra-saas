@@ -2,10 +2,13 @@
 
 import base64
 import logging
+from operator import itemgetter
+from collections import OrderedDict
 import collections
 import unicodedata
 
 from xml.sax.saxutils import escape, quoteattr
+from openpyxl import Workbook
 
 from common.utils import remove_accents
 
@@ -27,7 +30,6 @@ class WriterFactory(object):
 
 
 class BaseItemWriter(object):
-
     @classmethod
     def write(cls, out, item, **kwargs):
         sid = item.get("_extend_at", "")
@@ -61,7 +63,6 @@ class BaseItemWriter(object):
 
 
 class BodyWriter(BaseItemWriter):
-
     @classmethod
     def open_item(cls, out, item, **kwargs):
         pass
@@ -109,10 +110,10 @@ class GenericWriter(BaseItemWriter):
             for value in attrs[name]:
                 out.append("<attr name=%s value=%s/>" % (
                     quoteattr(name), quoteattr(value))
-                )
+                           )
             out.append("<attr name=%s value=%s/>" % (
                 quoteattr("path"), quoteattr(item.get("document_url")))
-            )
+                       )
             if name == "linked_fragments":
                 linked_fragments += list(attrs[name])
         if linked_fragments:
@@ -347,9 +348,8 @@ class GraphicWriter(BaseItemWriter):
             out.append('\n  <table query=%s>' % (text.decode('utf-8')))
             for values in result['table']:
                 cnt = values[1][key]
-                #if cnt != 0:
                 out.append('\n    <row year=%s cnt=%s s_created=%s />' % (
-                               quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
+                    quoteattr(values[0]), quoteattr(str(cnt)), quoteattr(values[2])))
             out.append('\n  </table>')
         out.append('\n</tables>')
 
@@ -384,3 +384,39 @@ class RegionalGenericWriter(GenericWriter):
         if title_created:
             title += "%s" % title_created
         return title
+
+
+class ExcelWriter(object):
+    def __init__(self):
+        self.document_info = []
+
+    def write(self, out, item, **kwargs):
+        if "top" in item.get("type"):
+            self.document_info = item.get("Attrs")
+
+        for sub_item in item.get("items", []):
+            if "content" in sub_item:
+                is_left_context = True
+                hit, left_context, right_context = "", "", ""
+                for sent in sub_item["content"]:
+                    for word in sent["Words"]:
+                        word_text = word["Text"]
+                        if word.get("is_hit"):
+                            is_left_context = False
+                            hit = word_text
+                        if is_left_context:
+                            left_context += word.get("Punct", "")
+                            left_context += word_text
+                        else:
+                            right_context += word.get("Punct", "")
+                            right_context += word_text
+                out.append({
+                    "reversed_left": left_context[::-1],
+                    "reversed_hit": hit[::-1],
+                    "hit": hit,
+                    "left_context": left_context,
+                    "right_context": right_context,
+                    "attributes": self.document_info if self.document_info else [],
+                })
+            if sub_item.get("items", []):
+                self.write(out, sub_item, **kwargs)

@@ -8,7 +8,7 @@ from collections import defaultdict, OrderedDict
 from params import ParamsProcessor, SearchParams
 from processor import ResponseProcessor
 from render import render_legacy, writers
-from render.document import OutputDocumentWeb
+from render.document import OutputDocumentWeb, OutputDocumentExcel
 from search_result import SearchResult
 from syntax.syntax_search import syntax_search_process
 
@@ -179,7 +179,7 @@ class SearchEngine(object):
         MODE_TO_KPS["old_rus"]: (16, 0, 500292),
         MODE_TO_KPS["mid_rus"]: (5876, 0, 8074107),
         MODE_TO_KPS["birchbark"]: (879, 0, 19002),
-        MODE_TO_KPS["orthlib"]: (1160 , 0, 4476006),
+        MODE_TO_KPS["orthlib"]: (1160, 0, 4476006),
         MODE_TO_KPS["multiparc"]: (3652, 0, 421226),
         MODE_TO_KPS["multiparc_rus"]: (1315, 0, 960738),
         MODE_TO_KPS["multi"]: (12, 0, 5022425),
@@ -269,7 +269,6 @@ class SearchEngine(object):
             )
             results = ResponseProcessor(snippets=params.snippets_per_doc).process(
                 params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
-
             hchy = {"type": "body", "items": results}
 
             stat_response = SearchResult(
@@ -312,12 +311,17 @@ class SearchEngine(object):
             stat = self._get_stat(kps, response, query_len, docs_is_wrong)
 
         query_info = QueryInfo.get_query_info(params)
-        out = OutputDocumentWeb(
-            wfile, page=params.page, stat=stat,
-            info=query_info, search_type=params.search_type, subcorpus=params.subcorpus,
-            docs_per_page=params.docs_per_page, snippets_per_doc=params.snippets_per_doc)
-        writers.BodyWriter.write(
-            out, hchy, nodia=params.diacritic, text=params.text)
+
+        if params.xlsx_export:
+            out = OutputDocumentExcel(wfile)
+            writers.ExcelWriter().write(out, hchy)
+        else:
+            out = OutputDocumentWeb(
+                wfile, page=params.page, stat=stat,
+                info=query_info, search_type=params.search_type, subcorpus=params.subcorpus,
+                docs_per_page=params.docs_per_page, snippets_per_doc=params.snippets_per_doc)
+            writers.BodyWriter.write(
+                out, hchy, nodia=params.diacritic, text=params.text)
         out.finalize()
 
     def _serve_doc_info(self, params, wfile, args):

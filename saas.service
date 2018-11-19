@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI instance to serve saas
+After=network.target
+
+[Service]
+User=zavgorodny
+Group=www-data
+WorkingDirectory=/home/zavgorodny/saas
+Environment="PATH=/home/zavgorodny/saas/venv/bin"
+ExecStart=/home/zavgorodny/saas/venv/bin/uwsgi --http 0.0.0.0:8888 --ini saas.ini > /var/log/saas.log
+
+[Install]
+WantedBy=multi-user.target
+

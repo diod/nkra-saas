@@ -1,13 +1,61 @@
 # -*- coding: utf-8 -*-
 
-import logging
 import urllib
 
+from openpyxl import Workbook
+from openpyxl.writer.excel import save_virtual_workbook
 from xml.sax.saxutils import quoteattr
 
 
-class OutputDocumentSimple(object):
+class OutputDocumentExcel(object):
+    def __init__(self, wfile):
+        self.row_count = 0
+        self.wfile = wfile
+        self.book = Workbook()
+        self.sheet = self.book.active
+        self.column_names = None
 
+    def append(self, row):
+        if not self.column_names:
+            self.column_names = [
+                "Reversed left context",
+                "Hit",
+                "Left context",
+                "Hit",
+                "Right context",
+            ]
+            for attr_kv in row["attributes"]:
+                self.column_names.append(attr_kv[0])
+            self.sheet.append(self.column_names)
+        data = [
+            row["reversed_left"],
+            row["reversed_hit"],
+            row["left_context"],
+            row["hit"],
+            row["right_context"],
+        ]
+        attrs = dict(row["attributes"])
+        for column_name in self.column_names[5:]:
+            data.append(attrs.get(column_name, ""))
+        self.sheet.append(data)
+        self.row_count += 1
+
+    def text(self):
+        return save_virtual_workbook(self.book)
+
+    def finalize(self):
+        dims = {}
+        for row in self.sheet.rows:
+            for cell in row:
+                if cell.value:
+                    dims[cell.column] = 40
+        for col, value in dims.items():
+            self.sheet.column_dimensions[col].width = value
+        excel_text = save_virtual_workbook(self.book)
+        self.wfile.write(excel_text)
+
+
+class OutputDocumentSimple(object):
     def __init__(self):
         self.w = ""
 
@@ -32,7 +80,7 @@ class OutputDocumentWeb(object):
         if not stat:
             raise Exception("No stats for document, rejected")
         if not info:
-            info = [{"lex": u"", "gramm": u"",  "sem": u""}]
+            info = [{"lex": u"", "gramm": u"", "sem": u""}]
         for word in info:
             for k, v in word.items():
                 word[k] = v.encode("utf-8")

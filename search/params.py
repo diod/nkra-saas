@@ -34,6 +34,9 @@ class SearchParams(object):
         if query.get("text") == ["meta"]:
             query["req"] = ["*"]
         logging.info(query)
+        self.xlsx_export = False
+        if query.get("dl") == ["excel"]:
+            self.xlsx_export = True
         self.subcorpus = ""
         self.expand_snippets = False
         self.join_grouped_docs = True
