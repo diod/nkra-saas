@@ -7,7 +7,7 @@ import argparse
 import urlparse
 import StringIO
 
-from flask import Flask, current_app, redirect, request, Response
+from flask import Flask, current_app, redirect, request, Response, send_from_directory
 from flask_classful import FlaskView, route
 
 from search import search
@@ -77,7 +77,6 @@ class ServerHandler(FlaskView):
         ruscopora_bug_reporter.process_bug_report(msg, url)
         return Response("Ok\n", content_type="text/plain; charset=UTF-8")
 
-
 ############################################
 #
 # Init application for WSGI
@@ -92,6 +91,11 @@ parser.add_argument('-p', '--port', type=int, default=8001, nargs='?')
 args = parser.parse_args()
 
 application = Flask(__name__, static_folder='www', static_url_path='/www')
+
+@application.route('/robots.txt')
+@application.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(application.static_folder, request.path[1:])
 
 ServerHandler.args = args
 ServerHandler.register(application, route_base="/")
