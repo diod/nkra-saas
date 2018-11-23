@@ -59,7 +59,7 @@ class ServerHandler(FlaskView):
 
             if args.rendering == 'xslt' and "excel" not in path:
                 result = xslt.transform(result, params)
-                result = xslt.tostring(result, encoding='utf-8')
+                result = xslt.tostring(result, encoding='utf-8', method='html')
 
             resp = Response(result, content_type=content_type)
             if "excel" in path:
