@@ -274,8 +274,8 @@ class SimpleTextWriter(BaseItemWriter):
             pass
         if nodia:
             word = unicodedata.normalize('NFD', word)
-            word = word.replace(u'\u0300', "")
-            word = word.replace(u'\u0301', "")
+            word = word.replace(u'\u0300', "").replace(u'\u0301', "").replace('`', '')
+            word = unicodedata.normalize('NFC', word)
             return word
         else:
             dst_idx = None

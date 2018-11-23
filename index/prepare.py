@@ -13,7 +13,7 @@ def need_simplified_orthography(subcorpus):
 
 
 def should_keep_accents(subcorpus):
-    return subcorpus in ('poetic', 'accent', 'accent_stihi', 'spoken', 'murco')
+    return subcorpus in ('poetic', 'accent', 'accent_stihi', 'spoken', 'murco', 'school')
 
 
 def has_media(subcorpus):
@@ -42,18 +42,19 @@ def prepare(inpath, subcorpus='', split=True, corpus_type=None):
     if split:
         partition.split_long_sentences(doc)
         partition.make_aligned_parts(doc)
-    if not should_keep_accents(subcorpus):
+    is_should_keep_accents = should_keep_accents(subcorpus)
+    if not is_should_keep_accents:
         normalization.normalize_accents(doc)
     marks.normalize_punct(doc)
     marks.set_marks(doc)
     positions.set_first_last(doc)
     positions.set_capital(doc)
     repetition.set_repetitions(doc)
-    reversion.set_reversed(doc)
+    reversion.set_reversed(doc, is_should_keep_accents)
     groupattrs.set_groupattrs(doc)
     bastardness.move_bastardness_to_flags(doc)
     sorts.set_sorts(doc)
-    if should_keep_accents(subcorpus):
+    if is_should_keep_accents:
         rhyme.set_rhyme(doc)
     if need_simplified_orthography(subcorpus):
         orthography.simplify_orthography(doc, subcorpus)

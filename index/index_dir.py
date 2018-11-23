@@ -228,10 +228,12 @@ def _process_doc(sortings,
                 else:
                     new_attrs.append((attr_name, attr_val))
             doc["Attrs"] = new_attrs
+
+        is_remove_accent_u0300 = subcorpus in ('poetic', 'school')
         for i, doc_part in enumerate(doc['Parts']):
             try:
                 body_xml = _produce_xml(attrs_utils.split_attrs(
-                    doc_part, attrs_utils.C_INDEX))
+                    doc_part, attrs_utils.C_INDEX), is_remove_accent_u0300)
                 json_message = _produce_json(doc, sortings, inpath, i, kps, corpus_type=corpus_type)
                 logging.info('Processing %s, %s', inpath, i)
                 with open(inpath + ".%04d.json" % i, "w") as f:
@@ -271,10 +273,11 @@ def _process_doc_nodisk(sortings,
                     new_attrs.append((attr_name, attr_val))
             doc["Attrs"] = new_attrs
 
+        is_remove_accent_u0300 = subcorpus in ('poetic', 'school')
         for i, doc_part in enumerate(doc['Parts']):
             try:
                 body_xml = _produce_xml(attrs_utils.split_attrs(
-                    doc_part, attrs_utils.C_INDEX))
+                    doc_part, attrs_utils.C_INDEX), is_remove_accent_u0300)
                 json_message = _produce_json(
                     doc, sortings, sample_inpath, i, kps, corpus_type=corpus_type)
                 logging.info('Processing %s, %s', inpath, i)
@@ -334,7 +337,7 @@ def _get_resulting_filename(inpaths, pair_pattern):
         return inpaths
 
 
-def _produce_xml(doc_part):
+def _produce_xml(doc_part, is_remove_accent_u0300):
     out = StringIO.StringIO()
     out.write('<doc_part>\n')
     for sent in doc_part['Sents']:
@@ -345,6 +348,8 @@ def _produce_xml(doc_part):
             for value_part in split_attr_value_duct_tape(value):
                 out.write(' <e sz_%s=\'%s\'/>\n' % (attr, value_part))
         for word in sent['Words']:
+            if is_remove_accent_u0300:
+                word['Text'] = word['Text'].replace(u'\u0300', '').replace(u'\u0301', '').replace('`', '')
             out.write('<w sz_%s=%s>' % ('form', quoteattr(word['Text'])))
             for attr in ATTRS_WITH_COMBINATORIAL_EXPLOSION:
                 for item in _combinatorial_explosion(word['Anas'], attr):
