@@ -321,7 +321,7 @@ class SearchEngine(object):
                 info=query_info, search_type=params.search_type, subcorpus=params.subcorpus,
                 docs_per_page=params.docs_per_page, snippets_per_doc=params.snippets_per_doc)
             writers.BodyWriter.write(
-                out, hchy, nodia=params.diacritic, text=params.text)
+                out, hchy, nodia=params.diacritic, text=params.text, corpus=params.mode, data_holder={})
         out.finalize()
 
     def _serve_doc_info(self, params, wfile, args):

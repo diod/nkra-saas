@@ -280,6 +280,13 @@ class ResponseProcessor(object):
     def _get_top_path(self, item_top):
         # Save item_top's path to root and save the full snippet type.
         top_path = item_top.pop("path")
+        # Для некоторых документов в Устном корпусе top_path == []
+        #     top_path[0]["prefix"] = item_top["prefix"]
+        # IndexError: list index out of range
+        #if len(top_path) != 0:
+        #    top_path[0]["prefix"] = item_top["prefix"]
+        #else:
+        #   top_path.append({'prefix': item_top["prefix"]})
         top_path[0]["prefix"] = item_top["prefix"]
         return top_path
 

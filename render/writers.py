@@ -13,6 +13,10 @@ from openpyxl import Workbook
 from common.utils import remove_accents
 
 
+def is_speach_part_in_single_snippet(corpus):
+    return corpus in ('main')
+
+
 class WriterFactory(object):
     FACTORY_MAPPING = dict()
 
@@ -166,9 +170,10 @@ class SnippetWriter(BaseItemWriter):
         out.append(
             "<snippet sid=\"%s\" language=\" % s\" compound=\"1\" is_last=%s>" % (sid, lang, quoteattr(is_last))
         )
-        speach = kwargs.get("_speach", None)
+        speach = kwargs['data_holder'].get("speach", None)
         if speach:
             out.append("<text>[%s] </text>" % speach)
+        kwargs['data_holder']['speach'] = None
 
     @classmethod
     def close_item(cls, out, item, **kwargs):
@@ -190,16 +195,18 @@ class SpeechWriter(BaseItemWriter):
 
     @classmethod
     def open_item(cls, out, item, **kwargs):
-        """is_last = kwargs.get("is_last")
-        sp_attrs = dict(item.get("Attrs", {})).values()
-        out.append("<snippet is_last=%s>" % tuple(map(quoteattr, is_last)))
-        out.append("<text>[%s] </text>" % escape(", ".join(sp_attrs)))"""
-        pass
+        corpus = kwargs['corpus']
+        if not is_speach_part_in_single_snippet(corpus):
+            is_last = kwargs.get("is_last")
+            sp_attrs = dict(item.get("Attrs", {})).values()
+            out.append("<snippet is_last=%s>" % tuple(map(quoteattr, is_last)))
+            out.append("<text>[%s] </text>" % escape(", ".join(sp_attrs)))
+        else:
+            sp_attrs = dict(item.get("Attrs", {})).values()
+            kwargs['data_holder']['speach'] = escape(", ".join(sp_attrs))
 
-    @classmethod
+    """@classmethod
     def process_content(cls, out, item, **kwargs):
-        sp_attrs = dict(item.get("Attrs", {})).values()
-        kwargs["_speach"] = escape(", ".join(sp_attrs))
         #if "content" in item:
         #    SimpleTextWriter.write(out, item, **kwargs)
         sid = item.get("_extend_at", "")
@@ -214,11 +221,13 @@ class SpeechWriter(BaseItemWriter):
                     kwargs["is_last"] = "0"
                 writer = WriterFactory.get_writer(sub_item)
                 writer.write(out, sub_item, **kwargs)
+    """
 
     @classmethod
     def close_item(cls, out, item, **kwargs):
-        #out.append("</snippet>")
-        pass
+        corpus = kwargs['corpus']
+        if not is_speach_part_in_single_snippet(corpus):
+            out.append("</snippet>")
 
 
 class SimpleTextWriter(BaseItemWriter):
