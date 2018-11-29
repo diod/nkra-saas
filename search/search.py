@@ -183,8 +183,8 @@ class SearchEngine(object):
         MODE_TO_KPS["multiparc"]: (3652, 0, 421226),
         MODE_TO_KPS["multiparc_rus"]: (1315, 0, 960738),
         MODE_TO_KPS["multi"]: (12, 0, 5022425),
-        MODE_TO_KPS["paper"]: (0, 0, 0),
-        MODE_TO_KPS["main"]: (0, 0, 0),
+        MODE_TO_KPS["paper"]: (433373, 0, 228521421),
+        MODE_TO_KPS["main"]: (115645, 0, 283431966),
         MODE_TO_KPS["para"]: (2013, 0, 71033352),
         MODE_TO_KPS["dialect"]: (627, 0, 285281),
         MODE_TO_KPS["poetic"]: (78852, 0, 10923513),
@@ -192,7 +192,8 @@ class SearchEngine(object):
         MODE_TO_KPS["accent"]: (238318, 0, 25254284),
         MODE_TO_KPS["murco"]: (187230, 0, 4497729),
         MODE_TO_KPS["regional_rus"]: (0, 0, 0),
-        MODE_TO_KPS["regional"]: (0, 0, 0),
+        MODE_TO_KPS["regional"]: (27982, 0, 13291019),
+        MODE_TO_KPS['school']: (229, 0, 664751),
     }
 
     def __init__(self):
