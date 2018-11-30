@@ -28,8 +28,10 @@
 
   <xsl:template match="/">
     <!--<xsl:value-of select="x:http-header-out('Content-Type', 'text/html; charset=utf-8')"/>-->
-    <xsl:apply-templates select="/page/searchresult/body/result"/>
-    <xsl:call-template name="bug-reporter"/>
+    <div>
+      <xsl:apply-templates select="/page/searchresult/body/result"/>
+      <xsl:call-template name="bug-reporter"/>
+    </div>
   </xsl:template>
 
   <xsl:template name="bug-reporter">
