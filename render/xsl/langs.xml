@@ -124,11 +124,17 @@
     <translation name="Оригинальность"/>
     <comment name="Комментарий"/>
 
-    <sphere name="Сфера функционирования"/>
+    <!-- было так, и это приводило к показу только первой части составного атрибута
+        (см. search/search_attributes.py:get_attributes) -->
+    <!--sphere name="Сфера функционирования"/-->
+    <grsphere name="Сфера функционирования"/>
     <genre_fi name="Жанр художественной литературы"/>
     <genre name="Жанр текста"/>
     <chronotop name="Время и место действия"/>
-    <topic name="Тема текста"/>
+    <!-- было так, и это приводило к показу только первой части составного атрибута
+        (см. search/search_attributes.py:get_attributes) -->
+    <!--topic name="Тема текста"/-->
+    <grtopic name="Тема текста"/>
     <type name="Тип текста"/>
     <style name="Стиль"/>
 

@@ -285,7 +285,9 @@ class Document(object):
                     key = key.replace("p_", "")
                     key = key.replace("s_", "")
                     if type(value) is list:
-                        value = value[0]
+                        # было так, и это приводило к показу только первой части составного атрибута
+                        # value = value[0]
+                        value = value[len(value) - 1]
                     self.attrs[key] = self.attrs.get(key, []) + [value]
                 self.attrs['url'] = [self.get_url()]
             except Exception:
