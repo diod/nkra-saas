@@ -144,7 +144,7 @@ MODE_TO_KPS = {
     "multiparc_rus": 10050,
     "multi": 10060,
     "paper": 10071,
-    "main": 10092,
+    "main": 12101,
     "para": 10100,
     "dialect": 10111,
     "poetic": 10122,
@@ -215,10 +215,12 @@ class SearchEngine(object):
         """
         if raw_query.get('mode', [None])[0] == 'syntax':
             syntax_search_process(raw_query, wfile)
+            return None
         else:
             params = SearchParams(raw_query)
             response_callback = self.response_mapping[params.text]
             response_callback(params, wfile, args)
+            return params.is_return_saas_url_only
 
     def _serve_lex(self, params, wfile, args):
         """Used for queries by some grammatical marker or by some wordform.
@@ -266,43 +268,53 @@ class SearchEngine(object):
                 hits_count=True,
                 docid=params.doc_id,
                 subcorpus=params.subcorpus,
-                mode=params.mode
+                mode=params.mode,
+                is_return_saas_url_only=params.is_return_saas_url_only
             )
+
+            if params.is_return_saas_url_only:
+                wfile.write(response.url.encode('utf-8') + '\n')
+                return
+
             results = ResponseProcessor(snippets=params.snippets_per_doc).process(
                 params, response, extend_id=params.sent_id, sort_by=params.sort_by, subcorpus=params.mode)
             hchy = {"type": "body", "items": results}
 
-            stat_response = SearchResult(
-                query=saas_query,
-                kps=kps,
-                max_docs=STAT_MAX_DOCS_ON_PAGE,
-                docs_per_group=0,
-                group_attr=params.group_by,
-                sort=None,
-                hits_info=False,
-                hits_count=True,
-                docid=params.doc_id,
-                subcorpus=params.subcorpus,
-                mode=params.mode
-            )
-            docs_count = stat_response.get_docs_count()
-            docs_is_wrong = False
+            # Времено отключить точный подсчёт количества документов, так как запросы вида
+            # text=sz_form%3A"*"+(s_sphere%3A"художественная") и стоит rty_hits_detail=da&qi=rty_hits_count&qi=rty_hits_count_full
+            # приводят к 504 от saas для больших объёмов
+            #stat_response = SearchResult(
+            #    query=saas_query,
+            #    kps=kps,
+            #    max_docs=STAT_MAX_DOCS_ON_PAGE,
+            #    docs_per_group=0,
+            #    group_attr=params.group_by,
+            #    sort=None,
+            #    hits_info=False,
+            #    hits_count=True,
+            #    docid=params.doc_id,
+            #    subcorpus=params.subcorpus,
+            #    mode=params.mode
+            #)
+            docs_count = 0#stat_response.get_docs_count()
+            docs_is_wrong = True#False
             if docs_count == 0 and response.get_hits_count() != 0:
-                stat_response = SearchResult(
-                    query=saas_query,
-                    kps=kps,
-                    max_docs=WHEN_DOCS_WRONG_STAT_MAX_DOCS_ON_PAGE,
-                    docs_per_group=0,
-                    group_attr=params.group_by,
-                    sort=None,
-                    hits_info=False,
-                    hits_count=True,
-                    docid=params.doc_id,
-                    subcorpus=params.subcorpus,
-                    mode=params.mode
-                )
+                #stat_response = SearchResult(
+                #    query=saas_query,
+                #    kps=kps,
+                #    max_docs=WHEN_DOCS_WRONG_STAT_MAX_DOCS_ON_PAGE,
+                #    docs_per_group=0,
+                #    group_attr=params.group_by,
+                #    sort=None,
+                #    hits_info=False,
+                #    hits_count=True,
+                #    docid=params.doc_id,
+                #    subcorpus=params.subcorpus,
+                #    mode=params.mode
+                #)
                 docs_is_wrong = True
-                docs_count = stat_response.get_docs_count()
+                #docs_count = stat_response.get_docs_count()
+                docs_count = response.get_docs_count()
                 if docs_count == 0:
                     docs_count = 1
             try:

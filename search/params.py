@@ -65,6 +65,7 @@ class SearchParams(object):
         self.search_type = self._load_search_type()
         if self.mode in ["murco"] and self.text == "meta":
             self.group_by = "gr_author"
+        self.is_return_saas_url_only = query.get('return_saas_url_only', None) is not None
 
     def __iter__(self):
         """

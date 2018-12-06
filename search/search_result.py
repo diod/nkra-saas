@@ -32,7 +32,8 @@ class SearchResult(object):
                  add_props=None,
                  subcorpus="",
                  sentence_num=None,
-                 mode=None):
+                 mode=None,
+                 is_return_saas_url_only=False):
         """
         :param query:
         :param kps:
@@ -58,7 +59,8 @@ class SearchResult(object):
         url = self._get_url(params)
         logging.info(url)
         self.url = url
-        self.mapping = self._get_mapping(url)
+        if not is_return_saas_url_only:
+            self.mapping = self._get_mapping(url)
 
     def is_empty(self):
         return 'results' not in self.mapping.get('response', [])

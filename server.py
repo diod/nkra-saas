@@ -53,9 +53,14 @@ class ServerHandler(FlaskView):
                 output.write('<?xml version=\'1.0\' encoding=\'utf-8\'?>\n')
             elif args.rendering == 'xslt':
                 content_type = 'text/html; charset=utf-8'
+            else:
+                content_type = 'text/html; charset=utf-8'
 
-            self.engine.search(params, output, args)
+            is_return_saas_url_only = self.engine.search(params, output, args)
             result = output.getvalue()
+
+            if  is_return_saas_url_only:
+                return Response(result, content_type='text/html; charset=utf-8')
 
             if args.rendering == 'xslt' and "excel" not in path:
                 result = xslt.transform(result, params)
