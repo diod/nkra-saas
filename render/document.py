@@ -23,8 +23,11 @@ class OutputDocumentExcel(object):
                 "Left context",
                 "Hit",
                 "Right context",
+                "Full context"
             ]
             for attr_kv in row["attributes"]:
+                if attr_kv[0].startswith("gr"):
+                    continue
                 self.column_names.append(attr_kv[0])
             self.sheet.append(self.column_names)
         data = [
@@ -37,6 +40,12 @@ class OutputDocumentExcel(object):
         attrs = dict(row["attributes"])
         for column_name in self.column_names[5:]:
             data.append(attrs.get(column_name, ""))
+        # Append full context.
+        data.append(" ".join([
+            row["left_context"],
+            row["hit"],
+            row["right_context"]
+        ]))
         self.sheet.append(data)
         self.row_count += 1
 
