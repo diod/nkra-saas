@@ -15,7 +15,7 @@ from render import xslt
 from integration.bug_report import ruscopora_bug_reporter
 
 
-logging.basicConfig(format='%(asctime)s %(message)s',
+logging.basicConfig(format='%(asctime)s [%(process)d] %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S',
                     level=logging.DEBUG)
 
